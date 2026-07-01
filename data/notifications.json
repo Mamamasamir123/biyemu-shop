@@ -1,0 +1,1694 @@
+[
+  {
+    "id": "1e6a3a57",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:29"
+  },
+  {
+    "id": "912baf61",
+    "user_id": "0de6b278",
+    "notification_type": "low_stock",
+    "title": "Hifadhi Chini",
+    "message": "hjh inabaki 4 tu kwenye BiyeMu Shop",
+    "link": "/meneja/duka/bidhaa",
+    "read": true,
+    "created_at": "2026-06-30 16:29"
+  },
+  {
+    "id": "f3163851",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 150 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 16:29"
+  },
+  {
+    "id": "59fc2bf6",
+    "user_id": "d61be9d7",
+    "notification_type": "cash_remittance",
+    "title": "Pesa Imethibitishwa",
+    "message": "Shemu amethibitisha kupokea 150 TZS yako",
+    "link": "/mfanyakazi/pesa",
+    "read": true,
+    "created_at": "2026-06-30 16:30"
+  },
+  {
+    "id": "8410d74b",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x2 — 300 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:38"
+  },
+  {
+    "id": "bf2dec6b",
+    "user_id": "0de6b278",
+    "notification_type": "low_stock",
+    "title": "Hifadhi Chini",
+    "message": "hjh inabaki 2 tu kwenye BiyeMu Shop",
+    "link": "/meneja/duka/bidhaa",
+    "read": true,
+    "created_at": "2026-06-30 16:38"
+  },
+  {
+    "id": "3f02815e",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:50"
+  },
+  {
+    "id": "2d0368fb",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:50"
+  },
+  {
+    "id": "1d4ba6ea",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 300 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 16:50"
+  },
+  {
+    "id": "57d6b894",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 150 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 16:54"
+  },
+  {
+    "id": "7e7cab73",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 150 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 16:54"
+  },
+  {
+    "id": "338cc027",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x8 — 1,200 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:57"
+  },
+  {
+    "id": "b845d7d0",
+    "user_id": "0de6b278",
+    "notification_type": "low_stock",
+    "title": "Hifadhi Chini",
+    "message": "hjh inabaki 0 tu kwenye BiyeMu Shop",
+    "link": "/meneja/duka/bidhaa",
+    "read": true,
+    "created_at": "2026-06-30 16:57"
+  },
+  {
+    "id": "8e420eb0",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 1,200 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 16:58"
+  },
+  {
+    "id": "4fc0b36a",
+    "user_id": "d61be9d7",
+    "notification_type": "cash_remittance",
+    "title": "Pesa Imethibitishwa",
+    "message": "Shemu amethibitisha kupokea 300 TZS yako",
+    "link": "/mfanyakazi/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:01"
+  },
+  {
+    "id": "ce672cf0",
+    "user_id": "d61be9d7",
+    "notification_type": "cash_remittance",
+    "title": "Pesa Imethibitishwa",
+    "message": "Shemu amethibitisha kupokea 150 TZS yako",
+    "link": "/mfanyakazi/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:01"
+  },
+  {
+    "id": "e5deea2d",
+    "user_id": "d61be9d7",
+    "notification_type": "cash_remittance",
+    "title": "Pesa Imethibitishwa",
+    "message": "Shemu amethibitisha kupokea 150 TZS yako",
+    "link": "/mfanyakazi/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:01"
+  },
+  {
+    "id": "9c261a5b",
+    "user_id": "d61be9d7",
+    "notification_type": "cash_remittance",
+    "title": "Pesa Imethibitishwa",
+    "message": "Shemu amethibitisha kupokea 1,200 TZS yako",
+    "link": "/mfanyakazi/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:01"
+  },
+  {
+    "id": "25792f4d",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x2 — 300 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "30b7f3a9",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 300 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "d96ca023",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "8791439d",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "d0c31438",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa ya Mauzo Imewasilishwa",
+    "message": "Broskid amewasilisha 300 TZS — BiyeMu Shop",
+    "link": "/meneja/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "0d0b62b4",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Pesa Imethibitishwa",
+    "message": "BiyeMu amethibitisha kupokea 150 TZS yako",
+    "link": "/meneja/toa-pesa",
+    "read": true,
+    "created_at": "2026-07-01 02:28"
+  },
+  {
+    "id": "4a749aa3",
+    "user_id": "0de6b278",
+    "notification_type": "cash_remittance",
+    "title": "Cash Confirmed",
+    "message": "BiyeMu confirmed receiving your 150 TZS",
+    "link": "/meneja/toa-pesa",
+    "read": true,
+    "created_at": "2026-07-01 03:22",
+    "meta": {
+      "variant": "confirmed",
+      "name": "BiyeMu",
+      "amount": "150"
+    }
+  },
+  {
+    "id": "caa51d53",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 250 TZS (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-07-01 04:10",
+    "meta": {
+      "shop_id": "shop001",
+      "shop_logo": "shop001_logo.jpg",
+      "shop_name": "BiyeMu Shop",
+      "employee_name": "Broskid",
+      "employee_id": "d61be9d7",
+      "product_id": "43d3e3ba",
+      "product_name": "hjh",
+      "product_image": "new_dce5b3ab.jpg",
+      "qty": 1,
+      "amount": "250"
+    }
+  },
+  {
+    "id": "35e07d0a",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Shemu ameuza hjh x1 — 250 Fbi (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-07-01 04:57",
+    "meta": {
+      "shop_id": "shop001",
+      "shop_logo": "shop001_logo.jpg",
+      "shop_name": "BiyeMu Shop",
+      "employee_name": "Shemu",
+      "employee_id": "0de6b278",
+      "product_id": "43d3e3ba",
+      "product_name": "hjh",
+      "product_image": "new_dce5b3ab.jpg",
+      "qty": 1,
+      "amount": "250 Fbi"
+    }
+  },
+  {
+    "id": "9b29f826",
+    "user_id": "0de6b278",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Shemu ameuza hjh x6 — 1,500 Fbi (BiyeMu Shop)",
+    "link": "/meneja/duka/mauzo",
+    "read": true,
+    "created_at": "2026-07-01 04:57",
+    "meta": {
+      "shop_id": "shop001",
+      "shop_logo": "shop001_logo.jpg",
+      "shop_name": "BiyeMu Shop",
+      "employee_name": "Shemu",
+      "employee_id": "0de6b278",
+      "product_id": "43d3e3ba",
+      "product_name": "hjh",
+      "product_image": "new_dce5b3ab.jpg",
+      "qty": 6,
+      "amount": "1,500 Fbi"
+    }
+  },
+  {
+    "id": "0200a0f1",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kuongeza bidhaa — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-06-30 15:49"
+  },
+  {
+    "id": "d4e3ce69",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:29"
+  },
+  {
+    "id": "5053c367",
+    "user_id": "boss001",
+    "notification_type": "low_stock",
+    "title": "Hifadhi Chini",
+    "message": "hjh inabaki 4 tu kwenye BiyeMu Shop",
+    "link": "/boss/maduka/shop001/bidhaa",
+    "read": true,
+    "created_at": "2026-06-30 16:29"
+  },
+  {
+    "id": "5f6ede99",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x2 — 300 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:38"
+  },
+  {
+    "id": "120371ff",
+    "user_id": "boss001",
+    "notification_type": "low_stock",
+    "title": "Ububiko Buke",
+    "message": "hjh isigaye 2 gusa muri BiyeMu Shop",
+    "link": "/boss/maduka/shop001/bidhaa",
+    "read": true,
+    "created_at": "2026-06-30 16:38"
+  },
+  {
+    "id": "850a59d7",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:50"
+  },
+  {
+    "id": "5fa036a6",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:50"
+  },
+  {
+    "id": "b6962995",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x8 — 1,200 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 16:57"
+  },
+  {
+    "id": "3c4a4a5e",
+    "user_id": "boss001",
+    "notification_type": "low_stock",
+    "title": "Ububiko Buke",
+    "message": "hjh isigaye 0 gusa muri BiyeMu Shop",
+    "link": "/boss/maduka/shop001/bidhaa",
+    "read": true,
+    "created_at": "2026-06-30 16:57"
+  },
+  {
+    "id": "1e899f9d",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x2 — 300 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "8b9be892",
+    "user_id": "boss001",
+    "notification_type": "cash_remittance",
+    "title": "Amafaranga Yoherejwe",
+    "message": "Shemu yohereje 300 TZS y'iduka — BiyeMu Shop",
+    "link": "/boss/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "1bed1fe6",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "367953a3",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Uguri sha Gushya",
+    "message": "Broskid yagurishije hjh x1 — 150 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "3546c41b",
+    "user_id": "boss001",
+    "notification_type": "cash_remittance",
+    "title": "Amafaranga Yoherejwe",
+    "message": "Shemu yohereje 150 TZS y'iduka — BiyeMu Shop",
+    "link": "/boss/pesa",
+    "read": true,
+    "created_at": "2026-06-30 17:09"
+  },
+  {
+    "id": "fda5f46d",
+    "user_id": "boss001",
+    "notification_type": "cash_remittance",
+    "title": "Sales Cash Submitted",
+    "message": "Shemu submitted 150 TZS shop cash — BiyeMu Shop",
+    "link": "/boss/pesa",
+    "read": true,
+    "created_at": "2026-07-01 03:10",
+    "meta": {
+      "variant": "manager_submitted",
+      "employee_name": "Shemu",
+      "amount": "150",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "7e15d3e9",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Broskid ameuza hjh x1 — 250 TZS (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-07-01 04:10",
+    "meta": {
+      "shop_id": "shop001",
+      "shop_logo": "shop001_logo.jpg",
+      "shop_name": "BiyeMu Shop",
+      "employee_name": "Broskid",
+      "employee_id": "d61be9d7",
+      "product_id": "43d3e3ba",
+      "product_name": "hjh",
+      "product_image": "new_dce5b3ab.jpg",
+      "qty": 1,
+      "amount": "250"
+    }
+  },
+  {
+    "id": "8ccc6d3a",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Shemu ameuza hjh x1 — 250 Fbi (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-07-01 04:57",
+    "meta": {
+      "shop_id": "shop001",
+      "shop_logo": "shop001_logo.jpg",
+      "shop_name": "BiyeMu Shop",
+      "employee_name": "Shemu",
+      "employee_id": "0de6b278",
+      "product_id": "43d3e3ba",
+      "product_name": "hjh",
+      "product_image": "new_dce5b3ab.jpg",
+      "qty": 1,
+      "amount": "250 Fbi"
+    }
+  },
+  {
+    "id": "96a43e15",
+    "user_id": "boss001",
+    "notification_type": "sale_new",
+    "title": "Mauzo Mapya",
+    "message": "Shemu ameuza hjh x6 — 1,500 Fbi (BiyeMu Shop)",
+    "link": "/boss/maduka/shop001/mauzo",
+    "read": true,
+    "created_at": "2026-07-01 04:57",
+    "meta": {
+      "shop_id": "shop001",
+      "shop_logo": "shop001_logo.jpg",
+      "shop_name": "BiyeMu Shop",
+      "employee_name": "Shemu",
+      "employee_id": "0de6b278",
+      "product_id": "43d3e3ba",
+      "product_name": "hjh",
+      "product_image": "new_dce5b3ab.jpg",
+      "qty": 6,
+      "amount": "1,500 Fbi"
+    }
+  },
+  {
+    "id": "67da90c6",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Mauzo Yangu kwenye dashibodi yako",
+    "link": "/dashibodi",
+    "read": false,
+    "created_at": "2026-07-01 07:25",
+    "meta": {
+      "dashboard_reset_id": "bf541560",
+      "section": "my_sales"
+    }
+  },
+  {
+    "id": "e36eb03d",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashibodi Imeanzishwa",
+    "message": "Broskid amethibitisha kuanza upya Mauzo Yangu",
+    "link": "/dashibodi",
+    "read": true,
+    "created_at": "2026-07-01 07:25",
+    "meta": {
+      "dashboard_reset_id": "bf541560",
+      "section": "my_sales",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "d64e8a25",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Bidhaa kwenye dashibodi yako",
+    "link": "/dashibodi",
+    "read": true,
+    "created_at": "2026-07-01 07:52",
+    "meta": {
+      "dashboard_reset_id": "49245267",
+      "section": "products"
+    }
+  },
+  {
+    "id": "1a25b93b",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Pesa Inayonaswa kwenye dashibodi yako",
+    "link": "/dashibodi",
+    "read": false,
+    "created_at": "2026-07-01 07:52",
+    "meta": {
+      "dashboard_reset_id": "e1b8d03c",
+      "section": "cash_held"
+    }
+  },
+  {
+    "id": "69ef99ae",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Pesa Inayosubiri kwenye dashibodi yako",
+    "link": "/dashibodi",
+    "read": false,
+    "created_at": "2026-07-01 07:52",
+    "meta": {
+      "dashboard_reset_id": "00ea104c",
+      "section": "cash_pending"
+    }
+  },
+  {
+    "id": "7d7f19a4",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Iliyothibitishwa kwenye dashibodi yako",
+    "link": "/dashibodi",
+    "read": false,
+    "created_at": "2026-07-01 07:52",
+    "meta": {
+      "dashboard_reset_id": "c8edc8e4",
+      "section": "cash_confirmed"
+    }
+  },
+  {
+    "id": "a88d29c4",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Mauzo Yangu kwenye dashibodi yako",
+    "link": "/dashibodi",
+    "read": false,
+    "created_at": "2026-07-01 07:53",
+    "meta": {
+      "dashboard_reset_id": "9385beb2",
+      "section": "my_sales"
+    }
+  },
+  {
+    "id": "eab94c27",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Bidhaa kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 07:58",
+    "meta": {
+      "dashboard_reset_id": "6288e0e1",
+      "section": "products"
+    }
+  },
+  {
+    "id": "d2394f90",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Wafanyakazi kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 07:58",
+    "meta": {
+      "dashboard_reset_id": "14e61cfd",
+      "section": "staff"
+    }
+  },
+  {
+    "id": "e82c8ed0",
+    "user_id": "a8d0a96c",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Bidhaa kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": false,
+    "created_at": "2026-07-01 07:59",
+    "meta": {
+      "dashboard_reset_id": "fa18ba45",
+      "section": "products"
+    }
+  },
+  {
+    "id": "06f995f0",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Wafanyakazi kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 07:59",
+    "meta": {
+      "dashboard_reset_id": "806e9556",
+      "section": "staff"
+    }
+  },
+  {
+    "id": "58ac332f",
+    "user_id": "2e1ac5b0",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Iliyothibitishwa kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": false,
+    "created_at": "2026-07-01 07:59",
+    "meta": {
+      "dashboard_reset_id": "e675449f",
+      "section": "cash_confirmed"
+    }
+  },
+  {
+    "id": "c17e208a",
+    "user_id": "a8d0a96c",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Wafanyakazi kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": false,
+    "created_at": "2026-07-01 07:59",
+    "meta": {
+      "dashboard_reset_id": "0085fcb8",
+      "section": "staff"
+    }
+  },
+  {
+    "id": "e4ca2367",
+    "user_id": "a8d0a96c",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Mapato ya Duka kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": false,
+    "created_at": "2026-07-01 07:59",
+    "meta": {
+      "dashboard_reset_id": "c289440b",
+      "section": "revenue"
+    }
+  },
+  {
+    "id": "9a6fcb3c",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Ombi la Dashibodi",
+    "message": "BiyeMu anaomba kuanza upya Mapato ya Duka kwenye dashibodi yako",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:00",
+    "meta": {
+      "dashboard_reset_id": "ea5bdc93",
+      "section": "revenue"
+    }
+  },
+  {
+    "id": "af18f881",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Ikibaho Cyatangijwe",
+    "message": "bebe yemeje gutangira Ibicuruzwa",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:01",
+    "meta": {
+      "dashboard_reset_id": "6288e0e1",
+      "section": "products",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "2eae93f7",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Ikibaho Cyatangijwe",
+    "message": "bebe yemeje gutangira Abakozi",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:01",
+    "meta": {
+      "dashboard_reset_id": "14e61cfd",
+      "section": "staff",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "1cc66dce",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "bigi confirmed reset for Staff",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:02",
+    "meta": {
+      "dashboard_reset_id": "0085fcb8",
+      "section": "staff",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "989a5209",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "bigi confirmed reset for Products",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:03",
+    "meta": {
+      "dashboard_reset_id": "fa18ba45",
+      "section": "products",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "59ce8d1c",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "bigi confirmed reset for Shop Revenue",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:03",
+    "meta": {
+      "dashboard_reset_id": "c289440b",
+      "section": "revenue",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "53807a8c",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "Broskid confirmed reset for My Sales",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:04",
+    "meta": {
+      "dashboard_reset_id": "9385beb2",
+      "section": "my_sales",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "fd40fee6",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "Broskid confirmed reset for Held Cash",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:04",
+    "meta": {
+      "dashboard_reset_id": "e1b8d03c",
+      "section": "cash_held",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "77003b91",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "Broskid confirmed reset for Pending Cash",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:04",
+    "meta": {
+      "dashboard_reset_id": "00ea104c",
+      "section": "cash_pending",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "97f859df",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashboard Reset Approved",
+    "message": "Broskid confirmed reset for Confirmed",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:04",
+    "meta": {
+      "dashboard_reset_id": "c8edc8e4",
+      "section": "cash_confirmed",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "bc506682",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashibodi Imeanzishwa",
+    "message": "nduve amethibitisha kuanza upya Iliyothibitishwa",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:07",
+    "meta": {
+      "dashboard_reset_id": "e675449f",
+      "section": "cash_confirmed",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "b8baa60c",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashibodi Imeanzishwa",
+    "message": "Shemu amethibitisha kuanza upya Bidhaa",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:08",
+    "meta": {
+      "dashboard_reset_id": "49245267",
+      "section": "products",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "05fa92cc",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashibodi Imeanzishwa",
+    "message": "Shemu amethibitisha kuanza upya Wafanyakazi",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:08",
+    "meta": {
+      "dashboard_reset_id": "806e9556",
+      "section": "staff",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "827227b6",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Dashibodi Imeanzishwa",
+    "message": "Shemu amethibitisha kuanza upya Mapato ya Duka",
+    "link": "/dashibodi/udhibiti",
+    "read": true,
+    "created_at": "2026-07-01 08:08",
+    "meta": {
+      "dashboard_reset_id": "ea5bdc93",
+      "section": "revenue",
+      "result": "approved"
+    }
+  },
+  {
+    "id": "a905c27f",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta bidhaa — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:12",
+    "meta": {
+      "approval_id": "fbe30d23",
+      "name": "Shemu",
+      "approval_type": "delete_product",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "11a86091",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta bidhaa limeidhinishwa: Ombi la kufuta: hjh",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:13",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_product",
+      "details": "Ombi la kufuta: hjh"
+    }
+  },
+  {
+    "id": "7c4c3b9a",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:38",
+    "meta": {
+      "approval_id": "1de75034",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "2cb70575",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "65286742",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "e779b9aa",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "5aa03438",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "b6fd452f",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "4f556833",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "fe8d1c02",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "f9e0c4f4",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "ea2a92bd",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "315ebbff",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "54f21ffd",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "031fd0b9",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "5436555c",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "8fbdf4a9",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "4706a890",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "807a4a8c",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "c0e2f6a7",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "3a8a182f",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "e037dd4f",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "18afcc55",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "7d707fe6",
+    "user_id": "boss001",
+    "notification_type": "approval_incoming",
+    "title": "Ombi Jipya la Idhini",
+    "message": "Shemu ametuma ombi la Kufuta mauzo — BiyeMu Shop",
+    "link": "/boss/idhini",
+    "read": true,
+    "created_at": "2026-07-01 08:51",
+    "meta": {
+      "approval_id": "188b2178",
+      "name": "Shemu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop001",
+      "shop_name": "BiyeMu Shop",
+      "shop_logo": "shop001_logo.jpg"
+    }
+  },
+  {
+    "id": "acfc6803",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x2) — 300 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x2) — 300 Fbi"
+    }
+  },
+  {
+    "id": "fc9cb109",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x6) — 1,500 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x6) — 1,500 Fbi"
+    }
+  },
+  {
+    "id": "554940ac",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 250 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 250 Fbi"
+    }
+  },
+  {
+    "id": "f4082518",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 250 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 250 Fbi"
+    }
+  },
+  {
+    "id": "0793fb0b",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 150 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 150 Fbi"
+    }
+  },
+  {
+    "id": "cb66211b",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 150 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 150 Fbi"
+    }
+  },
+  {
+    "id": "d948e24b",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x2) — 300 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x2) — 300 Fbi"
+    }
+  },
+  {
+    "id": "efe57485",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x8) — 1,200 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x8) — 1,200 Fbi"
+    }
+  },
+  {
+    "id": "8d87e158",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 150 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 150 Fbi"
+    }
+  },
+  {
+    "id": "1f08065a",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 150 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 150 Fbi"
+    }
+  },
+  {
+    "id": "b0de2989",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x2) — 300 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x2) — 300 Fbi"
+    }
+  },
+  {
+    "id": "c57c45d1",
+    "user_id": "0de6b278",
+    "notification_type": "approval_result",
+    "title": "Ombi Limeidhinishwa",
+    "message": "Ombi lako la Kufuta mauzo limeidhinishwa: Futa mauzo: hjh (x1) — 150 Fbi",
+    "link": "/meneja/idhini",
+    "read": true,
+    "created_at": "2026-07-01 09:00",
+    "meta": {
+      "result": "approved",
+      "approval_type": "delete_sale",
+      "details": "Futa mauzo: hjh (x1) — 150 Fbi"
+    }
+  },
+  {
+    "id": "a8d555b6",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "Broskid (Employee, BiyeMu Shop) is requesting permission to connect.",
+    "link": "/mazungumzo?na=d61be9d7",
+    "read": false,
+    "created_at": "2026-07-01 09:25",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "d61be9d7"
+    }
+  },
+  {
+    "id": "67e50601",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Permission Response",
+    "message": "bebe allowed you to connect.",
+    "link": "/mazungumzo?na=e948e8fd",
+    "read": false,
+    "created_at": "2026-07-01 09:25",
+    "meta": {
+      "connection_result": true,
+      "target_id": "e948e8fd"
+    }
+  },
+  {
+    "id": "01619b75",
+    "user_id": "d61be9d7",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "BiyeMu (Boss (Admin), -) is requesting permission to connect.",
+    "link": "/mazungumzo?na=boss001",
+    "read": false,
+    "created_at": "2026-07-01 09:31",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "boss001"
+    }
+  },
+  {
+    "id": "0be9a6c2",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Permission Response",
+    "message": "Broskid allowed you to connect.",
+    "link": "/mazungumzo?na=d61be9d7",
+    "read": true,
+    "created_at": "2026-07-01 09:32",
+    "meta": {
+      "connection_result": true,
+      "target_id": "d61be9d7"
+    }
+  },
+  {
+    "id": "060f18b4",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "bebe (Manager, BiyeMu Studio) is requesting permission to connect.",
+    "link": "/mazungumzo?na=e948e8fd",
+    "read": true,
+    "created_at": "2026-07-01 09:47",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "e948e8fd"
+    }
+  },
+  {
+    "id": "14e076d7",
+    "user_id": "2e1ac5b0",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "bebe (Manager, BiyeMu Studio) is requesting permission to connect.",
+    "link": "/mazungumzo?na=e948e8fd",
+    "read": false,
+    "created_at": "2026-07-01 09:47",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "e948e8fd"
+    }
+  },
+  {
+    "id": "301733c2",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "bebe (Manager, BiyeMu Studio) is requesting permission to connect.",
+    "link": "/mazungumzo?na=e948e8fd",
+    "read": true,
+    "created_at": "2026-07-01 09:47",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "e948e8fd"
+    }
+  },
+  {
+    "id": "ff2fb9fc",
+    "user_id": "a8d0a96c",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "bebe (Manager, BiyeMu Studio) is requesting permission to connect.",
+    "link": "/mazungumzo?na=e948e8fd",
+    "read": false,
+    "created_at": "2026-07-01 11:09",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "e948e8fd"
+    }
+  },
+  {
+    "id": "e694269e",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Jibu la Ruhusa",
+    "message": "Shemu amekuruhusu kuwasiliana.",
+    "link": "/mazungumzo?na=0de6b278",
+    "read": false,
+    "created_at": "2026-07-01 11:34",
+    "meta": {
+      "connection_result": true,
+      "target_id": "0de6b278"
+    }
+  },
+  {
+    "id": "8e3275df",
+    "user_id": "a8d0a96c",
+    "notification_type": "staff",
+    "title": "Ombi la Ruhusa",
+    "message": "Shemu (Meneja, BiyeMu Shop) anaomba ruhusa ya kuwasiliana.",
+    "link": "/mazungumzo?na=0de6b278",
+    "read": false,
+    "created_at": "2026-07-01 11:36",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "0de6b278"
+    }
+  },
+  {
+    "id": "e5211d90",
+    "user_id": "boss001",
+    "notification_type": "staff",
+    "title": "Ombi la Ruhusa",
+    "message": "Shemu (Meneja, BiyeMu Shop) anaomba ruhusa ya kuwasiliana.",
+    "link": "/mazungumzo?na=0de6b278",
+    "read": true,
+    "created_at": "2026-07-01 11:36",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "0de6b278"
+    }
+  },
+  {
+    "id": "fa3a0c76",
+    "user_id": "2e1ac5b0",
+    "notification_type": "staff",
+    "title": "Ombi la Ruhusa",
+    "message": "Shemu (Meneja, BiyeMu Shop) anaomba ruhusa ya kuwasiliana.",
+    "link": "/mazungumzo?na=0de6b278",
+    "read": false,
+    "created_at": "2026-07-01 11:36",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "0de6b278"
+    }
+  },
+  {
+    "id": "ebe2cf55",
+    "user_id": "2d3fa00c",
+    "notification_type": "staff",
+    "title": "Ombi la Ruhusa",
+    "message": "Shemu (Meneja, BiyeMu Shop) anaomba ruhusa ya kuwasiliana.",
+    "link": "/mazungumzo?na=0de6b278",
+    "read": false,
+    "created_at": "2026-07-01 11:36",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "0de6b278"
+    }
+  },
+  {
+    "id": "f28c1cbc",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Jibu la Ruhusa",
+    "message": "nduve amekuruhusu kuwasiliana.",
+    "link": "/mazungumzo?na=2e1ac5b0",
+    "read": false,
+    "created_at": "2026-07-01 11:38",
+    "meta": {
+      "connection_result": true,
+      "target_id": "2e1ac5b0"
+    }
+  },
+  {
+    "id": "4ba5dc18",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Jibu la Ruhusa",
+    "message": "nduve amekuruhusu kuwasiliana.",
+    "link": "/mazungumzo?na=2e1ac5b0",
+    "read": true,
+    "created_at": "2026-07-01 11:39",
+    "meta": {
+      "connection_result": true,
+      "target_id": "2e1ac5b0"
+    }
+  },
+  {
+    "id": "fb302c78",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Permission Response",
+    "message": "bigi allowed you to connect.",
+    "link": "/mazungumzo?na=a8d0a96c",
+    "read": false,
+    "created_at": "2026-07-01 11:47",
+    "meta": {
+      "connection_result": true,
+      "target_id": "a8d0a96c"
+    }
+  },
+  {
+    "id": "8b3c4954",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Permission Response",
+    "message": "bigi allowed you to connect.",
+    "link": "/mazungumzo?na=a8d0a96c",
+    "read": true,
+    "created_at": "2026-07-01 11:47",
+    "meta": {
+      "connection_result": true,
+      "target_id": "a8d0a96c"
+    }
+  },
+  {
+    "id": "2a784be1",
+    "user_id": "0de6b278",
+    "notification_type": "staff",
+    "title": "Permission Response",
+    "message": "BiyeMu allowed you to connect.",
+    "link": "/mazungumzo?na=boss001",
+    "read": true,
+    "created_at": "2026-07-01 12:34",
+    "meta": {
+      "connection_result": true,
+      "target_id": "boss001"
+    }
+  },
+  {
+    "id": "26d379ff",
+    "user_id": "e948e8fd",
+    "notification_type": "staff",
+    "title": "Permission Response",
+    "message": "BiyeMu allowed you to connect.",
+    "link": "/mazungumzo?na=boss001",
+    "read": false,
+    "created_at": "2026-07-01 12:34",
+    "meta": {
+      "connection_result": true,
+      "target_id": "boss001"
+    }
+  },
+  {
+    "id": "ef164def",
+    "user_id": "2d3fa00c",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "BiyeMu (Boss (Admin), -) is requesting permission to connect.",
+    "link": "/mazungumzo?na=boss001",
+    "read": false,
+    "created_at": "2026-07-01 12:38",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "boss001"
+    }
+  },
+  {
+    "id": "a1b52cd5",
+    "user_id": "2e1ac5b0",
+    "notification_type": "staff",
+    "title": "Permission Request",
+    "message": "BiyeMu (Boss (Admin), -) is requesting permission to connect.",
+    "link": "/mazungumzo?na=boss001",
+    "read": false,
+    "created_at": "2026-07-01 12:38",
+    "meta": {
+      "connection_request": true,
+      "requester_id": "boss001"
+    }
+  },
+  {
+    "id": "43ab7f7c",
+    "user_id": "a8d0a96c",
+    "notification_type": "approval_incoming",
+    "title": "New Approval Request",
+    "message": "BiyeMu sent a Kufuta mauzo request — BiyeMu Electr Shop",
+    "link": "/meneja/idhini",
+    "read": false,
+    "created_at": "2026-07-01 13:26",
+    "meta": {
+      "approval_id": "b9fcff2a",
+      "name": "BiyeMu",
+      "approval_type": "delete_sale",
+      "shop_id": "shop002",
+      "shop_name": "BiyeMu Electr Shop",
+      "shop_logo": "shop002_logo.jpg"
+    }
+  }
+]

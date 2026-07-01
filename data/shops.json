@@ -1,0 +1,29 @@
+[
+  {
+    "id": "shop001",
+    "name": "BiyeMu Shop",
+    "shop_type": "Nguo",
+    "location": "Kirundo",
+    "logo": "shop001_logo.jpg",
+    "cover_image": "shop001_cover.jpg",
+    "description": "iduka ryimpuzu"
+  },
+  {
+    "id": "shop002",
+    "name": "BiyeMu Electr Shop",
+    "shop_type": "Electronics",
+    "location": "Kirundo",
+    "logo": "shop002_logo.jpg",
+    "cover_image": "shop002_cover.jpg",
+    "description": "Electronics shop"
+  },
+  {
+    "id": "shop003",
+    "name": "BiyeMu Studio",
+    "shop_type": "Studio",
+    "location": "Bujumbura",
+    "logo": "shop003_logo.jpg",
+    "cover_image": "shop003_cover.jpg",
+    "description": ""
+  }
+]

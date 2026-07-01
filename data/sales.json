@@ -1,0 +1,17 @@
+[
+  {
+    "id": "a2fcff26",
+    "product_id": "fc14c636",
+    "product_name": "radio",
+    "shop_id": "shop002",
+    "employee_id": "2e1ac5b0",
+    "employee_name": "nduve",
+    "quantity": 2,
+    "unit_price": 150.0,
+    "total_amount": 300.0,
+    "cost_price": 100.0,
+    "date": "2026-06-30 15:40",
+    "cash_status": "confirmed",
+    "remittance_id": ""
+  }
+]

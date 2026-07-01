@@ -1,0 +1,13 @@
+[
+  {
+    "id": "fc14c636",
+    "name": "radio",
+    "price": 150.0,
+    "quantity": 0,
+    "shop_id": "shop002",
+    "cost_price": 100.0,
+    "category": "radio",
+    "image": "new_18d4550c.jpg",
+    "created_at": ""
+  }
+]

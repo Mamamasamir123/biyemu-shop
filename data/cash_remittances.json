@@ -1,0 +1,203 @@
+[
+  {
+    "id": "ca60e5fe",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 150.0,
+    "sale_ids": [
+      "32c7e867"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 16:29",
+    "confirmed_at": "2026-06-30 16:30",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "c0ce1804",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 300.0,
+    "sale_ids": [
+      "80d55a74"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 16:50",
+    "confirmed_at": "2026-06-30 17:01",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "503077fd",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 150.0,
+    "sale_ids": [
+      "22f5664f"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 16:54",
+    "confirmed_at": "2026-06-30 17:01",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "c7d8057f",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 150.0,
+    "sale_ids": [
+      "f2f1bc4a"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 16:54",
+    "confirmed_at": "2026-06-30 17:01",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "f9ada790",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 1200.0,
+    "sale_ids": [
+      "643f08c6"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 16:58",
+    "confirmed_at": "2026-06-30 17:01",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "6edbc156",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 300.0,
+    "sale_ids": [
+      "f480fd81"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 17:09",
+    "confirmed_at": "2026-06-30 17:09",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "09af40eb",
+    "shop_id": "shop001",
+    "employee_id": "0de6b278",
+    "employee_name": "Shemu",
+    "receiver_id": "boss001",
+    "receiver_name": "BiyeMu",
+    "receiver_role": "boss",
+    "amount": 300.0,
+    "sale_ids": [
+      "f480fd81"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_manager",
+    "note": "",
+    "created_at": "2026-06-30 17:09",
+    "confirmed_at": "2026-06-30 17:09",
+    "confirmed_by_id": "boss001",
+    "confirmed_by_name": "BiyeMu"
+  },
+  {
+    "id": "a4942318",
+    "shop_id": "shop001",
+    "employee_id": "d61be9d7",
+    "employee_name": "Broskid",
+    "receiver_id": "0de6b278",
+    "receiver_name": "Shemu",
+    "receiver_role": "manager",
+    "amount": 300.0,
+    "sale_ids": [
+      "a574f0db",
+      "b68ec46e"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_employee",
+    "note": "",
+    "created_at": "2026-06-30 17:09",
+    "confirmed_at": "2026-06-30 17:09",
+    "confirmed_by_id": "0de6b278",
+    "confirmed_by_name": "Shemu"
+  },
+  {
+    "id": "c617c291",
+    "shop_id": "shop001",
+    "employee_id": "0de6b278",
+    "employee_name": "Shemu",
+    "receiver_id": "boss001",
+    "receiver_name": "BiyeMu",
+    "receiver_role": "boss",
+    "amount": 150.0,
+    "sale_ids": [
+      "a574f0db"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_manager",
+    "note": "",
+    "created_at": "2026-06-30 17:09",
+    "confirmed_at": "2026-07-01 02:28",
+    "confirmed_by_id": "boss001",
+    "confirmed_by_name": "BiyeMu"
+  },
+  {
+    "id": "9726c44a",
+    "shop_id": "shop001",
+    "employee_id": "0de6b278",
+    "employee_name": "Shemu",
+    "receiver_id": "boss001",
+    "receiver_name": "BiyeMu",
+    "receiver_role": "boss",
+    "amount": 150.0,
+    "sale_ids": [
+      "b68ec46e"
+    ],
+    "status": "confirmed",
+    "remittance_kind": "from_manager",
+    "note": "",
+    "created_at": "2026-07-01 03:10",
+    "confirmed_at": "2026-07-01 03:22",
+    "confirmed_by_id": "boss001",
+    "confirmed_by_name": "BiyeMu"
+  }
+]

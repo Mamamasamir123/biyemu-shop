@@ -1,0 +1,98 @@
+[
+  {
+    "id": "5d4917a9",
+    "requester_id": "d61be9d7",
+    "target_id": "e948e8fd",
+    "status": "approved",
+    "created_at": "2026-07-01 09:25",
+    "responded_at": "2026-07-01 09:25"
+  },
+  {
+    "id": "6fb3434c",
+    "requester_id": "boss001",
+    "target_id": "d61be9d7",
+    "status": "approved",
+    "created_at": "2026-07-01 09:31",
+    "responded_at": "2026-07-01 09:32"
+  },
+  {
+    "id": "7dad1994",
+    "requester_id": "e948e8fd",
+    "target_id": "0de6b278",
+    "status": "approved",
+    "created_at": "2026-07-01 09:47",
+    "responded_at": "2026-07-01 11:34"
+  },
+  {
+    "id": "e5066906",
+    "requester_id": "e948e8fd",
+    "target_id": "2e1ac5b0",
+    "status": "approved",
+    "created_at": "2026-07-01 09:47",
+    "responded_at": "2026-07-01 11:38"
+  },
+  {
+    "id": "e6ea00af",
+    "requester_id": "e948e8fd",
+    "target_id": "boss001",
+    "status": "approved",
+    "created_at": "2026-07-01 09:47",
+    "responded_at": "2026-07-01 12:34"
+  },
+  {
+    "id": "0e3d94d6",
+    "requester_id": "e948e8fd",
+    "target_id": "a8d0a96c",
+    "status": "approved",
+    "created_at": "2026-07-01 11:09",
+    "responded_at": "2026-07-01 11:47"
+  },
+  {
+    "id": "287cc3ed",
+    "requester_id": "0de6b278",
+    "target_id": "a8d0a96c",
+    "status": "approved",
+    "created_at": "2026-07-01 11:36",
+    "responded_at": "2026-07-01 11:47"
+  },
+  {
+    "id": "e9c859d5",
+    "requester_id": "0de6b278",
+    "target_id": "boss001",
+    "status": "approved",
+    "created_at": "2026-07-01 11:36",
+    "responded_at": "2026-07-01 12:34"
+  },
+  {
+    "id": "32a8cc55",
+    "requester_id": "0de6b278",
+    "target_id": "2e1ac5b0",
+    "status": "approved",
+    "created_at": "2026-07-01 11:36",
+    "responded_at": "2026-07-01 11:39"
+  },
+  {
+    "id": "6734da96",
+    "requester_id": "0de6b278",
+    "target_id": "2d3fa00c",
+    "status": "pending",
+    "created_at": "2026-07-01 11:36",
+    "responded_at": ""
+  },
+  {
+    "id": "a95a6b39",
+    "requester_id": "boss001",
+    "target_id": "2d3fa00c",
+    "status": "pending",
+    "created_at": "2026-07-01 12:38",
+    "responded_at": ""
+  },
+  {
+    "id": "3818017c",
+    "requester_id": "boss001",
+    "target_id": "2e1ac5b0",
+    "status": "pending",
+    "created_at": "2026-07-01 12:38",
+    "responded_at": ""
+  }
+]

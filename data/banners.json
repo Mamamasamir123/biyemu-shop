@@ -1,0 +1,38 @@
+[
+  {
+    "id": "a1electr",
+    "name": "Electr",
+    "image": "promo_a1electr_b282fbbb.jpg",
+    "updated_at": "2026-07-01 06:07"
+  },
+  {
+    "id": "a2shop01",
+    "name": "Shop",
+    "image": "promo_2_7036d63b.jpg",
+    "updated_at": "2026-07-01 05:28"
+  },
+  {
+    "id": "a3movie1",
+    "name": "Movies",
+    "image": "promo_3_8890a49a.jpg",
+    "updated_at": "2026-07-01 05:28"
+  },
+  {
+    "id": "a4studo1",
+    "name": "Studo",
+    "image": "promo_4_8e40243b.jpg",
+    "updated_at": "2026-07-01 05:27"
+  },
+  {
+    "id": "9ee137d4",
+    "name": "Simba",
+    "image": "promo_9ee137d4_2afcf014.jpg",
+    "updated_at": "2026-07-01 06:40"
+  },
+  {
+    "id": "dac5e82f",
+    "name": "Brosk",
+    "image": "promo_dac5e82f_9d659876.jpg",
+    "updated_at": "2026-07-01 06:41"
+  }
+]
