@@ -1,0 +1,7 @@
+<a href="{{ url_for('boss_dashboard') }}" class="mob-nav-link{% if active == 'dashboard' %} active{% endif %}">{{ t('dashboard') }}</a>
+<a href="{{ url_for('boss_shops') }}" class="mob-nav-link{% if active == 'shops' %} active{% endif %}">{{ t('all_shops') }}</a>
+<a href="{{ url_for('boss_staff') }}" class="mob-nav-link{% if active == 'staff' %} active{% endif %}">{{ t('staff') }}</a>
+<a href="{{ url_for('boss_approvals') }}" class="mob-nav-link{% if active == 'approvals' %} active{% endif %}">{{ t('approvals') }}{% if pending %}<span class="mob-nav-badge">{{ pending }}</span>{% endif %}</a>
+<a href="{{ url_for('boss_finance') }}" class="mob-nav-link{% if active == 'report' %} active{% endif %}">{{ t('report') }}</a>
+<a href="{{ url_for('boss_trash') }}" class="mob-nav-link{% if active == 'trash' %} active{% endif %}">{{ t('trash_title') }}</a>
+<a href="{{ url_for('profile_view') }}" class="mob-nav-link{% if active == 'profile' %} active{% endif %}">{{ t('profile') }}</a>

@@ -1,0 +1,121 @@
+<div id="sellModal" class="staff-modal sell-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeSellModal()"></div>
+  <div class="staff-modal-panel sell-modal-panel fb-modal-panel" role="dialog" aria-modal="true" aria-labelledby="sellModalTitle">
+    <button type="button" class="staff-modal-close" onclick="closeSellModal()" aria-label="{{ t('close') }}">✕</button>
+    <h3 id="sellModalTitle">{{ t('sell_modal_title') }}</h3>
+
+    <form method="POST" action="{{ url_for('employee_sell') }}" id="sellModalForm" class="sell-modal-form">
+      <input type="hidden" name="redirect_to" value="home">
+      <input type="hidden" name="product_id" id="sellProductId" value="">
+
+      <div class="sell-modal-product-head">
+        <div id="sellModalThumb" class="sell-modal-thumb"></div>
+        <div>
+          <div id="sellModalProductName" class="sell-modal-product-name"></div>
+          <div id="sellModalStock" class="sell-modal-stock"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('sell_cost_price') }}</label>
+        <div id="sellCostPrice" class="sell-ref-price"></div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ t('sell_shop_price') }}</label>
+        <div id="sellShopPrice" class="sell-ref-price muted"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="sellUnitPrice">{{ t('sell_price_agreed') }}</label>
+        <input type="number" name="unit_price" id="sellUnitPrice" min="1" step="1" required>
+        <p class="hint sell-price-hint">{{ t('sell_price_hint') }}</p>
+      </div>
+
+      <div class="form-group">
+        <label for="sellQuantity">{{ t('quantity') }}</label>
+        <input type="number" name="quantity" id="sellQuantity" min="1" value="1" required>
+      </div>
+
+      <div class="sell-modal-total">
+        <span>{{ t('sell_total') }}</span>
+        <strong id="sellModalTotal">0</strong>
+      </div>
+      <p id="sellProfitLine" class="hint sell-profit-line"></p>
+
+      <button type="submit" class="btn btn-primary btn-block sell-modal-submit">{{ t('sell_submit') }}</button>
+    </form>
+  </div>
+</div>
+
+<script>
+var sellModalStock = 0;
+var sellModalCost = 0;
+
+function formatFbMoney(n) {
+  return Math.round(n).toLocaleString('en-US') + ' Fbi';
+}
+
+function updateSellModalTotal() {
+  var price = parseFloat(document.getElementById('sellUnitPrice').value) || 0;
+  var qty = parseInt(document.getElementById('sellQuantity').value, 10) || 0;
+  document.getElementById('sellModalTotal').textContent = formatFbMoney(price * qty);
+  var profitLine = document.getElementById('sellProfitLine');
+  if (profitLine && sellModalCost > 0 && price > sellModalCost) {
+    profitLine.textContent = '{{ t("sell_profit_per_unit") }}: ' + formatFbMoney(price - sellModalCost);
+    profitLine.hidden = false;
+  } else if (profitLine) {
+    profitLine.hidden = true;
+  }
+}
+
+function openSellModal(productData) {
+  if (!productData || !productData.id) return;
+  var modal = document.getElementById('sellModal');
+  if (!modal) return;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  sellModalStock = productData.stock || 0;
+  sellModalCost = productData.cost || 0;
+  document.getElementById('sellProductId').value = productData.id;
+  document.getElementById('sellModalProductName').textContent = productData.name;
+  document.getElementById('sellModalStock').textContent = '{{ t("in_stock") }}: ' + productData.stock;
+  document.getElementById('sellCostPrice').textContent = formatFbMoney(sellModalCost);
+  document.getElementById('sellShopPrice').textContent = formatFbMoney(productData.price || 0);
+  var priceInput = document.getElementById('sellUnitPrice');
+  var minPrice = Math.max(sellModalCost + 1, productData.price || 0, sellModalCost);
+  priceInput.min = minPrice;
+  priceInput.value = Math.max(minPrice, Math.round(productData.price || minPrice));
+  var qtyInput = document.getElementById('sellQuantity');
+  qtyInput.value = 1;
+  qtyInput.max = sellModalStock;
+  var thumb = document.getElementById('sellModalThumb');
+  if (productData.image) {
+    thumb.innerHTML = '<img src="' + productData.image + '" alt="">';
+  } else {
+    thumb.innerHTML = '<span class="sell-picker-placeholder">' + (productData.name[0] || '?').toUpperCase() + '</span>';
+  }
+  updateSellModalTotal();
+}
+
+function closeSellModal() {
+  var modal = document.getElementById('sellModal');
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.getElementById('sellUnitPrice')?.addEventListener('input', updateSellModalTotal);
+document.getElementById('sellQuantity')?.addEventListener('input', updateSellModalTotal);
+
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.feed-product-sell-btn');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  try {
+    var data = JSON.parse(btn.getAttribute('data-product') || '{}');
+    openSellModal(data);
+  } catch (err) {}
+});
+</script>

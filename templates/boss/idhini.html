@@ -1,0 +1,63 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('approvals') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% set active = 'approvals' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header approval-page-header">
+  <h1>{{ t('approvals_pending_title') }}</h1>
+  <p class="hint">{{ t('pending_approvals') }}</p>
+</div>
+
+{% if pending_requests %}
+{% set list_id = 'bossPendingApprovals' %}
+<div class="card approval-panel" data-approval-list="{{ list_id }}">
+  {% set title = t('pending_approvals') %}
+  {% set search_ph = t('approval_search_ph') %}
+  {% set show_select = true %}
+  {% set bulk_approve_url = url_for('boss_approval_bulk') %}
+  {% set bulk_reject_url = url_for('boss_approval_bulk') %}
+  {% include 'includes/approval_toolbar.html' %}
+  <div class="approval-grid">
+    {% for req in pending_requests %}
+    {% set show_checkbox = true %}
+    {% set show_review_actions = true %}
+    {% set show_manage_actions = false %}
+    {% set approve_url = url_for('boss_approval_action', req_id=req.id, action='approve') %}
+    {% set reject_url = url_for('boss_approval_action', req_id=req.id, action='reject') %}
+    {% include 'includes/approval_card.html' %}
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<div class="card empty-state">{{ t('no_pending_approvals') }}</div>
+{% endif %}
+
+{% set list_id = 'bossMyApprovals' %}
+<div class="card approval-panel" data-approval-list="{{ list_id }}">
+  {% set title = t('my_requests_title') %}
+  {% set search_ph = t('approval_search_ph') %}
+  {% set show_select = true %}
+  {% set bulk_approve_url = none %}
+  {% set bulk_reject_url = none %}
+  {% set bulk_cancel_url = url_for('boss_approval_bulk') %}
+  {% include 'includes/approval_toolbar.html' %}
+  {% if my_requests %}
+  <div class="approval-grid">
+    {% for req in my_requests %}
+    {% set show_checkbox = req.status.value == 'pending' and req.approval_type.value in ['add_product', 'delete_product'] %}
+    {% set show_review_actions = false %}
+    {% set show_manage_actions = show_checkbox %}
+    {% set cancel_url = url_for('boss_approval_action', req_id=req.id, action='cancel') %}
+    {% set delete_url = url_for('boss_approval_action', req_id=req.id, action='delete') %}
+    {% include 'includes/approval_card.html' %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">{{ t('no_data') }}</div>
+  {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='js/approval-list.js') }}"></script>
+{% endblock %}

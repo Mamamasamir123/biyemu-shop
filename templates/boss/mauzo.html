@@ -1,0 +1,33 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('sales_title') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% set active = 'sales' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header"><h1>{{ t('sales_title') }}</h1></div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>{{ t('date') }}</th>
+        <th>{{ t('product') }}</th>
+        <th>{{ t('quantity') }}</th>
+        <th>{{ t('total') }}</th>
+        <th>{{ t('employee') }}</th>
+        <th>{{ t('shop') }}</th>
+      </tr></thead>
+      <tbody>
+        {% for s in sales|reverse %}
+        <tr>
+          <td>{{ s.date }}</td><td>{{ s.product_name }}</td><td>{{ s.quantity }}</td>
+          <td>{{ s.total_amount|money }}</td><td>{{ s.employee_name }}</td><td>{{ shops.get(s.shop_id, '-') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty-state">Hakuna mauzo</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

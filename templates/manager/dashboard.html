@@ -1,0 +1,134 @@
+{% extends "layout_app.html" %}
+{% block title %}Paneli ya Meneja — BiyeMu{% endblock %}
+{% block nav %}
+{% set active = 'dashboard' %}
+{% include 'includes/nav_manager.html' %}
+{% endblock %}
+{% block content %}
+
+<div class="dash-welcome">
+  <div style="display: flex; align-items: center; gap: 14px;">
+    {% if current_user.profile_picture %}
+      <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}" 
+           class="sidebar-avatar" style="width:52px;height:52px;">
+    {% else %}
+      <div class="sidebar-avatar placeholder" style="width:52px;height:52px;font-size:1.4rem;">
+        {{ current_user.full_name[0]|upper }}
+      </div>
+    {% endif %}
+    <div>
+      <h2 style="margin:0;">{{ t('welcome_user', name=current_user.full_name.split(' ')[0]) }}</h2>
+      <p style="margin:2px 0 0;">{{ role_label(current_user.role.value) }} • {{ shop_name }}</p>
+    </div>
+  </div>
+
+  <div style="text-align: right;">
+    <div style="font-size:0.8rem; color:var(--muted);">{{ t('shop_revenue_label') }}</div>
+    <div style="font-size:1.3rem; font-weight:700; color:var(--accent);">{{ report.total_revenue|money }}</div>
+    <div style="font-size:0.75rem; color:var(--muted);">{{ t('cash_dashboard_note') }}</div>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">{{ t('products') }}</div>
+    <div class="value">{{ products_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('staff') }}</div>
+    <div class="value">{{ employees_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('net_profit_positive') if report.net_profit >= 0 else t('net_profit_negative') }}</div>
+    <div class="value {% if report.net_profit < 0 %}danger{% endif %}">{{ report.net_profit|abs|money }}</div>
+  </div>
+  {% if report.held_revenue or report.pending_revenue %}
+  <div class="stat-card">
+    <div class="label">💵 {{ t('cash_held') }} / {{ t('cash_pending') }}</div>
+    <div class="value" style="font-size:1rem;">{{ report.held_revenue|money }} / {{ report.pending_revenue|money }}</div>
+    <div class="stat-hint">Fbi</div>
+  </div>
+  {% endif %}
+</div>
+
+<h3 class="section-title">{{ t('services') }}</h3>
+
+<div class="services-grid">
+  <a href="{{ url_for('manager_products') }}" class="service-card">
+    <div class="icon">📦</div>
+    <div class="title">{{ t('products') }}</div>
+    <div class="subtitle">{{ t('add_product') }}</div>
+    <div class="count">{{ products_count }} {{ t('products') }}</div>
+  </a>
+
+  <a href="{{ url_for('manager_employees') }}" class="service-card">
+    <div class="icon">👥</div>
+    <div class="title">{{ t('staff') }}</div>
+    <div class="subtitle">{{ t('staff_title') }}</div>
+    <div class="count">{{ employees_count }} {{ t('staff') }}</div>
+  </a>
+
+  <a href="{{ url_for('manager_sales') }}" class="service-card">
+    <div class="icon">💰</div>
+    <div class="title">{{ t('sales') }}</div>
+    <div class="subtitle">{{ t('sales_title') }}</div>
+  </a>
+
+  <a href="{{ url_for('manager_finance') }}" class="service-card">
+    <div class="icon">📊</div>
+    <div class="title">{{ t('report') }}</div>
+    <div class="subtitle">{{ t('reports_title') }}</div>
+  </a>
+
+  <a href="{{ url_for('manager_approvals') }}" class="service-card">
+    <div class="icon">✅</div>
+    <div class="title">{{ t('my_requests') }}</div>
+    <div class="subtitle">{{ t('my_requests_title') }}</div>
+  </a>
+
+  <a href="{{ url_for('manager_cash') }}" class="service-card">
+    <div class="icon">✅</div>
+    <div class="title">{{ t('cash_confirm_title') }}</div>
+    <div class="subtitle">{{ t('cash_confirm_sub') }}</div>
+    {% if pending_cash %}
+    <div class="count" style="color:var(--accent-red);">{{ pending_cash }} {{ t('cash_pending') }}</div>
+    {% endif %}
+  </a>
+
+  <a href="{{ url_for('manager_submit_cash') }}" class="service-card">
+    <div class="icon">💵</div>
+    <div class="title">{{ t('cash_manager_handover') }}</div>
+    <div class="subtitle">{{ t('cash_manager_handover_sub') }}</div>
+    {% if report.manager_held_revenue %}
+    <div class="count" style="color:var(--accent-red);">{{ report.manager_held_revenue|money }}</div>
+    {% endif %}
+  </a>
+
+  <a href="{{ url_for('manager_products') }}" class="service-card">
+    <div class="icon">➕</div>
+    <div class="title">{{ t('add_product') }}</div>
+    <div class="subtitle">{{ t('add_product') }}</div>
+  </a>
+</div>
+
+{% if low_stock %}
+<div class="card" style="margin-top: 18px;">
+  <h3 style="font-size:1rem; margin-bottom:10px;">⚠️ Bidhaa Zenye Stock Chini</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Bidhaa</th><th>Idadi</th></tr></thead>
+      <tbody>
+        {% for p in low_stock %}
+        <tr>
+          <td class="product-thumb-cell">{% include 'includes/product_thumb.html' %}</td>
+          <td>{{ p.name }}</td>
+          <td><span class="badge badge-warning">{{ p.quantity }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

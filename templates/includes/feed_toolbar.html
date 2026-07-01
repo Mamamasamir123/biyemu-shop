@@ -1,0 +1,54 @@
+<div class="card feed-toolbar-card">
+  <a href="{{ url_for('profile_view') }}" class="feed-toolbar-profile" title="{{ t('feed_toolbar_my_profile') }}">
+    {% if current_user.profile_picture %}
+    <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}" alt="{{ current_user.full_name }}">
+    {% else %}
+    <span class="feed-toolbar-profile-placeholder">{{ current_user.full_name[0]|upper }}</span>
+    {% endif %}
+  </a>
+
+  <div class="feed-toolbar-filters" role="tablist" aria-label="{{ t('feed_filters_label') }}">
+    <button type="button" class="feed-toolbar-filter active" data-feed-filter="all" role="tab" aria-selected="true">{{ t('feed_filter_all') }}</button>
+    <button type="button" class="feed-toolbar-filter" data-feed-filter="own" role="tab" aria-selected="false">{{ t('feed_filter_my_shop') }}</button>
+    <button type="button" class="feed-toolbar-filter" data-feed-filter="shared" role="tab" aria-selected="false">{{ t('feed_filter_shared') }}</button>
+  </div>
+
+  <a href="{{ url_for('global_search') }}" class="feed-toolbar-search" title="{{ t('search') }}" aria-label="{{ t('search') }}">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M20 20l-3.5-3.5"></path>
+    </svg>
+  </a>
+</div>
+<script>
+(function () {
+  var filters = document.querySelectorAll('[data-feed-filter]');
+  var posts = document.querySelectorAll('[data-feed-scope]');
+  if (!filters.length || !posts.length) return;
+
+  function applyFeedFilter(scope) {
+    var visible = 0;
+    posts.forEach(function (post) {
+      var match = scope === 'all'
+        || (scope === 'own' && post.getAttribute('data-feed-scope') === 'own')
+        || (scope === 'shared' && post.getAttribute('data-feed-scope') === 'shared');
+      post.style.display = match ? '' : 'none';
+      if (match) visible += 1;
+    });
+    var empty = document.getElementById('feedFilterEmpty');
+    if (empty) empty.hidden = visible > 0;
+  }
+
+  filters.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var scope = btn.getAttribute('data-feed-filter');
+      filters.forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      applyFeedFilter(scope);
+    });
+  });
+})();
+</script>

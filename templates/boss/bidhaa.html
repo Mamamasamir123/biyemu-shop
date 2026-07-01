@@ -1,0 +1,58 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('products_title') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% set active = 'products' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header"><h1>{{ t('products_title') }}</h1><p>{{ t('all_shops') }}</p></div>
+
+<div class="card">
+  <h3>{{ t('request_add_product') }}</h3>
+  <p class="hint">{{ t('boss_product_approval_hint') }}</p>
+  <form method="POST" action="{{ url_for('boss_request_add_product') }}" class="form-row">
+    <div class="form-group"><label>{{ t('shop_label') }}</label>
+      <select name="shop_id" required>{% for s in all_shops %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select>
+    </div>
+    <div class="form-group"><label>{{ t('product_name_label') }}</label><input name="name" required></div>
+    <div class="form-group"><label>{{ t('price_label') }}</label><input name="price" type="number" required></div>
+    <div class="form-group"><label>{{ t('cost_price') }}</label><input name="cost_price" type="number" value="0"></div>
+    <div class="form-group"><label>{{ t('quantity_label') }}</label><input name="quantity" type="number" required></div>
+    <div class="form-group"><label>{{ t('category') }}</label><input name="category"></div>
+    <button type="submit" class="btn btn-primary">{{ t('request_approval') }}</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>{{ t('product') }}</th>
+        <th>{{ t('price_label') }}</th>
+        <th>{{ t('cost_price') }}</th>
+        <th>{{ t('quantity_label') }}</th>
+        <th>{{ t('shop_label') }}</th>
+        <th>{{ t('actions_label') }}</th>
+      </tr></thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td><strong>{{ p.name }}</strong></td>
+          <td>{{ p.price|money }}</td>
+          <td>{{ p.cost_price|money }}</td>
+          <td>{{ p.quantity }}</td>
+          <td>{{ shops.get(p.shop_id, '-') }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('boss_request_delete_product', product_id=p.id) }}" style="display:inline" onsubmit="return confirm('{{ t('request_delete_confirm') }}')">
+              <button type="submit" class="btn btn-danger btn-sm">{{ t('request_delete_btn') }}</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty-state">{{ t('no_data') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

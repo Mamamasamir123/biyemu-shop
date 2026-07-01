@@ -1,0 +1,39 @@
+{% if current_user %}
+<div id="notificationSettingsModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeNotificationSettings()"></div>
+  <div class="staff-modal-panel notification-settings-modal" role="dialog" aria-modal="true" aria-labelledby="notificationSettingsTitle">
+    <button type="button" class="staff-modal-close" onclick="closeNotificationSettings()" aria-label="{{ t('close') }}">✕</button>
+    <h2 id="notificationSettingsTitle">{{ t('notification_settings') }}</h2>
+    <p class="hint">{{ t('notification_settings_hint') }}</p>
+    <form method="POST" action="{{ url_for('notification_settings') }}" class="notification-prefs-form">
+      {% for key in notification_pref_keys %}
+      <label class="notification-pref-row">
+        <div>
+          <strong>{{ t('notif_pref_' + key) }}</strong>
+          <span class="hint">{{ t('notif_pref_' + key + '_hint') }}</span>
+        </div>
+        <span class="toggle-switch">
+          <input type="checkbox" name="{{ key }}" {% if notification_prefs.get(key) %}checked{% endif %}>
+          <span class="toggle-slider"></span>
+        </span>
+      </label>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">{{ t('save_settings') }}</button>
+    </form>
+  </div>
+</div>
+<script>
+function openNotificationSettings() {
+  var modal = document.getElementById('notificationSettingsModal');
+  if (!modal) return;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeNotificationSettings() {
+  var modal = document.getElementById('notificationSettingsModal');
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+</script>
+{% endif %}

@@ -1,0 +1,112 @@
+{% extends "layout_shop.html" %}
+{% block title %}{{ t('products') }} — {{ shop.name }}{% endblock %}
+{% block content %}
+<div class="dash-welcome products-dash-header">
+  <div>
+    <h2 style="margin:0;">{{ t('products') }} — {{ shop.name }}</h2>
+    <p style="margin:4px 0 0; color:var(--muted); font-size:0.9rem;">{{ t('products_dashboard_sub') }}</p>
+  </div>
+  <button type="button" class="btn btn-primary btn-sm" onclick="openAddProductModal()">+ {{ t('register_product') }}</button>
+</div>
+
+<div class="stats-grid shop-overview-stats">
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">💼</span>
+      <span class="label">{{ t('shop_money_total') }}</span>
+      <span class="value">{{ dashboard.capital|money }}</span>
+    </div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">🛒</span>
+      <span class="label">{{ t('products_sold_label') }}</span>
+      <span class="value">{{ dashboard.units_sold }}</span>
+    </div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">📦</span>
+      <span class="label">{{ t('products') }}</span>
+      <span class="value">{{ dashboard.products_count }}</span>
+    </div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">📈</span>
+      <span class="label">{{ t('total_profit_label') }}</span>
+      <span class="value {% if dashboard.profit < 0 %}danger{% endif %}">{{ dashboard.profit|money }}</span>
+    </div>
+  </div>
+</div>
+
+{% set table_id = 'shopProductsTable' %}
+{% set title = t('products') %}
+{% set search_ph = t('shop_data_search_products_ph') %}
+{% set bulk_delete_url = bulk_delete_products_url|default('') %}
+{% set bulk_confirm = t('request_delete_confirm') %}
+<div class="card shop-data-card">
+  {% include 'includes/shop_data_toolbar.html' %}
+  <div class="table-wrap shop-data-table-wrap">
+    <table class="shop-data-table products-table" id="{{ table_id }}" data-shop-table="{{ table_id }}">
+      <thead><tr>
+        {% if bulk_delete_url %}
+        <th class="col-check"><input type="checkbox" data-select-all-for="{{ table_id }}" aria-label="{{ t('select_all') }}"></th>
+        {% endif %}
+        <th></th>
+        <th>{{ t('product') }}</th>
+        <th>{{ t('price_label') }}</th>
+        <th>{{ t('cost_price') }}</th>
+        <th>{{ t('quantity_label') }}</th>
+        <th>{{ t('actions_label') }}</th>
+      </tr></thead>
+      <tbody>
+        {% for p in products %}
+        <tr data-row data-search="{{ p.name }} {{ p.category }} {{ p.price }} {{ p.quantity }}">
+          {% if bulk_delete_url %}
+          <td class="col-check">
+            {% if p.id in (pending_delete_ids|default([])) %}
+            <input type="checkbox" disabled>
+            {% else %}
+            <input type="checkbox" class="shop-row-check" value="{{ p.id }}">
+            {% endif %}
+          </td>
+          {% endif %}
+          <td class="product-thumb-cell">
+            <div class="product-thumb-wrap">
+              {% include 'includes/product_thumb.html' %}
+              {% if product_image_url is defined %}
+              <form method="POST" action="{{ product_image_url.replace('__ID__', p.id) }}" enctype="multipart/form-data" class="product-image-upload">
+                <label class="product-image-upload-btn" title="{{ t('upload_product_image') }}">📷
+                  <input type="file" name="image" accept="image/png,image/jpeg,image/jpg,image/webp" hidden onchange="this.form.submit()">
+                </label>
+              </form>
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <strong>{{ p.name }}</strong>
+            {% if p.category %}<br><small style="color:var(--muted)">{{ p.category }}</small>{% endif %}
+          </td>
+          <td>{{ p.price|money }}</td>
+          <td>{{ p.cost_price|money }}</td>
+          <td>{{ p.quantity }}</td>
+          <td>
+            {% if current_user.role.value == 'boss' %}
+            {% set delete_url = url_for('boss_shop_request_delete_product', shop_id=shop.id, product_id=p.id) %}
+            {% else %}
+            {% set delete_url = url_for('manager_delete_product', product_id=p.id) %}
+            {% endif %}
+            {% include 'includes/product_delete_btn.html' %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="{{ 8 if bulk_delete_url else 6 }}" class="empty-state">{{ t('no_data') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include 'includes/add_product_modal.html' %}
+{% endblock %}

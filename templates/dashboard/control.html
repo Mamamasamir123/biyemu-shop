@@ -1,0 +1,208 @@
+{% extends "layout_app.html" %}
+{% set active = 'dashboard' %}
+{% block title %}{% if current_user.is_boss() %}{{ t('dashboard_control') }}{% else %}{{ t('dashboard_reset_requests') }}{% endif %} — BiyeMu{% endblock %}
+
+{% block content %}
+<div class="page-header dashboard-control-page-header">
+  <div>
+    <a href="{{ url_for('pro_dashboard') }}" class="dashboard-control-back" aria-label="{{ t('back') }}">←</a>
+    <h1>{% if current_user.is_boss() %}{{ t('dashboard_control') }}{% else %}{{ t('dashboard_reset_requests') }}{% endif %}</h1>
+    <p class="hint">{% if current_user.is_boss() %}{{ t('dashboard_control_hint') }}{% else %}{{ t('dashboard_reset_pending_banner_hint') }}{% endif %}</p>
+  </div>
+</div>
+
+<div class="dashboard-control-page">
+  {% if current_user.is_boss() %}
+  <div class="dashboard-control-block">
+    <h3>{{ t('dashboard_control_mine') }}</h3>
+    <div class="dashboard-person-card card is-boss">
+      <div class="dashboard-person-header compact">
+        <div class="dashboard-person-photo sm">
+          {% if current_user.profile_picture %}
+          <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}" alt="{{ current_user.full_name }}">
+          {% else %}
+          <div class="staff-card-avatar">{{ current_user.full_name[0]|upper }}</div>
+          {% endif %}
+        </div>
+        <div class="dashboard-person-meta">
+          <div class="dashboard-person-name">{{ current_user.full_name }}</div>
+          <div class="dashboard-person-sub">{{ role_label(current_user.role.value) }} · {{ boss_preview_cards|length }} {{ t('dashboard_sections_count') }}</div>
+        </div>
+      </div>
+      <ul class="dashboard-stat-rows">
+        {% for card in boss_preview_cards %}
+        <li class="dashboard-stat-row{% if card.pending %} is-pending{% endif %}">
+          <div class="dashboard-stat-line">
+            <span class="dashboard-stat-label">{% if card.icon %}{{ card.icon }} {% endif %}{{ t('dashboard_section_' + card.section) }}</span>
+            <span class="dashboard-stat-value{% if card.profit_negative %} danger{% endif %}{% if card.is_highlight %} highlight{% endif %}">
+              {% if card.is_money %}{{ card.value|money }}{% else %}{{ card.value }}{% endif %}
+            </span>
+          </div>
+          <div class="dashboard-stat-foot">
+            {% if card.reset_since %}<span class="stat-hint">{{ t('dashboard_since', date=card.reset_since) }}</span>{% endif %}
+            <form method="POST" action="{{ url_for('dashboard_reset_section', section=card.section) }}"
+                  onsubmit="syncDashboardFilters(this); return confirm('{{ t('dashboard_section_reset_confirm', section=t('dashboard_section_' + card.section)) }}');">
+              <input type="hidden" name="filter_shop" class="js-filter-shop" value="{{ filter_shop }}">
+              <input type="hidden" name="filter_q" class="js-filter-q" value="{{ filter_q }}">
+              <button type="submit" class="btn btn-secondary btn-xs">{{ t('dashboard_section_start') }}</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  {% if dashboard_staff %}
+  <div class="dashboard-control-block">
+    <div class="dashboard-staff-toolbar">
+      <h3>{{ t('dashboard_control_staff') }} <span class="hint" id="dashCtrlStaffCount">({{ dashboard_staff|length }})</span></h3>
+      <div class="dashboard-staff-filters">
+        <label class="dashboard-filter-field">
+          <span class="dashboard-filter-label">{{ t('dashboard_filter_shop') }}</span>
+          <select id="dashCtrlShopFilter" onchange="onDashboardFilterChange()">
+            <option value="">{{ t('dashboard_filter_all_shops') }}</option>
+            {% for shop in dashboard_shops %}
+            <option value="{{ shop.id }}"{% if filter_shop == shop.id %} selected{% endif %}>{{ shop.name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label class="dashboard-filter-field grow">
+          <span class="dashboard-filter-label">{{ t('dashboard_filter_search') }}</span>
+          <input type="search" id="dashCtrlNameSearch" value="{{ filter_q }}" placeholder="{{ t('dashboard_filter_search_ph') }}" oninput="onDashboardFilterChange()" autocomplete="off">
+        </label>
+      </div>
+    </div>
+    <p class="hint">{{ t('dashboard_control_staff_hint') }}</p>
+    <div class="dashboard-people-grid" id="dashCtrlStaffGrid">
+      {% for entry in dashboard_staff %}
+      <div class="dashboard-person-card card{% if entry.role == 'manager' %} is-manager{% else %} is-employee{% endif %}"
+           data-staff-card
+           data-shop-id="{{ entry.shop_id }}"
+           data-staff-name="{{ entry.user.full_name|lower }}">
+        <div class="dashboard-person-header compact">
+          <div class="dashboard-person-photo sm">
+            {% if entry.user.profile_picture %}
+            <img src="{{ url_for('static', filename='uploads/profiles/' + entry.user.profile_picture) }}" alt="{{ entry.user.full_name }}">
+            {% else %}
+            <div class="staff-card-avatar">{{ entry.user.full_name[0]|upper }}</div>
+            {% endif %}
+          </div>
+          <div class="dashboard-person-meta">
+            <div class="dashboard-person-name">{{ entry.user.full_name }}</div>
+            <div class="dashboard-person-role">{{ role_label(entry.role) }}</div>
+            <div class="dashboard-person-sub">
+              {% if entry.shop_name %}{{ entry.shop_name }} · {% endif %}{{ entry.sections_count }} {{ t('dashboard_sections_count') }}
+            </div>
+          </div>
+        </div>
+        <ul class="dashboard-stat-rows">
+          {% for card in entry.cards %}
+          <li class="dashboard-stat-row{% if card.pending %} is-pending{% endif %}">
+            <div class="dashboard-stat-line">
+              <span class="dashboard-stat-label">{% if card.icon %}{{ card.icon }} {% endif %}{{ t('dashboard_section_' + card.section) }}</span>
+              <span class="dashboard-stat-value{% if card.is_highlight %} highlight{% endif %}">
+                {% if card.is_money %}{{ card.value|money }}{% else %}{{ card.value }}{% endif %}
+              </span>
+            </div>
+            <div class="dashboard-stat-foot">
+              {% if card.reset_since %}<span class="stat-hint">{{ t('dashboard_since', date=card.reset_since) }}</span>{% endif %}
+              {% if card.pending %}<span class="dashboard-pending-tag">{{ t('dashboard_reset_pending_short') }}</span>{% endif %}
+              <form method="POST" action="{{ url_for('dashboard_request_reset') }}" class="js-dash-reset-form"
+                    onsubmit="syncDashboardFilters(this); return confirm('{{ t('dashboard_reset_request_confirm', name=entry.user.full_name, section=t('dashboard_section_' + card.section)) }}');">
+                <input type="hidden" name="target_user_id" value="{{ entry.user.id }}">
+                <input type="hidden" name="section" value="{{ card.section }}">
+                <input type="hidden" name="filter_shop" class="js-filter-shop" value="{{ filter_shop }}">
+                <input type="hidden" name="filter_q" class="js-filter-q" value="{{ filter_q }}">
+                <button type="submit" class="btn btn-secondary btn-xs"{% if card.pending %} disabled{% endif %}>{{ t('dashboard_reset_request_btn') }}</button>
+              </form>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="hint dashboard-filter-empty" id="dashCtrlEmpty" hidden>{{ t('dashboard_filter_no_results') }}</p>
+  </div>
+  {% endif %}
+
+  {% else %}
+  {% if pending_dashboard_resets %}
+  <ul class="dashboard-pending-list">
+    {% for req in pending_dashboard_resets %}
+    <li class="dashboard-pending-item card">
+      <div class="dashboard-pending-body">
+        <strong>{{ t('dashboard_reset_pending_title') }}</strong>
+        <p>{{ t('dashboard_reset_pending_msg', boss=req.requester_name, section=t('dashboard_section_' + req.section)) }}</p>
+        <span class="hint">{{ req.created_at }}</span>
+      </div>
+      <div class="dashboard-pending-actions">
+        <form method="POST" action="{{ url_for('dashboard_respond_reset', request_id=req.id) }}">
+          <input type="hidden" name="action" value="approve">
+          <button type="submit" class="btn btn-primary btn-sm">{{ t('dashboard_reset_approve') }}</button>
+        </form>
+        <form method="POST" action="{{ url_for('dashboard_respond_reset', request_id=req.id) }}"
+              onsubmit="return confirm('{{ t('dashboard_reset_reject_confirm', section=t('dashboard_section_' + req.section)) }}');">
+          <input type="hidden" name="action" value="reject">
+          <button type="submit" class="btn btn-secondary btn-sm">{{ t('dashboard_reset_reject') }}</button>
+        </form>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="hint">{{ t('dashboard_reset_none_pending') }}</p>
+  {% endif %}
+  {% endif %}
+</div>
+
+<script>
+function syncDashboardFilters(form) {
+  var shopEl = document.getElementById('dashCtrlShopFilter');
+  var searchEl = document.getElementById('dashCtrlNameSearch');
+  if (!form) return;
+  var shopInput = form.querySelector('.js-filter-shop');
+  var qInput = form.querySelector('.js-filter-q');
+  if (shopInput && shopEl) shopInput.value = shopEl.value;
+  if (qInput && searchEl) qInput.value = searchEl.value;
+}
+
+function filterDashboardStaff() {
+  var shopEl = document.getElementById('dashCtrlShopFilter');
+  var searchEl = document.getElementById('dashCtrlNameSearch');
+  var emptyEl = document.getElementById('dashCtrlEmpty');
+  var countEl = document.getElementById('dashCtrlStaffCount');
+  if (!shopEl || !searchEl) return;
+  var shop = shopEl.value;
+  var q = searchEl.value.toLowerCase().trim();
+  var visible = 0;
+  document.querySelectorAll('[data-staff-card]').forEach(function(card) {
+    var matchShop = !shop || card.dataset.shopId === shop;
+    var matchName = !q || (card.dataset.staffName || '').indexOf(q) !== -1;
+    var show = matchShop && matchName;
+    card.hidden = !show;
+    if (show) visible += 1;
+  });
+  if (countEl) countEl.textContent = '(' + visible + ')';
+  if (emptyEl) emptyEl.hidden = visible > 0;
+  document.querySelectorAll('.js-filter-shop').forEach(function(el) { el.value = shop; });
+  document.querySelectorAll('.js-filter-q').forEach(function(el) { el.value = searchEl.value; });
+}
+
+function onDashboardFilterChange() {
+  filterDashboardStaff();
+  var shopEl = document.getElementById('dashCtrlShopFilter');
+  var searchEl = document.getElementById('dashCtrlNameSearch');
+  if (!shopEl || !searchEl) return;
+  var params = new URLSearchParams();
+  if (shopEl.value) params.set('shop', shopEl.value);
+  if (searchEl.value.trim()) params.set('q', searchEl.value.trim());
+  var qs = params.toString();
+  var next = window.location.pathname + (qs ? '?' + qs : '');
+  window.history.replaceState(null, '', next);
+}
+
+document.addEventListener('DOMContentLoaded', filterDashboardStaff);
+</script>
+{% endblock %}

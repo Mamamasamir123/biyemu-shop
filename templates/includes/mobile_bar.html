@@ -1,0 +1,9 @@
+{% if shop_urls is defined %}
+  {% include 'includes/mobile_bar_shop.html' %}
+{% elif current_user and current_user.role.value == 'boss' %}
+  {% include 'includes/mobile_bar_boss.html' %}
+{% elif current_user and current_user.role.value == 'manager' %}
+  {% include 'includes/mobile_bar_manager.html' %}
+{% elif current_user and current_user.role.value == 'employee' %}
+  {% include 'includes/mobile_bar_employee.html' %}
+{% endif %}

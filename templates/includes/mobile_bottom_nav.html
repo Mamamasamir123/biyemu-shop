@@ -1,0 +1,19 @@
+<nav class="mobile-bottom-nav" aria-label="{{ t('nav_main') }}">
+  <a href="{{ url_for('home_feed') }}" class="mobile-bottom-item{% if active == 'home' %} active{% endif %}">
+    <span class="mobile-bottom-icon">🏠</span>
+    <span class="mobile-bottom-label">{{ t('nav_home') }}</span>
+  </a>
+  <a href="{{ url_for('pro_dashboard') }}" class="mobile-bottom-item{% if active == 'dashboard' %} active{% endif %}">
+    <span class="mobile-bottom-icon">📊</span>
+    <span class="mobile-bottom-label">{{ t('nav_dashboard') }}</span>
+  </a>
+  <a href="{{ url_for('profile_view') }}" class="mobile-bottom-item{% if active == 'profile' %} active{% endif %}">
+    <span class="mobile-bottom-icon">👤</span>
+    <span class="mobile-bottom-label">{{ t('profile') }}</span>
+  </a>
+  <a href="{{ url_for('notifications_list') }}" class="mobile-bottom-item{% if active == 'notifications' %} active{% endif %}">
+    <span class="mobile-bottom-icon">🔔</span>
+    <span class="mobile-bottom-label">{{ t('notifications_short') }}</span>
+    {% if unread_notifications %}<span class="mobile-bottom-badge">{{ unread_notifications }}</span>{% endif %}
+  </a>
+</nav>

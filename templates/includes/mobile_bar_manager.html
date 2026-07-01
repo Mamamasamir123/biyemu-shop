@@ -1,0 +1,29 @@
+<nav class="mobile-bar" aria-label="Navigation">
+  <a href="{{ url_for('manager_dashboard') }}" class="mob-item{% if active == 'dashboard' %} active{% endif %}">
+    <span class="mob-icon">📊</span><span class="mob-label">{{ t('dashboard') }}</span>
+  </a>
+  <a href="{{ url_for('manager_shop_view') }}" class="mob-item{% if active == 'shop' or active_tab == 'overview' %} active{% endif %}">
+    <span class="mob-icon">🏪</span><span class="mob-label">{{ t('my_shop') }}</span>
+  </a>
+  <a href="{{ url_for('manager_shop_products') }}" class="mob-item{% if active == 'products' or active_tab == 'products' %} active{% endif %}">
+    <span class="mob-icon">📦</span><span class="mob-label">{{ t('products') }}</span>
+  </a>
+  <a href="{{ url_for('manager_employees') }}" class="mob-item{% if active == 'staff' %} active{% endif %}">
+    <span class="mob-icon">👥</span><span class="mob-label">{{ t('staff') }}</span>
+  </a>
+  <a href="{{ url_for('manager_shop_sales') }}" class="mob-item{% if active == 'sales' or active_tab == 'sales' %} active{% endif %}">
+    <span class="mob-icon">💰</span><span class="mob-label">{{ t('sales') }}</span>
+  </a>
+  <a href="{{ url_for('manager_finance') }}" class="mob-item{% if active == 'report' %} active{% endif %}">
+    <span class="mob-icon">📋</span><span class="mob-label">{{ t('report') }}</span>
+  </a>
+  <a href="{{ url_for('manager_approvals') }}" class="mob-item{% if active == 'requests' %} active{% endif %}">
+    <span class="mob-icon">✅</span><span class="mob-label">{{ t('my_requests') }}</span>
+  </a>
+  <a href="{{ url_for('manager_trash') }}" class="mob-item">
+    <span class="mob-icon">🗑️</span><span class="mob-label">{{ t('trash_title') }}</span>
+  </a>
+  <a href="{{ url_for('profile_view') }}" class="mob-item{% if active == 'profile' %} active{% endif %}">
+    <span class="mob-icon">👤</span><span class="mob-label">{{ t('profile') }}</span>
+  </a>
+</nav>

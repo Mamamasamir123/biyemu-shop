@@ -1,0 +1,62 @@
+{% extends "layout_shop.html" %}
+{% block title %}{{ t('edit_shop') }} — {{ shop.name }}{% endblock %}
+{% block content %}
+<div class="shop-edit-layout">
+  <div class="card shop-edit-cover-card">
+    <h3>{{ t('shop_cover') }}</h3>
+    <div class="shop-edit-cover-preview{% if not shop.cover_image %} shop-hero-default{% endif %}"
+         {% if shop.cover_image %}style="background-image:url('{{ url_for('static', filename='uploads/shops/covers/' + shop.cover_image) }}')"{% endif %}>
+      <form method="POST" action="{{ cover_url }}" enctype="multipart/form-data" class="shop-upload-form">
+        <label class="shop-upload-btn">
+          📷 {{ t('upload_cover') }}
+          <input type="file" name="cover" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="this.form.submit()">
+        </label>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shop-edit-main">
+    <div class="shop-edit-logo-row">
+      <div class="shop-edit-logo-wrap">
+        {% if shop.logo %}
+        <img src="{{ url_for('static', filename='uploads/shops/logos/' + shop.logo) }}" alt="{{ shop.name }}">
+        {% else %}
+        <div class="shop-card-logo-placeholder large">{{ shop.name.replace('BiyeMu ', '')[0]|upper }}</div>
+        {% endif %}
+        <form method="POST" action="{{ logo_url }}" enctype="multipart/form-data">
+          <label class="shop-upload-btn small">
+            +
+            <input type="file" name="logo" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="this.form.submit()">
+          </label>
+        </form>
+      </div>
+      <div>
+        <h3>{{ shop.name }}</h3>
+        <p class="hint">{{ t('shop_logo') }}</p>
+      </div>
+    </div>
+
+    <form method="POST" action="{{ save_url }}" class="shop-edit-form">
+      {% if not manager_mode %}
+      <div class="form-group">
+        <label>{{ t('shop_name') }}</label>
+        <input name="name" value="{{ shop.name }}" required>
+      </div>
+      {% endif %}
+      <div class="form-group">
+        <label>{{ t('shop_type') }}</label>
+        <input name="shop_type" value="{{ shop.shop_type }}" required>
+      </div>
+      <div class="form-group">
+        <label>{{ t('location') }}</label>
+        <input name="location" value="{{ shop.location }}">
+      </div>
+      <div class="form-group">
+        <label>{{ t('bio') }} ({{ t('optional') }})</label>
+        <textarea name="description" rows="3">{{ shop.description }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">{{ t('save') }}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

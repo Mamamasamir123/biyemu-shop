@@ -1,0 +1,18 @@
+{% extends "layout_app.html" %}
+{% block title %}Ripoti — Meneja{% endblock %}
+{% block nav %}
+{% set active = 'report' %}
+{% include 'includes/nav_manager.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Ripoti ya Duka Lako</h1></div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="label">Mapato</div><div class="value">{{ report.total_revenue|money }}</div></div>
+  <div class="stat-card"><div class="label">Gharama</div><div class="value">{{ report.total_cost|money }}</div></div>
+  <div class="stat-card"><div class="label">Mishahara</div><div class="value">{{ report.total_salaries|money }}</div></div>
+  <div class="stat-card">
+    <div class="label">{% if report.net_profit >= 0 %}Faida Halisi{% else %}Hasara{% endif %}</div>
+    <div class="value {% if report.net_profit < 0 %}danger{% endif %}">{{ report.net_profit|abs|money }}</div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+<a href="{{ back_url }}" class="mob-nav-link">{{ t('all_shops') }}</a>
+<a href="{{ shop_urls.overview }}" class="mob-nav-link{% if active_tab == 'overview' %} active{% endif %}">{{ t('dashboard') }}</a>
+<a href="{{ shop_urls.products }}" class="mob-nav-link{% if active_tab == 'products' %} active{% endif %}">{{ t('products') }}</a>
+<a href="{{ shop_urls.sales }}" class="mob-nav-link{% if active_tab == 'sales' %} active{% endif %}">{{ t('sales') }}</a>
+{% if shop_urls.staff %}
+<a href="{{ shop_urls.staff }}" class="mob-nav-link{% if active_tab == 'staff' %} active{% endif %}">{{ t('staff') }}</a>
+{% endif %}
+{% if can_edit %}
+<a href="{{ shop_urls.edit }}" class="mob-nav-link{% if active_tab == 'edit' %} active{% endif %}">{{ t('edit_shop') }}</a>
+{% endif %}
+<a href="{{ url_for('profile_view') }}" class="mob-nav-link">{{ t('profile') }}</a>

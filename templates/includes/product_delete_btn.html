@@ -1,0 +1,7 @@
+{% if p.id in (pending_delete_ids|default([])) %}
+<button type="button" class="btn btn-danger btn-sm btn-delete-pending" disabled title="{{ t('delete_cancel_first') }}">{{ t('delete_pending') }}</button>
+{% else %}
+<form method="POST" action="{{ delete_url }}" style="display:inline" onsubmit="return confirm('{{ t('request_delete_confirm') }}')">
+  <button type="submit" class="btn btn-success btn-sm">{{ t('request_delete_btn') }}</button>
+</form>
+{% endif %}

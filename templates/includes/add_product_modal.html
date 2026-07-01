@@ -1,0 +1,102 @@
+<div id="addProductModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeAddProductModal()"></div>
+  <div class="staff-modal-panel fb-modal-panel add-product-modal-panel" role="dialog" aria-modal="true">
+    <button type="button" class="staff-modal-close" onclick="closeAddProductModal()" aria-label="{{ t('close') }}">✕</button>
+    <h3>{{ t('register_product') }}</h3>
+    <p class="hint">{{ product_hint|default(t('add_product_modal_hint')) }}</p>
+
+    <form method="POST" action="{{ add_product_url }}" enctype="multipart/form-data" id="addProductForm" class="add-product-form">
+      <input type="hidden" name="cropped_image" id="addProductCroppedData">
+
+      <div class="form-group">
+        <label>{{ t('product_image') }}</label>
+        <label class="add-product-image-btn">
+          <span id="addProductImagePreview" class="add-product-image-preview">📷 {{ t('add_product_pick_image') }}</span>
+          <input type="file" id="addProductImageInput" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
+        </label>
+        <p class="hint">{{ t('crop_hint') }}</p>
+      </div>
+
+      <div class="form-group">
+        <label for="addProductName">{{ t('product_name_label') }}</label>
+        <input name="name" id="addProductName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="addProductCost">{{ t('cost_price') }}</label>
+        <input name="cost_price" id="addProductCost" type="number" min="0" step="1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="addProductQty">{{ t('quantity_label') }}</label>
+        <input name="quantity" id="addProductQty" type="number" min="1" step="1" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">{{ t('request_approval') }}</button>
+    </form>
+  </div>
+</div>
+
+<div id="addProductCropModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeAddProductCropModal()"></div>
+  <div class="staff-modal-panel crop-modal-panel fb-modal-panel">
+    <button type="button" class="staff-modal-close" onclick="closeAddProductCropModal()">✕</button>
+    <h3>{{ t('crop_image') }}</h3>
+    <p class="hint">{{ t('crop_hint') }}</p>
+    <div class="crop-container crop-container-square">
+      <img id="addProductCropImage" src="" alt="">
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;">
+      <button type="button" class="btn btn-primary" onclick="confirmAddProductCrop()">{{ t('crop_confirm_product') }}</button>
+      <button type="button" class="btn btn-secondary" onclick="closeAddProductCropModal()">{{ t('cancel') }}</button>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script>
+var addProductCropper = null;
+
+function openAddProductModal() {
+  var modal = document.getElementById('addProductModal');
+  if (!modal) return;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAddProductModal() {
+  var modal = document.getElementById('addProductModal');
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+
+function closeAddProductCropModal() {
+  document.getElementById('addProductCropModal').hidden = true;
+  if (addProductCropper) { addProductCropper.destroy(); addProductCropper = null; }
+}
+
+function confirmAddProductCrop() {
+  if (!addProductCropper) return;
+  var canvas = addProductCropper.getCroppedCanvas({ width: 800, height: 800, imageSmoothingQuality: 'high' });
+  document.getElementById('addProductCroppedData').value = canvas.toDataURL('image/jpeg', 0.9);
+  var preview = document.getElementById('addProductImagePreview');
+  preview.innerHTML = '<img src="' + canvas.toDataURL('image/jpeg', 0.85) + '" alt="">';
+  closeAddProductCropModal();
+}
+
+document.getElementById('addProductImageInput')?.addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var img = document.getElementById('addProductCropImage');
+    img.src = ev.target.result;
+    document.getElementById('addProductCropModal').hidden = false;
+    if (addProductCropper) addProductCropper.destroy();
+    addProductCropper = new Cropper(img, { aspectRatio: 1, viewMode: 1, autoCropArea: 1 });
+  };
+  reader.readAsDataURL(file);
+});
+</script>

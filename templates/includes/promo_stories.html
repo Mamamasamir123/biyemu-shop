@@ -1,0 +1,46 @@
+{% if promo_cards %}
+{% set story_idx = namespace(v=0) %}
+<div class="promo-stories-rail{% if promo_cards|length > 4 %} has-nav{% endif %}">
+  {% if promo_cards|length > 4 %}
+  <button type="button" class="promo-scroll-btn promo-scroll-prev" aria-label="{{ t('promo_scroll_prev') }}" hidden>‹</button>
+  {% endif %}
+  <section class="promo-stories-bar" aria-label="{{ t('promo_banner') }}" id="promoStoriesBar">
+    <div class="promo-stories-scroll{% if promo_cards|length > 4 %} is-scrollable{% endif %}" data-promo-scroll>
+      {% for card in promo_cards %}
+      <div class="promo-story-item promo-story-slot-{{ (loop.index0 % 4) + 1 }}{% if card.image %} promo-story-tappable{% endif %}"
+           {% if card.image %}
+           role="button" tabindex="0"
+           onclick="openPromoStoryViewer({{ story_idx.v }})"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPromoStoryViewer({{ story_idx.v }});}"
+           {% endif %}>
+        <div class="promo-story-ring">
+          <div class="promo-story-avatar{% if not card.image %} promo-story-empty{% endif %}">
+            {% if card.image %}
+            <img src="{{ url_for('static', filename='uploads/banners/' + card.image) }}" alt="{{ card.name or t('promo_card_default', n=loop.index) }}" loading="lazy">
+            {% else %}
+            <span class="promo-story-placeholder-icon">+</span>
+            {% endif %}
+          </div>
+        </div>
+        <span class="promo-story-label">{{ card.name or t('promo_card_default', n=loop.index) }}</span>
+      </div>
+      {% if card.image %}{% set story_idx.v = story_idx.v + 1 %}{% endif %}
+      {% endfor %}
+    </div>
+  </section>
+  {% if promo_cards|length > 4 %}
+  <button type="button" class="promo-scroll-btn promo-scroll-next" aria-label="{{ t('promo_scroll_next') }}">›</button>
+  {% endif %}
+</div>
+
+<script>
+window.PROMO_STORY_ITEMS = [
+{%- for card in promo_cards if card.image -%}
+{%- if not loop.first %},{% endif -%}
+{"name":{{ (card.name or t('promo_card_default', n=loop.index))|tojson }},"image":{{ url_for('static', filename='uploads/banners/' + card.image)|tojson }}}
+{%- endfor -%}
+];
+</script>
+<script src="{{ url_for('static', filename='js/promo-stories-scroll.js') }}"></script>
+{% include 'includes/promo_stories_viewer.html' %}
+{% endif %}

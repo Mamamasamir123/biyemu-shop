@@ -1,0 +1,27 @@
+{# profile_user, connection_state, connection_id, is_own_profile — Facebook-style action buttons #}
+{% if not is_own_profile %}
+<div class="fb-profile-action-group">
+  {% if connection_state == 'approved' %}
+  <a href="{{ url_for('staff_chat', na=profile_user.id) }}" class="btn btn-primary btn-sm fb-profile-btn">
+    💬 {{ t('profile_send_message') }}
+  </a>
+  {% elif connection_state == 'pending_in' and connection_id %}
+  <form method="POST" action="{{ url_for('staff_connection_approve', conn_id=connection_id) }}" class="fb-profile-btn-form">
+    <input type="hidden" name="next" value="{{ url_for('profile_user_view', user_id=profile_user.id) }}">
+    <button type="submit" class="btn btn-primary btn-sm fb-profile-btn">{{ t('connection_approve_btn') }}</button>
+  </form>
+  <form method="POST" action="{{ url_for('staff_connection_reject', conn_id=connection_id) }}" class="fb-profile-btn-form">
+    <input type="hidden" name="next" value="{{ url_for('profile_user_view', user_id=profile_user.id) }}">
+    <button type="submit" class="btn btn-secondary btn-sm fb-profile-btn">{{ t('connection_reject_btn') }}</button>
+  </form>
+  {% elif connection_state == 'pending_out' %}
+  <button type="button" class="btn btn-secondary btn-sm fb-profile-btn" disabled>{{ t('connection_pending_out') }}</button>
+  {% else %}
+  <form method="POST" action="{{ url_for('staff_connection_request') }}" class="fb-profile-btn-form">
+    <input type="hidden" name="target_id" value="{{ profile_user.id }}">
+    <input type="hidden" name="next" value="{{ url_for('profile_user_view', user_id=profile_user.id) }}">
+    <button type="submit" class="btn btn-primary btn-sm fb-profile-btn">🤝 {{ t('connection_request_btn') }}</button>
+  </form>
+  {% endif %}
+</div>
+{% endif %}

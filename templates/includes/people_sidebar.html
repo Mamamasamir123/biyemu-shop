@@ -1,0 +1,65 @@
+<div class="people-sidebar card">
+  <div class="people-sidebar-head">
+    <h4 class="people-sidebar-title">{{ t('people_sidebar_title') }}</h4>
+    <span class="hint people-sidebar-count">{{ people_sidebar|length }}</span>
+  </div>
+  <label class="people-sidebar-search-wrap">
+    <span class="shop-data-search-icon" aria-hidden="true">🔍</span>
+    <input type="search" class="people-sidebar-search" id="peopleSidebarSearch"
+           placeholder="{{ t('people_sidebar_search_ph') }}" autocomplete="off">
+  </label>
+  <div class="people-sidebar-list" id="peopleSidebarList">
+    <a href="{{ url_for('profile_view') }}"
+       class="people-sidebar-item{% if profile_view_id == current_user.id %} active{% endif %}"
+       data-search="{{ current_user.full_name }} {{ t('people_sidebar_me') }}">
+      <div class="people-sidebar-avatar">
+        {% if current_user.profile_picture %}
+        <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}" alt="">
+        {% else %}
+        <span class="staff-card-avatar">{{ current_user.full_name[0]|upper }}</span>
+        {% endif %}
+      </div>
+      <div class="people-sidebar-body">
+        <strong>{{ t('people_sidebar_me') }}</strong>
+        <span>{{ jukumu(current_user.role) }}</span>
+      </div>
+    </a>
+    {% for item in people_sidebar %}
+    {% set u = item.user %}
+    <a href="{{ url_for('profile_user_view', user_id=u.id) }}"
+       class="people-sidebar-item{% if profile_view_id == u.id %} active{% endif %}"
+       data-search="{{ u.full_name }} {{ jukumu(u.role) }} {{ item.shop_name }}">
+      <div class="people-sidebar-avatar">
+        {% if u.profile_picture %}
+        <img src="{{ url_for('static', filename='uploads/profiles/' + u.profile_picture) }}" alt="">
+        {% else %}
+        <span class="staff-card-avatar">{{ u.full_name[0]|upper }}</span>
+        {% endif %}
+        {% if item.connection_state == 'approved' %}
+        <span class="people-sidebar-connected" title="{{ t('connection_already') }}"></span>
+        {% elif item.connection_state == 'pending_in' %}
+        <span class="people-sidebar-pending" title="{{ t('connection_pending_in') }}">!</span>
+        {% endif %}
+      </div>
+      <div class="people-sidebar-body">
+        <strong>{{ u.full_name }}</strong>
+        <span>{{ jukumu(u.role) }}{% if item.shop_name %} • {{ item.shop_name }}{% endif %}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+<script>
+(function () {
+  var input = document.getElementById('peopleSidebarSearch');
+  var items = document.querySelectorAll('#peopleSidebarList .people-sidebar-item');
+  if (!input) return;
+  input.addEventListener('input', function () {
+    var q = input.value.toLowerCase().trim();
+    items.forEach(function (el) {
+      var text = (el.getAttribute('data-search') || '').toLowerCase();
+      el.style.display = !q || text.indexOf(q) !== -1 ? '' : 'none';
+    });
+  });
+})();
+</script>

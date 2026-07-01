@@ -1,0 +1,7 @@
+<li><a href="{{ url_for('boss_dashboard') }}" {% if active == 'dashboard' %}class="active"{% endif %}>📊 {{ t('dashboard') }}</a></li>
+<li><a href="{{ url_for('boss_shops') }}" {% if active == 'shops' %}class="active"{% endif %}>🏪 {{ t('all_shops') }}</a></li>
+<li><a href="{{ url_for('boss_staff') }}" {% if active == 'staff' %}class="active"{% endif %}>👥 {{ t('staff') }}</a></li>
+<li><a href="{{ url_for('boss_approvals') }}" {% if active == 'approvals' %}class="active"{% endif %}>✅ {{ t('approvals') }}{% if pending %} <span class="badge badge-warning">{{ pending }}</span>{% endif %}</a></li>
+<li><a href="{{ url_for('boss_cash') }}" {% if active == 'cash' %}class="active"{% endif %}>💵 {{ t('cash_confirm_title') }}{% if pending_cash %} <span class="badge badge-warning">{{ pending_cash }}</span>{% endif %}</a></li>
+<li><a href="{{ url_for('boss_finance') }}" {% if active == 'report' %}class="active"{% endif %}>📋 {{ t('report') }}</a></li>
+<li><a href="{{ url_for('boss_trash') }}" {% if active == 'trash' %}class="active"{% endif %}>🗑️ {{ t('trash_title') }}</a></li>

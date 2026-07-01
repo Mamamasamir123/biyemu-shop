@@ -1,0 +1,240 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('staff') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% set active = 'staff' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+<div class="dash-welcome staff-dash-header">
+  <div>
+    <h2 style="margin:0;">{{ t('staff_title') }}</h2>
+    <p style="margin:4px 0 0; color:var(--muted); font-size:0.9rem;">{{ t('staff_dashboard_sub') }}</p>
+  </div>
+  <button type="button" class="btn btn-primary btn-sm" onclick="openRegisterStaffModal()">+ {{ t('register_staff') }}</button>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">{{ t('staff') }}</div>
+    <div class="value">{{ staff|length }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('role_manager') }}</div>
+    <div class="value">{{ manager_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('role_employee') }}</div>
+    <div class="value">{{ employee_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('active') }}</div>
+    <div class="value" style="color:var(--accent);">{{ active_count }}</div>
+  </div>
+  {% if suspended_count > 0 %}
+  <div class="stat-card">
+    <div class="label">{{ t('inactive') }}</div>
+    <div class="value danger">{{ suspended_count }}</div>
+  </div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>{{ t('staff') }} <span class="hint staff-grid-hint">— {{ t('staff_click_details') }}</span></h3>
+  {% if staff %}
+  <div class="staff-grid">
+    {% for u in staff %}
+    <button type="button"
+            class="staff-card{% if u.role.value == 'manager' %} is-manager{% else %} is-employee{% endif %}{% if not u.active %} is-suspended{% endif %}{% if u.warnings > 0 %} has-warning{% endif %}"
+            data-id="{{ u.id }}"
+            data-name="{{ u.full_name }}"
+            data-role="{{ jukumu(u.role) }}"
+            data-shop="{{ shops.get(u.shop_id, '-') }}"
+            data-salary="{{ u.salary|money }}"
+            data-username="{{ u.username }}"
+            data-phone="{{ u.phone or t('not_set') }}"
+            data-email="{{ u.email or t('not_set') }}"
+            data-bio="{{ u.bio or t('not_set') }}"
+            data-active="{{ '1' if u.active else '0' }}"
+            data-warnings="{{ u.warnings }}"
+            data-photo="{% if u.profile_picture %}{{ url_for('static', filename='uploads/profiles/' + u.profile_picture) }}{% endif %}"
+            data-initial="{{ u.full_name[0]|upper }}"
+            onclick="openStaffModal(this)">
+      <div class="staff-card-photo">
+        {% if u.profile_picture %}
+        <img src="{{ url_for('static', filename='uploads/profiles/' + u.profile_picture) }}" alt="{{ u.full_name }}">
+        {% else %}
+        <div class="staff-card-avatar">{{ u.full_name[0]|upper }}</div>
+        {% endif %}
+        {% if u.warnings > 0 %}
+        <span class="staff-warning-mark" title="{{ t('warnings_count', count=u.warnings) }}">⚠️</span>
+        {% endif %}
+      </div>
+      <div class="staff-card-body">
+        <div class="staff-card-role">{{ jukumu(u.role) }}</div>
+        <div class="staff-card-name">{{ u.full_name }}</div>
+        <div class="staff-card-shop">{{ shops.get(u.shop_id, '-') }}</div>
+      </div>
+    </button>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">{{ t('no_data') }} — {{ t('staff') }}</div>
+  {% endif %}
+</div>
+
+<div id="registerStaffModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeRegisterStaffModal()"></div>
+  <div class="staff-modal-panel" role="dialog" aria-modal="true">
+    <button type="button" class="staff-modal-close" onclick="closeRegisterStaffModal()" aria-label="{{ t('close') }}">✕</button>
+    <h2>{{ t('register_staff') }}</h2>
+    <form method="POST" action="{{ url_for('boss_add_staff') }}" class="form-row" style="margin-top:16px">
+      <div class="form-group"><label>{{ t('role_label') }}</label>
+        <select name="role" required><option value="manager">{{ t('role_manager') }}</option><option value="employee">{{ t('role_employee') }}</option></select>
+      </div>
+      <div class="form-group"><label>{{ t('shop_label') }}</label>
+        <select name="shop_id" required>{% for s in all_shops %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select>
+      </div>
+      <div class="form-group"><label>{{ t('full_name_label') }}</label><input name="full_name" required></div>
+      <div class="form-group"><label>{{ t('username_label') }}</label><input name="username" required></div>
+      <div class="form-group"><label>{{ t('password') }}</label><input name="password" type="password" required></div>
+      <div class="form-group"><label>{{ t('salary_label') }}</label><input name="salary" type="number" value="0"></div>
+      <button type="submit" class="btn btn-primary">{{ t('add_button') }}</button>
+    </form>
+  </div>
+</div>
+
+<div id="staffModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeStaffModal()"></div>
+  <div class="staff-modal-panel" role="dialog" aria-modal="true">
+    <button type="button" class="staff-modal-close" onclick="closeStaffModal()" aria-label="{{ t('close') }}">✕</button>
+
+    <div class="staff-modal-header">
+      <div class="staff-modal-photo" id="modalPhoto"></div>
+      <div>
+        <h2 id="modalName"></h2>
+        <p id="modalRole" class="staff-modal-role"></p>
+        <div id="modalBadges" class="staff-card-meta"></div>
+      </div>
+    </div>
+
+    <ul class="staff-detail-list">
+      <li><span class="staff-detail-label">🏢 {{ t('shop_label') }}</span><span id="modalShop"></span></li>
+      <li><span class="staff-detail-label">💰 {{ t('salary_label') }}</span><span id="modalSalary"></span></li>
+      <li><span class="staff-detail-label">👤 {{ t('username_label') }}</span><span id="modalUsername"></span></li>
+      <li><span class="staff-detail-label">📞 {{ t('phone_no') }}</span><span id="modalPhone"></span></li>
+      <li><span class="staff-detail-label">✉️ {{ t('email') }}</span><span id="modalEmail"></span></li>
+      <li><span class="staff-detail-label">📝 {{ t('bio') }}</span><span id="modalBio"></span></li>
+      <li><span class="staff-detail-label">⚠️ {{ t('warnings_label') }}</span><span id="modalWarnings"></span></li>
+    </ul>
+
+    <div class="staff-modal-actions">
+      <h4>{{ t('staff_actions') }}</h4>
+      <div class="staff-action-buttons">
+        <form id="formSuspend" method="POST" style="display:none">
+          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ t('suspend_staff') }}?')">{{ t('suspend_staff') }}</button>
+        </form>
+        <form id="formActivate" method="POST" style="display:none">
+          <button type="submit" class="btn btn-primary btn-sm">{{ t('activate_staff') }}</button>
+        </form>
+        <form id="formWarn" method="POST">
+          <input type="hidden" name="action" value="add">
+          <button type="submit" class="btn btn-warning btn-sm">⚠️ {{ t('add_warning') }}</button>
+        </form>
+        <form id="formClearWarn" method="POST" style="display:none">
+          <input type="hidden" name="action" value="clear">
+          <button type="submit" class="btn btn-secondary btn-sm">{{ t('clear_warning') }}</button>
+        </form>
+        <form id="formDelete" method="POST" onsubmit="return confirmDeleteStaff()">
+          <button type="submit" class="btn btn-danger btn-sm">🗑️ {{ t('delete_staff') }}</button>
+        </form>
+      </div>
+      <p id="modalSuspendedNote" class="staff-suspended-note" style="display:none">{{ t('account_suspended') }}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const suspendUrl = "{{ url_for('boss_suspend_staff', user_id='__ID__') }}";
+const activateUrl = "{{ url_for('boss_activate_staff', user_id='__ID__') }}";
+const warnUrl = "{{ url_for('boss_warn_staff', user_id='__ID__') }}";
+const deleteUrl = "{{ url_for('boss_remove_staff', user_id='__ID__') }}";
+const tDeleteConfirm = "{{ t('delete_staff_confirm', name='__NAME__') }}";
+const tActive = "{{ t('active') }}";
+let currentStaffName = '';
+const tInactive = "{{ t('inactive') }}";
+const tWarnings = "{{ t('warnings_count', count='__N__') }}";
+function openStaffModal(card) {
+  const d = card.dataset;
+  const modal = document.getElementById('staffModal');
+  const photoEl = document.getElementById('modalPhoto');
+
+  if (d.photo) {
+    photoEl.innerHTML = '<img src="' + d.photo + '" alt="' + d.name + '">';
+  } else {
+    photoEl.innerHTML = '<div class="staff-card-avatar large">' + d.initial + '</div>';
+  }
+
+  document.getElementById('modalName').textContent = d.name;
+  document.getElementById('modalRole').textContent = d.role;
+  document.getElementById('modalShop').textContent = d.shop;
+  document.getElementById('modalSalary').textContent = d.salary;
+  document.getElementById('modalUsername').textContent = d.username;
+  document.getElementById('modalPhone').textContent = d.phone;
+  document.getElementById('modalEmail').textContent = d.email;
+  document.getElementById('modalBio').textContent = d.bio;
+  document.getElementById('modalWarnings').textContent = d.warnings > 0
+    ? tWarnings.replace('__N__', d.warnings)
+    : '0';
+
+  const badges = document.getElementById('modalBadges');
+  const active = d.active === '1';
+  badges.innerHTML =
+    '<span class="badge badge-info">' + d.role + '</span>' +
+    (active
+      ? '<span class="badge badge-success">' + tActive + '</span>'
+      : '<span class="badge badge-danger">' + tInactive + '</span>') +
+    (d.warnings > 0 ? '<span class="badge badge-warning">⚠️ ' + d.warnings + '</span>' : '');
+
+  const id = d.id;
+  currentStaffName = d.name;
+  document.getElementById('formSuspend').action = suspendUrl.replace('__ID__', id);
+  document.getElementById('formActivate').action = activateUrl.replace('__ID__', id);
+  document.getElementById('formWarn').action = warnUrl.replace('__ID__', id);
+  document.getElementById('formClearWarn').action = warnUrl.replace('__ID__', id);
+  document.getElementById('formDelete').action = deleteUrl.replace('__ID__', id);
+
+  document.getElementById('formSuspend').style.display = active ? 'inline' : 'none';
+  document.getElementById('formActivate').style.display = active ? 'none' : 'inline';
+  document.getElementById('formClearWarn').style.display = d.warnings > 0 ? 'inline' : 'none';
+  document.getElementById('modalSuspendedNote').style.display = active ? 'none' : 'block';
+
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeStaffModal() {
+  document.getElementById('staffModal').hidden = true;
+  document.body.style.overflow = '';
+}
+
+function confirmDeleteStaff() {
+  return confirm(tDeleteConfirm.replace('__NAME__', currentStaffName));
+}
+
+function openRegisterStaffModal() {
+  document.getElementById('registerStaffModal').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRegisterStaffModal() {
+  document.getElementById('registerStaffModal').hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Escape') return;
+  if (!document.getElementById('registerStaffModal').hidden) closeRegisterStaffModal();
+  else closeStaffModal();
+});
+</script>
+{% endblock %}

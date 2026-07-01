@@ -1,0 +1,42 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('report') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% set active = 'report' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header"><h1>{{ t('profit_loss_report') }}</h1></div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="label">{{ t('revenue_label') }}</div><div class="value">{{ report.total_revenue|money }}</div></div>
+  <div class="stat-card"><div class="label">{{ t('cost') or 'Gharama' }}</div><div class="value">{{ report.total_cost|money }}</div></div>
+  <div class="stat-card"><div class="label">{{ t('salary_label') }}</div><div class="value">{{ report.total_salaries|money }}</div></div>
+  <div class="stat-card">
+    <div class="label">{{ t('net_profit_positive') if report.net_profit >= 0 else t('net_profit_negative') }}</div>
+    <div class="value {% if report.net_profit < 0 %}danger{% endif %}">{{ report.net_profit|abs|money }}</div>
+  </div>
+</div>
+<div class="card">
+  <h3>{{ t('shop_label') }} - {{ t('revenue_label') }}</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>{{ t('shop_label') }}</th>
+        <th>{{ t('revenue_label') }}</th>
+        <th>{{ t('profit_loss_label') }}</th>
+      </tr></thead>
+      <tbody>
+        {% for s in shops %}
+        {% set r = shop_reports[s.id] %}
+        <tr>
+          <td>{{ s.name }}</td>
+          <td>{{ r.total_revenue|money }}</td>
+          <td class="{% if r.net_profit >= 0 %}profit-positive{% else %}profit-negative{% endif %}">
+            {{ r.net_profit|abs|money }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

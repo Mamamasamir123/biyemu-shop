@@ -1,0 +1,70 @@
+{% if current_user and current_user.is_boss() %}
+<div id="bossSettingsModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeBossSettings()"></div>
+  <div class="staff-modal-panel boss-settings-modal" role="dialog" aria-modal="true" aria-labelledby="bossSettingsTitle">
+    <button type="button" class="staff-modal-close" onclick="closeBossSettings()" aria-label="{{ t('close') }}">✕</button>
+    <h2 id="bossSettingsTitle">{{ t('boss_admin_settings') }}</h2>
+    <p class="hint">{{ t('boss_admin_settings_hint') }}</p>
+
+    {% if notifications_muted %}
+    <p class="boss-settings-status muted">🔕 {{ t('boss_notifications_muted_since', date=notifications_muted_at or '—') }}</p>
+    {% endif %}
+
+    <div class="boss-settings-actions">
+      {% if notifications_muted %}
+      <form method="POST" action="{{ url_for('boss_unmute_notifications') }}" class="boss-settings-action-card">
+        <div>
+          <strong>{{ t('boss_unmute_notifications') }}</strong>
+          <span class="hint">{{ t('boss_mute_notifications_hint') }}</span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">{{ t('boss_unmute_notifications') }}</button>
+      </form>
+      {% else %}
+      <form method="POST" action="{{ url_for('boss_mute_notifications') }}" class="boss-settings-action-card"
+            onsubmit="return confirm('{{ t('boss_mute_notifications_confirm') }}');">
+        <div>
+          <strong>{{ t('boss_mute_notifications') }}</strong>
+          <span class="hint">{{ t('boss_mute_notifications_hint') }}</span>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-sm">{{ t('boss_mute_notifications') }}</button>
+      </form>
+      {% endif %}
+    </div>
+
+    <div class="boss-archived-section">
+      <h3>{{ t('boss_archived_notifications') }}</h3>
+      <p class="hint">{{ t('boss_archived_notifications_hint') }}</p>
+      {% if archived_notifications %}
+      <ul class="boss-archived-list">
+        {% for note in archived_notifications[:20] %}
+        <li class="boss-archived-item">
+          <strong>{{ note.title }}</strong>
+          <span class="hint">{{ note.message }}</span>
+          <span class="boss-archived-meta">{{ note.archived_at }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% if archived_notifications|length > 20 %}
+      <p class="hint">+{{ archived_notifications|length - 20 }} …</p>
+      {% endif %}
+      {% else %}
+      <p class="hint">{{ t('boss_archived_empty') }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<script>
+function openBossSettings() {
+  var modal = document.getElementById('bossSettingsModal');
+  if (!modal) return;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeBossSettings() {
+  var modal = document.getElementById('bossSettingsModal');
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+</script>
+{% endif %}

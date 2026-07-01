@@ -1,0 +1,33 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('products') }} — {{ t('role_employee') }}{% endblock %}
+{% block nav %}
+{% set active = 'products' %}
+{% include 'includes/nav_employee.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header"><h1>{{ t('available_products') }}</h1></div>
+<div class="card">
+  <div class="table-wrap">
+    <table class="products-table">
+      <thead><tr>
+        <th></th>
+        <th>{{ t('product') }}</th>
+        <th>{{ t('price') }}</th>
+        <th>{{ t('stock') }}</th>
+      </tr></thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td class="product-thumb-cell">{% include 'includes/product_thumb.html' %}</td>
+          <td><strong>{{ p.name }}</strong>{% if p.category %}<br><small style="color:var(--muted)">{{ p.category }}</small>{% endif %}</td>
+          <td>{{ p.price|money }}</td>
+          <td>{{ p.quantity }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="empty-state">{{ t('not_found') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

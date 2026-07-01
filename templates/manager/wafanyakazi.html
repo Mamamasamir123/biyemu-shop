@@ -1,0 +1,42 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('staff') }} — {{ t('role_manager') }}{% endblock %}
+{% block nav %}
+{% set active = 'staff' %}
+{% include 'includes/nav_manager.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header"><h1>{{ t('staff_title') }}</h1></div>
+
+<div class="card">
+  <h3>{{ t('add_employee') }}</h3>
+  <form method="POST" action="{{ url_for('manager_add_employee') }}" class="form-row">
+    <div class="form-group"><label>{{ t('full_name_label') }}</label><input name="full_name" required></div>
+    <div class="form-group"><label>{{ t('username_label') }}</label><input name="username" required></div>
+    <div class="form-group"><label>{{ t('password') }}</label><input name="password" type="password" required></div>
+    <div class="form-group"><label>{{ t('salary_label') }}</label><input name="salary" type="number" value="0"></div>
+    <button type="submit" class="btn btn-primary">{{ t('add_button') }}</button>
+  </form>
+</div>
+
+{% for e in employees %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+    <h3>{{ e.full_name }} — {{ e.salary|money }}/{{ t('month') or 'mwezi' }}</h3>
+    <form method="POST" action="{{ url_for('manager_remove_employee', emp_id=e.id) }}" onsubmit="return confirm('{{ t('remove_employee_confirm', name=e.full_name) }}')">
+      <button type="submit" class="btn btn-danger btn-sm">🗑️ {{ t('remove_employee') }}</button>
+    </form>
+  </div>
+  <form method="POST" action="{{ url_for('manager_set_permissions', emp_id=e.id) }}">
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="can_view_products" {% if e.permissions.can_view_products %}checked{% endif %}> {{ t('can_view_products') }}</label>
+      <label><input type="checkbox" name="can_sell" {% if e.permissions.can_sell %}checked{% endif %}> {{ t('can_sell') }}</label>
+      <label><input type="checkbox" name="can_record_sales" {% if e.permissions.can_record_sales %}checked{% endif %}> {{ t('can_record_sales') }}</label>
+      <label><input type="checkbox" name="can_view_sales_history" {% if e.permissions.can_view_sales_history %}checked{% endif %}> {{ t('can_view_sales_history') }}</label>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm" style="margin-top:12px">{{ t('save') }} {{ t('permissions') }}</button>
+  </form>
+</div>
+{% else %}
+<div class="card empty-state">{{ t('no_data') }} — {{ t('staff') }}</div>
+{% endfor %}
+{% endblock %}

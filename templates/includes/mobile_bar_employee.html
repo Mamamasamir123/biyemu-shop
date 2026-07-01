@@ -1,0 +1,23 @@
+<nav class="mobile-bar" aria-label="Navigation">
+  <a href="{{ url_for('employee_dashboard') }}" class="mob-item{% if active == 'dashboard' %} active{% endif %}">
+    <span class="mob-icon">📊</span><span class="mob-label">{{ t('dashboard') }}</span>
+  </a>
+  {% if current_user.permissions.can_view_products %}
+  <a href="{{ url_for('employee_products') }}" class="mob-item{% if active == 'products' %} active{% endif %}">
+    <span class="mob-icon">📦</span><span class="mob-label">{{ t('products') }}</span>
+  </a>
+  {% endif %}
+  {% if current_user.permissions.can_sell %}
+  <a href="{{ url_for('employee_sell') }}" class="mob-item{% if active == 'sell' %} active{% endif %}">
+    <span class="mob-icon">🛒</span><span class="mob-label">{{ t('sell') }}</span>
+  </a>
+  {% endif %}
+  {% if current_user.permissions.can_view_sales_history %}
+  <a href="{{ url_for('employee_sales') }}" class="mob-item{% if active == 'sales' %} active{% endif %}">
+    <span class="mob-icon">💰</span><span class="mob-label">{{ t('my_sales') }}</span>
+  </a>
+  {% endif %}
+  <a href="{{ url_for('profile_view') }}" class="mob-item{% if active == 'profile' %} active{% endif %}">
+    <span class="mob-icon">👤</span><span class="mob-label">{{ t('profile') }}</span>
+  </a>
+</nav>

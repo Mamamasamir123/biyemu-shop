@@ -1,0 +1,23 @@
+{# table_id, title, search_ph, bulk_delete_url (optional), bulk_confirm (optional) #}
+<div class="shop-data-toolbar">
+  <div class="shop-data-toolbar-top">
+    <h3 class="shop-data-title">{{ title }}</h3>
+    <span class="hint shop-data-count" data-count-for="{{ table_id }}"></span>
+  </div>
+  <div class="shop-data-toolbar-actions">
+    <label class="shop-data-search-wrap">
+      <span class="shop-data-search-icon" aria-hidden="true">🔍</span>
+      <input type="search" class="shop-data-search" data-search-for="{{ table_id }}"
+             placeholder="{{ search_ph }}" autocomplete="off">
+    </label>
+    {% if bulk_delete_url %}
+    <form method="POST" action="{{ bulk_delete_url }}" class="shop-data-bulk-form"
+          data-bulk-form-for="{{ table_id }}"
+          data-confirm="{{ bulk_confirm }}">
+      <button type="submit" class="btn btn-danger btn-sm shop-data-bulk-btn"
+              data-bulk-btn-for="{{ table_id }}"
+              data-label="{{ t('request_delete_selected') }}" disabled>{{ t('request_delete_selected') }}</button>
+    </form>
+    {% endif %}
+  </div>
+</div>

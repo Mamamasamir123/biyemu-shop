@@ -1,0 +1,180 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('cash_manager_handover') }} — BiyeMu{% endblock %}
+{% block nav %}
+{% set active = 'cash_submit' %}
+{% include 'includes/nav_manager.html' %}
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ t('cash_manager_handover') }}</h1>
+  <p class="hint">{{ t('cash_manager_handover_sub') }}</p>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">💵 {{ t('cash_shop_available') }}</div>
+    <div class="value">{{ held_total|money }}</div>
+    <div class="stat-hint">{{ t('cash_shop_available_hint') }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">⏳ {{ t('cash_boss_pending') }}</div>
+    <div class="value">{{ pending_total|money }}</div>
+    <div class="stat-hint">{{ t('cash_boss_pending_hint') }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">✅ {{ t('cash_boss_confirmed') }}</div>
+    <div class="value">{{ confirmed_total|money }}</div>
+    <div class="stat-hint">{{ t('cash_boss_confirmed_hint') }}</div>
+  </div>
+</div>
+
+{% if held_total > 0 %}
+<div class="card">
+  <h3>{{ t('cash_submit') }}</h3>
+  <p class="hint">{{ t('cash_receiver') }}: <strong>{{ receiver_name }}</strong> ({{ t('cash_to_boss') }})</p>
+
+  <div class="cash-period-tabs">
+    <a href="{{ url_for('manager_submit_cash', period='today') }}" class="cash-period-tab{% if period == 'today' %} active{% endif %}">{{ t('cash_filter_today') }}</a>
+    <a href="{{ url_for('manager_submit_cash', period='week') }}" class="cash-period-tab{% if period == 'week' %} active{% endif %}">{{ t('cash_filter_week') }}</a>
+    <a href="{{ url_for('manager_submit_cash', period='month') }}" class="cash-period-tab{% if period == 'month' %} active{% endif %}">{{ t('cash_filter_month') }}</a>
+    <a href="{{ url_for('manager_submit_cash', period='all') }}" class="cash-period-tab{% if period == 'all' %} active{% endif %}">{{ t('cash_filter_all') }}</a>
+  </div>
+
+  <div class="cash-mode-tabs">
+    <button type="button" class="cash-mode-tab active" data-mode="selected">{{ t('cash_select_sales') }}</button>
+    <button type="button" class="cash-mode-tab" data-mode="amount">{{ t('cash_by_amount') }}</button>
+  </div>
+
+  <form method="POST" action="{{ url_for('manager_submit_cash', period=period) }}" id="cash-submit-form">
+    <input type="hidden" name="action" value="submit">
+    <input type="hidden" name="submit_mode" id="submit_mode" value="selected">
+
+    <div id="cash-mode-selected" class="cash-mode-panel">
+      {% if held_sales %}
+      <div class="cash-selection-bar">
+        <label class="cash-select-all">
+          <input type="checkbox" id="select-all-filtered">
+          {{ t('cash_select_all_filtered') }}
+        </label>
+        <span class="cash-selected-total">
+          {{ t('cash_selected_total') }}: <strong id="selected-total">0 Fbi</strong>
+        </span>
+      </div>
+      <ul class="cash-sale-list selectable">
+        {% for s in held_sales %}
+        <li>
+          <label class="cash-sale-row">
+            <input type="checkbox" name="sale_ids" value="{{ s.id }}" class="sale-checkbox" data-amount="{{ s.total_amount }}">
+            <span class="cash-sale-date">{{ s.date }}</span>
+            <span class="cash-sale-product">{{ s.product_name }} x{{ s.quantity }} — {{ s.employee_name }}</span>
+            <span class="cash-sale-amount">{{ s.total_amount|money }}</span>
+          </label>
+        </li>
+        {% endfor %}
+      </ul>
+      <p class="hint cash-filter-summary">{{ t('cash_sales_count', count=held_sales|length) }} — {{ filtered_total|money }}</p>
+      {% else %}
+      <div class="empty-state compact">{{ t('cash_no_filtered') }}</div>
+      <p class="hint">{{ t('cash_by_amount') }} — {{ t('cash_amount_hint') }}</p>
+      {% endif %}
+    </div>
+
+    <div id="cash-mode-amount" class="cash-mode-panel" hidden>
+      <div class="form-group">
+        <label>{{ t('cash_enter_amount') }}</label>
+        <input type="number" name="amount" id="cash-amount-input" min="1" max="{{ held_total|int }}" step="1" placeholder="0">
+        <p class="hint">{{ t('cash_amount_hint') }}</p>
+        <p class="hint">{{ t('cash_shop_available') }}: <strong>{{ held_total|money }}</strong></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>{{ t('approval_note_optional') }}</label>
+      <input name="note" placeholder="{{ t('optional') }}">
+    </div>
+    <button type="submit" class="btn btn-primary" id="cash-submit-btn">{{ t('cash_submit') }}</button>
+  </form>
+</div>
+{% else %}
+<div class="card empty-state">{{ t('cash_no_shop_cash') }}</div>
+{% endif %}
+
+{% if history %}
+<div class="card" style="margin-top:20px;">
+  <h3>{{ t('my_requests_title') }}</h3>
+  <ul class="notification-list">
+    {% for r in history %}
+    <li class="notification-item">
+      <div class="notification-body">
+        <div class="notification-title">{{ r.amount|money }} → {{ r.receiver_name }}</div>
+        <div class="notification-message">
+          {% if r.status.value == 'pending' %}{{ t('cash_boss_pending') }}
+          {% elif r.status.value == 'confirmed' %}{{ t('cash_boss_confirmed') }} — {{ r.confirmed_by_name }}
+          {% else %}{{ r.status.value }}{% endif %}
+        </div>
+        <div class="notification-meta">{{ r.created_at }}</div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<script>
+(function() {
+  const form = document.getElementById('cash-submit-form');
+  if (!form) return;
+  const modeTabs = document.querySelectorAll('.cash-mode-tab');
+  const modeInput = document.getElementById('submit_mode');
+  const panelSelected = document.getElementById('cash-mode-selected');
+  const panelAmount = document.getElementById('cash-mode-amount');
+  const selectAll = document.getElementById('select-all-filtered');
+  const checkboxes = document.querySelectorAll('.sale-checkbox');
+  const selectedTotalEl = document.getElementById('selected-total');
+  const submitBtn = document.getElementById('cash-submit-btn');
+  const receiverName = {{ receiver_name|tojson }};
+  const confirmSelected = {{ t('cash_submit_selected_confirm', name='__NAME__', amount='__AMOUNT__', count='__COUNT__')|tojson }};
+  const confirmAmount = {{ t('cash_submit_confirm', name='__NAME__')|tojson }};
+  const noSelection = {{ t('cash_no_selection')|tojson }};
+  function formatMoney(n) { return Math.round(n).toLocaleString('en-US') + ' Fbi'; }
+  function updateSelectedTotal() {
+    let total = 0, count = 0;
+    checkboxes.forEach(function(cb) { if (cb.checked) { total += parseFloat(cb.dataset.amount) || 0; count += 1; } });
+    if (selectedTotalEl) selectedTotalEl.textContent = formatMoney(total);
+    if (selectAll) { const allChecked = checkboxes.length > 0 && count === checkboxes.length; selectAll.checked = allChecked; selectAll.indeterminate = count > 0 && !allChecked; }
+    if (submitBtn && modeInput.value === 'selected') submitBtn.disabled = checkboxes.length === 0 || count === 0;
+  }
+  function setSubmitEnabledForMode(mode) {
+    if (!submitBtn) return;
+    submitBtn.disabled = mode !== 'amount' && (checkboxes.length === 0 || document.querySelectorAll('.sale-checkbox:checked').length === 0);
+  }
+  modeTabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      const mode = tab.dataset.mode;
+      modeTabs.forEach(function(t) { t.classList.toggle('active', t === tab); });
+      modeInput.value = mode;
+      panelSelected.hidden = mode !== 'selected';
+      panelAmount.hidden = mode !== 'amount';
+      setSubmitEnabledForMode(mode);
+    });
+  });
+  if (selectAll) selectAll.addEventListener('change', function() { checkboxes.forEach(function(cb) { cb.checked = selectAll.checked; }); updateSelectedTotal(); });
+  checkboxes.forEach(function(cb) { cb.addEventListener('change', updateSelectedTotal); });
+  form.addEventListener('submit', function(e) {
+    if (modeInput.value === 'selected') {
+      const checked = document.querySelectorAll('.sale-checkbox:checked');
+      if (!checked.length) { e.preventDefault(); alert(noSelection); return; }
+      let total = 0; checked.forEach(function(cb) { total += parseFloat(cb.dataset.amount) || 0; });
+      const msg = confirmSelected.replace('__NAME__', receiverName).replace('__AMOUNT__', formatMoney(total)).replace('__COUNT__', String(checked.length));
+      if (!confirm(msg)) e.preventDefault();
+    } else {
+      const amount = parseFloat(document.getElementById('cash-amount-input').value) || 0;
+      if (amount <= 0) { e.preventDefault(); alert(noSelection); return; }
+      if (!confirm(confirmAmount.replace('__NAME__', receiverName) + ' (' + formatMoney(amount) + ')')) e.preventDefault();
+    }
+  });
+  setSubmitEnabledForMode(modeInput.value);
+  updateSelectedTotal();
+})();
+</script>
+{% endblock %}

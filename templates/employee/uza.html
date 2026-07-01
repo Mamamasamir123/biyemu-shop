@@ -1,0 +1,43 @@
+{% extends "layout_app.html" %}
+{% set active = 'sell' %}
+{% block title %}{{ t('sell') }} — BiyeMu{% endblock %}
+{% block content %}
+<div class="page-header"><h1>{{ t('sell_product') }}</h1><p>{{ t('record_sale') }}</p></div>
+<div class="card" style="max-width:560px">
+  <form method="POST" id="sellForm">
+    <div class="form-group">
+      <label>{{ t('product') }}</label>
+      <div class="product-sell-grid" id="productSellGrid">
+        {% for p in products %}
+        <button type="button" class="product-sell-card" data-id="{{ p.id }}" onclick="selectSellProduct(this)">
+          {% with size='md' %}{% include 'includes/product_thumb.html' %}{% endwith %}
+          <div class="product-sell-card-name">{{ p.name }}</div>
+          <div class="product-sell-card-price">{{ p.price|money }}</div>
+          <div class="product-sell-card-price" style="color:var(--muted)">{{ t('stock') }}: {{ p.quantity }}</div>
+        </button>
+        {% endfor %}
+      </div>
+      <select name="product_id" id="productSelect" required hidden>
+        <option value="">-- {{ t('select') or 'Chagua' }} --</option>
+        {% for p in products %}
+        <option value="{{ p.id }}">{{ p.name }} — {{ p.price|money }} ({{ t('stock') }}: {{ p.quantity }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>{{ t('quantity') }}</label>
+      <input type="number" name="quantity" min="1" value="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">{{ t('confirm') }}</button>
+  </form>
+</div>
+<script>
+function selectSellProduct(card) {
+  document.querySelectorAll('.product-sell-card').forEach(function(el) {
+    el.classList.remove('selected');
+  });
+  card.classList.add('selected');
+  document.getElementById('productSelect').value = card.dataset.id;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% if not query %}
+<p class="hint search-page-hint">{{ t('search_hint') }}</p>
+{% elif not has_results %}
+<div class="card search-empty-card">
+  <p class="hint">{{ t('search_no_results', query=query) }}</p>
+</div>
+{% else %}
+
+{% if search_type in ('all', 'people') and results.people %}
+<section class="search-results-section">
+  <h2 class="search-results-title">{{ t('search_filter_people') }}</h2>
+  <div class="search-results-list">
+    {% for item in results.people %}
+    <a href="{{ item.url }}" class="search-result-card search-result-person">
+      <div class="search-result-avatar">
+        {% if item.user.profile_picture %}
+        <img src="{{ url_for('static', filename='uploads/profiles/' + item.user.profile_picture) }}" alt="">
+        {% else %}
+        <span>{{ item.user.full_name[0]|upper }}</span>
+        {% endif %}
+      </div>
+      <div class="search-result-body">
+        <strong>{{ item.user.full_name }}</strong>
+        <span>{{ jukumu(item.user.role) }}{% if item.shop_name %} • {{ item.shop_name }}{% endif %}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if search_type in ('all', 'shops') and results.shops %}
+<section class="search-results-section">
+  <h2 class="search-results-title">{{ t('search_filter_shops') }}</h2>
+  <div class="search-results-list">
+    {% for item in results.shops %}
+    <a href="{{ item.url }}" class="search-result-card search-result-shop">
+      <div class="search-result-shop-cover{% if item.shop.cover_image %} has-image{% endif %}"
+           {% if item.shop.cover_image %}style="background-image:url('{{ url_for('static', filename='uploads/shops/covers/' + item.shop.cover_image) }}')"{% endif %}>
+        {% if item.shop.logo %}
+        <img src="{{ url_for('static', filename='uploads/shops/logos/' + item.shop.logo) }}" alt="" class="search-result-shop-logo">
+        {% else %}
+        <div class="search-result-shop-logo placeholder">{{ item.shop.name[0]|upper }}</div>
+        {% endif %}
+      </div>
+      <div class="search-result-body">
+        <strong>{{ item.shop.name }}</strong>
+        <span>{{ item.shop.shop_type }}{% if item.shop.location %} • {{ item.shop.location }}{% endif %}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if search_type in ('all', 'products') and results.products %}
+<section class="search-results-section">
+  <h2 class="search-results-title">{{ t('search_filter_products') }}</h2>
+  <div class="search-results-list search-results-products">
+    {% for item in results.products %}
+    <a href="{{ item.url }}" class="search-result-card search-result-product">
+      <div class="search-result-product-media">
+        {% if item.product.image %}
+        <img src="{{ url_for('static', filename='uploads/products/' + item.product.image) }}" alt="{{ item.product.name }}" loading="lazy">
+        {% else %}
+        <div class="search-result-product-placeholder">{{ item.product.name[0]|upper }}</div>
+        {% endif %}
+      </div>
+      <div class="search-result-body">
+        <strong>{{ item.product.name }}</strong>
+        <span>{{ item.product.price|money }} • {{ item.shop.name }}</span>
+        <span class="hint">{{ item.product.quantity }} {{ t('in_stock') }}</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% endif %}

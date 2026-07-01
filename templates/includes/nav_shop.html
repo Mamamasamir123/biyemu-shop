@@ -1,0 +1,10 @@
+<li><a href="{{ back_url }}">🏪 {{ t('all_shops') }}</a></li>
+<li><a href="{{ shop_urls.overview }}" {% if active_tab == 'overview' %}class="active"{% endif %}>📊 {{ t('dashboard') }}</a></li>
+<li><a href="{{ shop_urls.products }}" {% if active_tab == 'products' %}class="active"{% endif %}>📦 {{ t('products') }}</a></li>
+<li><a href="{{ shop_urls.sales }}" {% if active_tab == 'sales' %}class="active"{% endif %}>💰 {{ t('sales') }}</a></li>
+{% if shop_urls.staff %}
+<li><a href="{{ shop_urls.staff }}" {% if active_tab == 'staff' %}class="active"{% endif %}>👥 {{ t('staff') }}</a></li>
+{% endif %}
+{% if can_edit %}
+<li><a href="{{ shop_urls.edit }}" {% if active_tab == 'edit' %}class="active"{% endif %}>✏️ {{ t('edit_shop') }}</a></li>
+{% endif %}

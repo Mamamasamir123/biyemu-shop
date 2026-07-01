@@ -1,0 +1,274 @@
+{% extends "layout_app.html" %}
+{% set active = 'profile' %}
+{% set pu = profile_user|default(current_user) %}
+{% set is_own = is_own_profile|default(true) %}
+{% set bio_key = 'profile_default_bio_' ~ pu.role.value %}
+{% set display_bio = pu.bio if pu.bio else t(bio_key, name=pu.full_name, shop=profile_shop_name or t('app_name')) %}
+{% set has_shop_link = pu.shop_id and profile_shop_name %}
+{% macro profile_shop_link(text) -%}
+  {%- if has_shop_link -%}
+  <a href="#profile-shop-card" class="fb-profile-shop-link" data-profile-shop-link>{{ text }}</a>
+  {%- else -%}
+  {{ text }}
+  {%- endif -%}
+{%- endmacro %}
+{% block title %}{% if is_own %}{{ t('profile') }}{% else %}{{ pu.full_name }}{% endif %} — BiyeMu{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<div class="profile-page fb-profile">
+  <div class="fb-profile-header card">
+    <div class="fb-profile-cover profile-cover-{{ pu.role.value }}{% if shop and shop.cover_image %} has-image{% endif %}"
+         {% if shop and shop.cover_image %}style="background-image:url('{{ url_for('static', filename='uploads/shops/covers/' + shop.cover_image) }}')"{% endif %}>
+    </div>
+    <div class="fb-profile-header-inner">
+      <div class="fb-profile-top">
+        <div class="fb-profile-identity">
+          <div class="fb-profile-avatar-wrap">
+            {% if pu.profile_picture %}
+            <img src="{{ url_for('static', filename='uploads/profiles/' + pu.profile_picture) }}" alt="{{ pu.full_name }}" class="fb-profile-avatar">
+            {% else %}
+            <div class="fb-profile-avatar fb-profile-avatar-placeholder">{{ pu.full_name[0]|upper }}</div>
+            {% endif %}
+          </div>
+          <div class="fb-profile-title-block">
+            <h1 class="fb-profile-name">{{ pu.full_name }}</h1>
+            <p class="fb-profile-meta">
+              <span>{{ jukumu(pu.role) }}</span>
+              {% if profile_shop_name %}<span class="fb-profile-meta-dot">•</span><span>{{ profile_shop_link(profile_shop_name) }}</span>{% endif %}
+            </p>
+            <p class="fb-profile-bio{% if not pu.bio %} is-placeholder{% endif %}">{{ display_bio }}</p>
+            {% if not pu.bio and is_own %}
+            <p class="fb-profile-edit-hint hint">{{ t('profile_bio_edit_hint') }}</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="fb-profile-toolbar">
+          {% if not is_own %}
+          {% include 'includes/profile_message_actions.html' %}
+          {% else %}
+          <div class="fb-profile-action-group">
+            {% if current_user.is_boss() %}
+            <button type="button" class="btn btn-secondary btn-sm fb-profile-btn" onclick="openBossSettings()">⚙️ {{ t('boss_admin_settings') }}</button>
+            {% endif %}
+            <a href="{{ url_for('profile_edit') }}" class="btn btn-primary btn-sm fb-profile-btn">✏️ {{ t('edit_profile') }}</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <nav class="fb-profile-tabs" aria-label="{{ t('profile_tabs_label') }}">
+        <button type="button" class="fb-profile-tab active" data-profile-tab="products">
+          {{ t('profile_tab_products') }}
+          {% if shop_products %}<span class="fb-profile-tab-count">{{ shop_products|length }}</span>{% endif %}
+        </button>
+        <button type="button" class="fb-profile-tab" data-profile-tab="about">{{ t('profile_tab_about') }}</button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="fb-profile-body">
+    <section class="fb-profile-panel" data-profile-panel="about" hidden>
+      <div class="fb-profile-stack">
+        <section class="card fb-intro-card">
+          <h2 class="fb-section-title">{{ t('profile_intro_title') }}</h2>
+          <p class="fb-intro-bio{% if not pu.bio %} is-placeholder{% endif %}">{{ display_bio }}</p>
+
+          {% if is_own or can_view_shop|default(false) %}
+          <ul class="fb-intro-list">
+            <li><span class="fb-intro-icon">👤</span><span>{{ jukumu(pu.role) }}</span></li>
+            {% if profile_shop_name %}
+            <li><span class="fb-intro-icon">🏪</span><span>{{ profile_shop_link(profile_shop_name) }}</span></li>
+            {% endif %}
+            {% if shop and shop.location %}
+            <li><span class="fb-intro-icon">📍</span><span>{{ shop.location }}</span></li>
+            {% endif %}
+            <li>
+              <span class="fb-intro-icon">📞</span>
+              <span{% if not pu.phone %} class="is-muted"{% endif %}>{{ pu.phone or t('profile_default_phone') }}</span>
+            </li>
+            <li>
+              <span class="fb-intro-icon">✉️</span>
+              <span{% if not pu.email %} class="is-muted"{% endif %}>{{ pu.email or t('profile_default_email') }}</span>
+            </li>
+          </ul>
+
+          <h3 class="fb-subsection-title">{{ t('social_media') }}</h3>
+          <ul class="fb-intro-list fb-intro-social">
+            <li><span class="fb-intro-icon">📱</span><span{% if not pu.whatsapp %} class="is-muted"{% endif %}>{{ pu.whatsapp or t('profile_default_whatsapp') }}</span></li>
+            <li><span class="fb-intro-icon">📘</span><span{% if not pu.facebook %} class="is-muted"{% endif %}>{{ pu.facebook or t('profile_default_facebook') }}</span></li>
+            <li><span class="fb-intro-icon">🎵</span><span{% if not pu.tiktok %} class="is-muted"{% endif %}>{{ pu.tiktok or t('profile_default_tiktok') }}</span></li>
+          </ul>
+          {% if is_own %}
+          <p class="fb-profile-edit-hint hint">{{ t('profile_details_edit_hint') }}</p>
+          {% endif %}
+          {% else %}
+          <p class="hint">{{ t('profile_locked_hint') }}</p>
+          {% endif %}
+        </section>
+
+        {% if is_own or can_view_shop|default(false) %}
+        <section class="card fb-about-card">
+          <h2 class="fb-section-title">{{ t('profile_about_section') }}</h2>
+          <div class="fb-about-details">
+            <div class="fb-about-item">
+              <span class="fb-about-label">{{ t('profile_stat_role') }}</span>
+              <span class="fb-about-value">{{ jukumu(pu.role) }}</span>
+            </div>
+            {% if profile_shop_name %}
+            <div class="fb-about-item">
+              <span class="fb-about-label">{{ t('profile_stat_shop') }}</span>
+              <span class="fb-about-value">{{ profile_shop_link(profile_shop_name) }}</span>
+            </div>
+            {% endif %}
+            {% if shop and shop.location %}
+            <div class="fb-about-item">
+              <span class="fb-about-label">{{ t('location') }}</span>
+              <span class="fb-about-value">{{ shop.location }}</span>
+            </div>
+            {% endif %}
+            {% if shop and shop.shop_type %}
+            <div class="fb-about-item">
+              <span class="fb-about-label">{{ t('shop_type_label') }}</span>
+              <span class="fb-about-value">{{ shop.shop_type }}</span>
+            </div>
+            {% endif %}
+          </div>
+        </section>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="fb-profile-panel active" data-profile-panel="products">
+      {% if shop and can_view_shop|default(false) %}
+      <div class="fb-profile-stack">
+        <article class="card fb-shop-card" id="profile-shop-card">
+          <div class="fb-shop-cover{% if shop.cover_image %} has-image{% endif %}"
+               {% if shop.cover_image %}style="background-image:url('{{ url_for('static', filename='uploads/shops/covers/' + shop.cover_image) }}')"{% endif %}>
+          </div>
+          <div class="fb-shop-card-body">
+            <div class="fb-shop-card-head">
+              {% if shop.logo %}
+              <img src="{{ url_for('static', filename='uploads/shops/logos/' + shop.logo) }}" alt="" class="fb-shop-logo">
+              {% else %}
+              <div class="fb-shop-logo placeholder">{{ shop.name[0]|upper }}</div>
+              {% endif %}
+              <div class="fb-shop-card-meta">
+                <h2 class="fb-shop-name">{{ shop.name }}</h2>
+                <p class="hint fb-shop-sub">
+                  {{ shop.shop_type }}{% if shop.location %} • {{ shop.location }}{% endif %}
+                </p>
+              </div>
+              {% if profile_shop_url %}
+              <a href="{{ profile_shop_url }}" class="btn btn-primary btn-sm fb-profile-btn">{{ t('profile_visit_shop') }}</a>
+              {% endif %}
+            </div>
+            {% if shop.description %}
+            <p class="fb-shop-desc">{{ shop.description }}</p>
+            {% else %}
+            <p class="fb-shop-desc is-placeholder">{{ t('profile_default_shop_desc', shop=shop.name) }}</p>
+            {% endif %}
+          </div>
+        </article>
+
+        {% if shop_products %}
+        <div class="fb-shop-products-feed">
+          {% for p in shop_products %}
+          <article class="feed-post fb-product-post">
+            <div class="feed-post-body">
+              <div class="feed-product-block">
+                <div class="feed-product-media">
+                  {% if p.image %}
+                  <img src="{{ url_for('static', filename='uploads/products/' + p.image) }}" alt="{{ p.name }}" loading="lazy">
+                  {% else %}
+                  <div class="feed-product-media-placeholder">{{ p.name[0]|upper }}</div>
+                  {% endif %}
+                </div>
+                <div class="feed-product-info">
+                  <div class="feed-product-name">{{ p.name }}</div>
+                  <div class="feed-product-price">{{ p.price|money }}</div>
+                  <div class="feed-product-stock">{{ p.quantity }} {{ t('in_stock') }}</div>
+                </div>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="card fb-empty-card">
+          <p class="hint fb-empty-state">{{ t('profile_no_shop_products') }}</p>
+        </div>
+        {% endif %}
+      </div>
+      {% elif pu.shop_id and not is_own %}
+      <div class="card fb-locked-card" id="profile-shop-card">
+        <h2 class="fb-section-title">📦 {{ t('profile_shop_products') }}</h2>
+        <p class="hint">{{ t('profile_shop_locked_hint') }}</p>
+        {% include 'includes/profile_message_actions.html' %}
+      </div>
+      {% else %}
+      <div class="card fb-empty-card">
+        <p class="hint fb-empty-state">{{ t('profile_no_shop_products') }}</p>
+      </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[data-profile-tab]');
+  var panels = document.querySelectorAll('[data-profile-panel]');
+  if (!tabs.length) return;
+
+  function activateTab(id) {
+    tabs.forEach(function (t) {
+      t.classList.toggle('active', t.getAttribute('data-profile-tab') === id);
+    });
+    panels.forEach(function (p) {
+      var show = p.getAttribute('data-profile-panel') === id;
+      p.classList.toggle('active', show);
+      p.hidden = !show;
+    });
+  }
+
+  function scrollToShopCard() {
+    var card = document.getElementById('profile-shop-card');
+    if (!card) return;
+    requestAnimationFrame(function () {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  function goToShopCard() {
+    activateTab('products');
+    scrollToShopCard();
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      activateTab(tab.getAttribute('data-profile-tab'));
+    });
+  });
+
+  document.querySelectorAll('[data-profile-shop-link]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      goToShopCard();
+      if (history.replaceState) {
+        history.replaceState(null, '', '#profile-shop-card');
+      } else {
+        location.hash = 'profile-shop-card';
+      }
+    });
+  });
+
+  if (window.location.hash === '#profile-shop-card') {
+    goToShopCard();
+  }
+})();
+</script>
+{% if is_own and current_user.is_boss() %}
+{% include "includes/boss_settings_modal.html" %}
+{% endif %}
+{% endblock %}

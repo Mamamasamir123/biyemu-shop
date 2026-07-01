@@ -1,0 +1,5 @@
+<li><a href="{{ url_for('employee_dashboard') }}" {% if active == 'dashboard' %}class="active"{% endif %}>📊 {{ t('dashboard') }}</a></li>
+{% if current_user.permissions.can_view_products %}<li><a href="{{ url_for('employee_products') }}" {% if active == 'products' %}class="active"{% endif %}>📦 {{ t('products') }}</a></li>{% endif %}
+{% if current_user.permissions.can_sell %}<li><a href="{{ url_for('employee_sell') }}" {% if active == 'sell' %}class="active"{% endif %}>🛒 {{ t('sell') }}</a></li>{% endif %}
+{% if current_user.permissions.can_view_sales_history %}<li><a href="{{ url_for('employee_sales') }}" {% if active == 'sales' %}class="active"{% endif %}>💰 {{ t('my_sales') }}</a></li>{% endif %}
+<li><a href="{{ url_for('employee_cash') }}" {% if active == 'cash' %}class="active"{% endif %}>💵 {{ t('cash_handover') }}{% if held_cash %} <span class="badge badge-warning">{{ held_cash|money }}</span>{% endif %}</a></li>

@@ -1,0 +1,18 @@
+<a href="{{ url_for('home_feed') }}" class="social-nav-item{% if active == 'home' %} active{% endif %}" title="{{ t('nav_home') }}">
+  <span class="social-nav-icon">🏠</span>
+  <span>{{ t('nav_home') }}</span>
+</a>
+<a href="{{ url_for('pro_dashboard') }}" class="social-nav-item{% if active == 'dashboard' %} active{% endif %}" title="{{ t('nav_dashboard') }}">
+  <span class="social-nav-icon">📊</span>
+  <span>{{ t('nav_dashboard') }}</span>
+</a>
+<a href="{{ url_for('staff_chat') }}" class="social-nav-item{% if active == 'chat' %} active{% endif %}" title="{{ t('chat_title') }}">
+  <span class="social-nav-icon">💬</span>
+  <span>{{ t('chat_nav_short') }}</span>
+  {% if unread_chat_messages or pending_connections %}<span class="social-nav-badge">{{ unread_chat_messages + pending_connections }}</span>{% endif %}
+</a>
+<a href="{{ url_for('notifications_list') }}" class="social-nav-item{% if active == 'notifications' %} active{% endif %}" title="{{ t('notifications_title') }}">
+  <span class="social-nav-icon">🔔</span>
+  <span>{{ t('notifications_title') }}</span>
+  {% if unread_notifications %}<span class="social-nav-badge">{{ unread_notifications }}</span>{% endif %}
+</a>

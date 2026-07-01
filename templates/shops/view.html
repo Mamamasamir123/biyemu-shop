@@ -1,0 +1,111 @@
+{% extends "layout_shop.html" %}
+{% block title %}{{ shop.name }} — {{ t('shop_dashboard') }}{% endblock %}
+{% block content %}
+<div class="shop-dash-cover card{% if not shop.cover_image %} shop-hero-default{% endif %}"
+     {% if shop.cover_image %}style="background-image:url('{{ url_for('static', filename='uploads/shops/covers/' + shop.cover_image) }}')"{% endif %}>
+  <div class="shop-dash-cover-overlay"></div>
+  <div class="shop-dash-cover-content">
+    <div class="shop-dash-cover-logo">
+      {% if shop.logo %}
+      <img src="{{ url_for('static', filename='uploads/shops/logos/' + shop.logo) }}" alt="{{ shop.name }}">
+      {% else %}
+      <div class="shop-card-logo-placeholder large">{{ shop.name.replace('BiyeMu ', '')[0]|upper }}</div>
+      {% endif %}
+    </div>
+    <div class="shop-dash-cover-text">
+      <h2>{{ shop.name }}</h2>
+      <p>{{ shop.shop_type }}{% if shop.location %} • {{ shop.location }}{% endif %}</p>
+    </div>
+    {% if can_edit %}
+    <a href="{{ shop_urls.edit }}" class="btn btn-secondary btn-sm shop-dash-edit-btn">✏️ {{ t('edit_shop') }}</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="stats-grid shop-overview-stats">
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">🔥</span>
+      <span class="label">{{ t('sales') }}</span>
+      <span class="value">{{ dashboard.revenue|money }}</span>
+    </div>
+    <div class="stat-hint">{{ dashboard.sales_count }} {{ t('sales_count_label') }}</div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">✅</span>
+      <span class="label">{{ t('profit_label') }}</span>
+      <span class="value {% if dashboard.profit < 0 %}danger{% endif %}">{{ dashboard.profit|money }}</span>
+    </div>
+    <div class="stat-hint">{{ t('profit_hint') }}</div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="shop-stat-icon">📦</span>
+      <span class="label">{{ t('products') }}</span>
+      <span class="value">{{ dashboard.products_count }}</span>
+    </div>
+    <div class="stat-hint">{{ dashboard.employees_count }} {{ t('staff') }}</div>
+  </div>
+</div>
+
+{% set table_id = 'shopRecentSales' %}
+{% set title = t('recent_sales') %}
+{% set search_ph = t('shop_data_search_ph') %}
+{% set bulk_delete_url = bulk_delete_sales_url|default('') %}
+{% set bulk_confirm = t('request_delete_sales_confirm') %}
+<div class="card shop-data-card">
+  {% include 'includes/shop_data_toolbar.html' %}
+  <div class="table-wrap shop-data-table-wrap">
+    <table class="shop-data-table" id="{{ table_id }}" data-shop-table="{{ table_id }}">
+      <thead><tr>
+        {% if bulk_delete_url %}
+        <th class="col-check"><input type="checkbox" data-select-all-for="{{ table_id }}" aria-label="{{ t('select_all') }}"></th>
+        {% endif %}
+        <th>{{ t('product') }}</th>
+        <th>{{ t('employee') }}</th>
+        <th>{{ t('quantity') }}</th>
+        <th>{{ t('total') }}</th>
+        <th>{{ t('profit_label') }}</th>
+        {% if bulk_delete_url %}<th>{{ t('actions_label') }}</th>{% endif %}
+      </tr></thead>
+      <tbody>
+        {% for sale in recent_sales|reverse %}
+        <tr data-row data-search="{{ sale.product_name }} {{ sale.employee_name }} {{ sale.date }} {{ sale.total_amount }}">
+          {% if bulk_delete_url %}
+          <td class="col-check">
+            {% if sale.id in (pending_delete_sale_ids|default([])) %}
+            <input type="checkbox" disabled title="{{ t('delete_pending') }}">
+            {% else %}
+            <input type="checkbox" class="shop-row-check" value="{{ sale.id }}">
+            {% endif %}
+          </td>
+          {% endif %}
+          <td>{{ sale.product_name }}</td>
+          <td>{{ sale.employee_name }}</td>
+          <td>{{ sale.quantity }}</td>
+          <td>{{ sale.total_amount|money }}</td>
+          <td class="{% if sale.profit < 0 %}text-danger{% else %}text-success{% endif %}">{{ sale.profit|money }}</td>
+          {% if bulk_delete_url %}
+          <td>
+            {% if sale.id in (pending_delete_sale_ids|default([])) %}
+            <span class="badge badge-warning">{{ t('delete_pending') }}</span>
+            {% else %}
+            <form method="POST" action="{{ bulk_delete_url }}" style="display:inline"
+                  onsubmit="return confirm('{{ t('request_delete_sales_confirm') }}');">
+              <input type="hidden" name="item_ids" value="{{ sale.id }}">
+              <button type="submit" class="btn btn-danger btn-xs">{{ t('request_delete_btn') }}</button>
+            </form>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% else %}
+        <tr><td colspan="{{ 8 if bulk_delete_url else 5 }}" class="empty-state">{{ t('no_data') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <a href="{{ shop_urls.sales }}" class="btn btn-secondary btn-sm shop-data-footer-link">{{ t('view_all_sales') }}</a>
+</div>
+{% endblock %}

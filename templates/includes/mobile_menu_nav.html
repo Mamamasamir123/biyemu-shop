@@ -1,0 +1,44 @@
+<span class="hint mobile-menu-section-label">{{ t('nav_more_tools') }}</span>
+
+{% if shop_urls is defined %}
+<a href="{{ back_url }}" class="mobile-menu-link">🏪 {{ t('all_shops') }}</a>
+<a href="{{ shop_urls.overview }}" class="mobile-menu-link{% if active_tab == 'overview' %} active{% endif %}">📊 {{ t('dashboard') }}</a>
+<a href="{{ shop_urls.products }}" class="mobile-menu-link{% if active_tab == 'products' %} active{% endif %}">📦 {{ t('products') }}</a>
+<a href="{{ shop_urls.sales }}" class="mobile-menu-link{% if active_tab == 'sales' %} active{% endif %}">💰 {{ t('sales') }}</a>
+{% if shop_urls.staff %}
+<a href="{{ shop_urls.staff }}" class="mobile-menu-link{% if active_tab == 'staff' %} active{% endif %}">👥 {{ t('staff') }}</a>
+{% endif %}
+{% elif current_user.role.value == 'boss' %}
+<a href="{{ url_for('boss_shops') }}" class="mobile-menu-link">🏪 {{ t('all_shops') }}</a>
+<a href="{{ url_for('boss_staff') }}" class="mobile-menu-link">👥 {{ t('staff') }}</a>
+<a href="{{ url_for('boss_approvals') }}" class="mobile-menu-link">✅ {{ t('approvals') }}{% if pending %} <span class="mob-nav-badge">{{ pending }}</span>{% endif %}</a>
+<a href="{{ url_for('boss_cash') }}" class="mobile-menu-link">💵 {{ t('cash_confirm_title') }}</a>
+<a href="{{ url_for('boss_finance') }}" class="mobile-menu-link">📋 {{ t('report') }}</a>
+{% elif current_user.role.value == 'manager' %}
+{% if user_can_sell %}
+<a href="{{ url_for('employee_sell') }}" class="mobile-menu-link">🛒 {{ t('sell') }}</a>
+{% endif %}
+<a href="{{ url_for('manager_shop_view') }}" class="mobile-menu-link">🏪 {{ t('my_shop') }}</a>
+<a href="{{ url_for('manager_shop_products') }}" class="mobile-menu-link">📦 {{ t('products') }}</a>
+<a href="{{ url_for('manager_cash') }}" class="mobile-menu-link">✅ {{ t('cash_confirm_title') }}</a>
+<a href="{{ url_for('manager_submit_cash') }}" class="mobile-menu-link">💵 {{ t('cash_manager_handover') }}</a>
+<a href="{{ url_for('manager_shop_sales') }}" class="mobile-menu-link">💰 {{ t('sales') }}</a>
+{% elif current_user.role.value == 'employee' %}
+{% if current_user.permissions.can_sell %}
+<a href="{{ url_for('employee_sell') }}" class="mobile-menu-link">🛒 {{ t('sell') }}</a>
+{% endif %}
+<a href="{{ url_for('employee_cash') }}" class="mobile-menu-link">💵 {{ t('cash_handover') }}</a>
+{% if current_user.permissions.can_view_products %}
+<a href="{{ url_for('employee_products') }}" class="mobile-menu-link">📦 {{ t('products') }}</a>
+{% endif %}
+{% endif %}
+
+<div class="mobile-menu-notifications-row">
+  <button type="button" class="mobile-menu-settings-btn" onclick="openNotificationSettings()" title="{{ t('notification_settings') }}" aria-label="{{ t('notification_settings') }}">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+    </svg>
+  </button>
+</div>
+<a href="{{ url_for('logout') }}" class="mobile-menu-link">🚪 {{ t('logout') }}</a>

@@ -1,0 +1,106 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('edit_profile') }} — BiyeMu{% endblock %}
+{% block nav %}
+{% set active = 'profile' %}
+{% if current_user.role.value == 'boss' %}{% include 'includes/nav_boss.html' %}
+{% elif current_user.role.value == 'manager' %}{% include 'includes/nav_manager.html' %}
+{% else %}{% include 'includes/nav_employee.html' %}{% endif %}
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<div class="profile-screen">
+  <div class="profile-edit-header">
+    <a href="{{ url_for('profile_view') }}" class="back-btn" title="{{ t('back') }}">←</a>
+    <h1>{{ t('edit_profile_title') }}</h1>
+  </div>
+
+  <div class="card profile-edit-hero">
+    <div class="profile-cover profile-cover-{{ current_user.role.value }}"></div>
+    <div class="profile-hero-content">
+      <div class="profile-avatar-wrap">
+        <div class="profile-photo-wrap">
+          {% if current_user.profile_picture %}
+          <img id="photoPreview" src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}" alt="" class="profile-avatar">
+          {% else %}
+          <div class="profile-avatar profile-avatar-placeholder" id="photoPreviewPlaceholder">{{ current_user.full_name[0]|upper }}</div>
+          <img id="photoPreview" src="" alt="" class="profile-avatar" style="display:none">
+          {% endif %}
+          <form method="POST" action="{{ url_for('profile_upload_photo') }}" enctype="multipart/form-data" id="photoForm">
+            <label class="photo-add-btn" title="{{ t('upload_photo') }}">
+              +
+              <input type="file" name="photo" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" onchange="this.form.submit()">
+            </label>
+          </form>
+        </div>
+      </div>
+      <h2 class="profile-name">{{ current_user.full_name }}</h2>
+      <p class="profile-dept">
+        {% if shop_name %}{{ shop_name }}{% else %}{{ role_label(current_user.role.value) }}{% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div class="card" style="padding: 24px;">
+    <form method="POST" action="{{ url_for('profile_edit') }}" class="profile-edit-form">
+      <input type="hidden" name="action" value="save">
+
+      <div class="form-field">
+        <label>{{ t('name') }}</label>
+        <input name="full_name" value="{{ current_user.full_name }}" required>
+      </div>
+
+      <div class="form-field">
+        <label>{{ t('department') }}</label>
+        <input value="{% if shop_name %}{{ shop_name }}{% else %}{{ role_label(current_user.role.value) }}{% endif %}" disabled>
+      </div>
+
+      <div class="form-field">
+        <label>{{ t('phone_no') }}</label>
+        <input name="phone" value="{{ current_user.phone }}" placeholder="+255 7XX XXX XXX">
+      </div>
+
+      <div class="form-field">
+        <label>{{ t('email') }}</label>
+        <input name="email" type="email" value="{{ current_user.email }}" placeholder="jina@barua.com">
+      </div>
+
+      <div class="form-field">
+        <label>{{ t('bio') }} ({{ t('optional') }})</label>
+        <textarea name="bio" placeholder="{{ t('bio') }}">{{ current_user.bio }}</textarea>
+      </div>
+
+      <div class="profile-section-title" style="border-top:none;padding-top:0;margin-top:8px;">{{ t('social_media') }}</div>
+
+      <div class="form-field">
+        <label>📱 {{ t('whatsapp') }}</label>
+        <input name="whatsapp" value="{{ current_user.whatsapp }}" placeholder="+255 7XX XXX XXX">
+      </div>
+      <div class="form-field">
+        <label>📘 {{ t('facebook') }}</label>
+        <input name="facebook" value="{{ current_user.facebook }}" placeholder="facebook.com/jina">
+      </div>
+      <div class="form-field">
+        <label>🎵 {{ t('tiktok') }}</label>
+        <input name="tiktok" value="{{ current_user.tiktok }}" placeholder="@jina">
+      </div>
+
+      <button type="submit" class="profile-save-btn">{{ t('save') }}</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('profile_edit') }}" class="profile-edit-form" style="margin-top:28px">
+      <input type="hidden" name="action" value="password">
+      <div class="profile-section-title">{{ t('change_password') }}</div>
+      <div class="form-field">
+        <label>{{ t('current_password') }}</label>
+        <input type="password" name="current_password">
+      </div>
+      <div class="form-field">
+        <label>{{ t('new_password') }}</label>
+        <input type="password" name="new_password" minlength="4">
+      </div>
+      <button type="submit" class="profile-save-btn" style="background:linear-gradient(135deg,#64748b,#475569)">{{ t('change_password') }}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,207 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('trash_title') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% if current_user.role.value == 'boss' %}
+{% set active = 'trash' %}
+{% include 'includes/nav_boss.html' %}
+{% else %}
+{% include 'includes/nav_manager.html' %}
+{% endif %}
+{% endblock %}
+{% block content %}
+<div class="page-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+  <h1>🗑️ {{ t('trash_title') }}</h1>
+  <a href="{{ back_url }}" class="btn btn-secondary btn-sm">← {{ t('back') }}</a>
+</div>
+<p class="hint" style="margin-bottom:16px">{{ t('trash_hint') }}</p>
+
+<div class="stats-grid trash-stats-grid" style="margin-bottom:20px">
+  <div class="stat-card">
+    <div class="label">{{ t('deleted_products') }}</div>
+    <div class="value">{{ deleted_products|length }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('deleted_staff') }}</div>
+    <div class="value">{{ deleted_users|length }}</div>
+  </div>
+</div>
+
+<div class="card trash-filters-card">
+  <div class="trash-filters">
+    <div class="trash-search-wrap">
+      <span class="trash-search-icon">🔍</span>
+      <input type="search" id="trashSearch" class="trash-search-input"
+             placeholder="{{ t('trash_search_placeholder') }}" autocomplete="off">
+    </div>
+    {% if current_user.role.value == 'boss' and shops|length > 1 %}
+    <select id="trashShopFilter" class="trash-shop-filter" title="{{ t('trash_filter_shop') }}">
+      <option value="all">{{ t('all_shops') }}</option>
+      {% for sid, sname in shops.items() %}
+      <option value="{{ sid }}">{{ sname }}</option>
+      {% endfor %}
+    </select>
+    {% endif %}
+  </div>
+  <p id="trashResultSummary" class="hint trash-result-summary"></p>
+</div>
+
+<div class="card trash-section" id="trashProductsSection" data-section="product">
+  <h3>{{ t('deleted_products') }} <span class="hint trash-section-count" id="productsSectionCount"></span></h3>
+  {% if deleted_products %}
+  <div class="table-wrap">
+    <table id="trashProductsTable">
+      <thead><tr>
+        <th></th>
+        <th>{{ t('product') }}</th>
+        <th>{{ t('shop_label') }}</th>
+        <th>{{ t('cost_price') }}</th>
+        <th>{{ t('quantity_label') }}</th>
+        <th>{{ t('deleted_by') }}</th>
+        <th>{{ t('date') }}</th>
+        {% if can_delete_trash %}<th></th>{% endif %}
+      </tr></thead>
+      <tbody>
+        {% for item in deleted_products %}
+        <tr class="trash-row"
+            data-id="{{ item.id }}"
+            data-type="product"
+            data-shop="{{ item.shop_id }}"
+            data-date="{{ item.deleted_at }}"
+            data-search="{{ (item.data.name ~ ' ' ~ shops.get(item.shop_id, '') ~ ' ' ~ item.deleted_by_name ~ ' ' ~ (item.reason or ''))|lower }}">
+          <td class="product-thumb-cell">
+            {% if item.data.image %}
+            <img src="{{ url_for('static', filename='uploads/products/' + item.data.image) }}" class="product-thumb" alt="">
+            {% else %}
+            <div class="product-thumb product-thumb-placeholder">{{ item.data.name[0]|upper }}</div>
+            {% endif %}
+          </td>
+          <td><strong>{{ item.data.name }}</strong></td>
+          <td>{{ shops.get(item.shop_id, '-') }}</td>
+          <td>{{ item.data.cost_price|money }}</td>
+          <td>{{ item.data.quantity }}</td>
+          <td>{{ item.deleted_by_name }}</td>
+          <td>{{ item.deleted_at }}</td>
+          {% if can_delete_trash %}
+          <td>
+            <form method="POST" action="{{ url_for('boss_delete_trash_item', item_id=item.id) }}"
+                  onsubmit="return confirm('{{ t('trash_delete_confirm', name=item.data.name) }}')">
+              <button type="submit" class="btn btn-danger btn-sm" title="{{ t('trash_delete_permanent') }}">🗑️</button>
+            </form>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div id="trashProductsEmpty" class="empty-state trash-filter-empty" hidden>{{ t('trash_no_results') }}</div>
+  {% else %}
+  <div class="empty-state">{{ t('trash_empty_products') }}</div>
+  {% endif %}
+</div>
+
+<div class="card trash-section" id="trashUsersSection" data-section="user">
+  <h3>{{ t('deleted_staff') }} <span class="hint trash-section-count" id="usersSectionCount"></span></h3>
+  {% if deleted_users %}
+  <div class="table-wrap">
+    <table id="trashUsersTable">
+      <thead><tr>
+        <th>{{ t('name') }}</th>
+        <th>{{ t('role_label') }}</th>
+        <th>{{ t('shop_label') }}</th>
+        <th>{{ t('deleted_by') }}</th>
+        <th>{{ t('date') }}</th>
+        {% if can_delete_trash %}<th></th>{% endif %}
+      </tr></thead>
+      <tbody>
+        {% for item in deleted_users %}
+        <tr class="trash-row"
+            data-id="{{ item.id }}"
+            data-type="user"
+            data-shop="{{ item.shop_id }}"
+            data-date="{{ item.deleted_at }}"
+            data-search="{{ (item.data.full_name ~ ' ' ~ item.data.username ~ ' ' ~ item.data.role ~ ' ' ~ shops.get(item.shop_id, '') ~ ' ' ~ item.deleted_by_name ~ ' ' ~ (item.reason or ''))|lower }}">
+          <td><strong>{{ item.data.full_name }}</strong><br><small style="color:var(--muted)">{{ item.data.username }}</small></td>
+          <td>{{ item.data.role }}</td>
+          <td>{{ shops.get(item.shop_id, '-') }}</td>
+          <td>{{ item.deleted_by_name }}</td>
+          <td>{{ item.deleted_at }}</td>
+          {% if can_delete_trash %}
+          <td>
+            <form method="POST" action="{{ url_for('boss_delete_trash_item', item_id=item.id) }}"
+                  onsubmit="return confirm('{{ t('trash_delete_confirm', name=item.data.full_name) }}')">
+              <button type="submit" class="btn btn-danger btn-sm" title="{{ t('trash_delete_permanent') }}">🗑️</button>
+            </form>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div id="trashUsersEmpty" class="empty-state trash-filter-empty" hidden>{{ t('trash_no_results') }}</div>
+  {% else %}
+  <div class="empty-state">{{ t('trash_empty_staff') }}</div>
+  {% endif %}
+</div>
+
+<script>
+const trashResultText = "{{ t('trash_result_count', count='__COUNT__') }}";
+
+function rowMatchesFilters(row, query, shop) {
+  if (shop !== 'all' && row.dataset.shop !== shop) return false;
+  if (query && !(row.dataset.search || '').includes(query)) return false;
+  return true;
+}
+
+function applyTrashFilters() {
+  const shopEl = document.getElementById('trashShopFilter');
+  const query = (document.getElementById('trashSearch').value || '').trim().toLowerCase();
+  const shop = shopEl ? shopEl.value : 'all';
+  const allRows = Array.from(document.querySelectorAll('.trash-row'));
+  const total = allRows.length;
+  let shown = 0;
+
+  ['product', 'user'].forEach(function(sectionType) {
+    const section = document.querySelector('.trash-section[data-section="' + sectionType + '"]');
+    if (!section) return;
+
+    const tbody = section.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('.trash-row'));
+    const matched = rows.filter(function(row) { return rowMatchesFilters(row, query, shop); });
+
+    rows.forEach(function(row) { row.hidden = true; });
+    matched.forEach(function(row) { row.hidden = false; });
+
+    shown += matched.length;
+
+    const countEl = section.querySelector('.trash-section-count');
+    if (countEl) countEl.textContent = '(' + matched.length + ')';
+
+    const emptyEl = section.querySelector('.trash-filter-empty');
+    const tableWrap = section.querySelector('.table-wrap');
+    if (emptyEl && tableWrap) {
+      const showEmpty = matched.length === 0 && total > 0;
+      emptyEl.hidden = !showEmpty;
+      tableWrap.hidden = showEmpty;
+    }
+  });
+
+  const summary = document.getElementById('trashResultSummary');
+  if (summary) {
+    summary.textContent = trashResultText.replace('__COUNT__', shown);
+  }
+}
+
+['trashSearch', 'trashShopFilter'].forEach(function(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', applyTrashFilters);
+  el.addEventListener('change', applyTrashFilters);
+});
+
+applyTrashFilters();
+</script>
+{% endblock %}

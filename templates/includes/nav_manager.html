@@ -1,0 +1,10 @@
+<li><a href="{{ url_for('manager_dashboard') }}" {% if active == 'dashboard' %}class="active"{% endif %}>📊 {{ t('dashboard') }}</a></li>
+<li><a href="{{ url_for('manager_shop_view') }}" {% if active == 'shop' %}class="active"{% endif %}>🏪 {{ t('my_shop') }}</a></li>
+<li><a href="{{ url_for('manager_shop_products') }}" {% if active == 'products' %}class="active"{% endif %}>📦 {{ t('products') }}</a></li>
+<li><a href="{{ url_for('manager_employees') }}" {% if active == 'staff' %}class="active"{% endif %}>👥 {{ t('staff') }}</a></li>
+<li><a href="{{ url_for('manager_shop_sales') }}" {% if active == 'sales' %}class="active"{% endif %}>💰 {{ t('sales') }}</a></li>
+<li><a href="{{ url_for('manager_cash') }}" {% if active == 'cash' %}class="active"{% endif %}>✅ {{ t('cash_confirm_title') }}{% if pending_cash %} <span class="badge badge-warning">{{ pending_cash }}</span>{% endif %}</a></li>
+<li><a href="{{ url_for('manager_submit_cash') }}" {% if active == 'cash_submit' %}class="active"{% endif %}>💵 {{ t('cash_manager_handover') }}{% if held_cash %} <span class="badge badge-warning">{{ held_cash|money }}</span>{% endif %}</a></li>
+<li><a href="{{ url_for('manager_finance') }}" {% if active == 'report' %}class="active"{% endif %}>📋 {{ t('report') }}</a></li>
+<li><a href="{{ url_for('manager_approvals') }}" {% if active == 'requests' %}class="active"{% endif %}>✅ {{ t('my_requests') }}</a></li>
+<li><a href="{{ url_for('manager_trash') }}">🗑️ {{ t('trash_title') }}</a></li>

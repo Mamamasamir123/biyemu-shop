@@ -1,0 +1,8 @@
+{% set prod = product if product is defined else p %}
+{% if prod.image %}
+<img src="{{ url_for('static', filename='uploads/products/' + prod.image) }}"
+     class="product-thumb{% if size %} product-thumb-{{ size }}{% endif %}"
+     alt="{{ prod.name }}">
+{% else %}
+<div class="product-thumb product-thumb-placeholder{% if size %} product-thumb-{{ size }}{% endif %}">{{ prod.name[0]|upper }}</div>
+{% endif %}

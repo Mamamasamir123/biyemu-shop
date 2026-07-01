@@ -1,0 +1,50 @@
+{# list_id, title, search_ph, show_select (optional), bulk_approve_url, bulk_reject_url, bulk_cancel_url (optional) #}
+<div class="approval-toolbar">
+  <div class="approval-toolbar-top">
+    <h3 class="approval-toolbar-title">{{ title }}</h3>
+    <span class="hint approval-toolbar-count" data-count-for="{{ list_id }}"></span>
+  </div>
+  <div class="approval-toolbar-actions">
+    {% if show_select %}
+    <label class="approval-select-all">
+      <input type="checkbox" data-select-all-for="{{ list_id }}" aria-label="{{ t('select_all') }}">
+      <span>{{ t('select_all') }}</span>
+    </label>
+    {% endif %}
+    <label class="shop-data-search-wrap approval-search-wrap">
+      <span class="shop-data-search-icon" aria-hidden="true">🔍</span>
+      <input type="search" class="shop-data-search approval-search" data-search-for="{{ list_id }}"
+             placeholder="{{ search_ph }}" autocomplete="off">
+    </label>
+    {% if bulk_approve_url %}
+    <form method="POST" action="{{ bulk_approve_url }}" class="approval-bulk-form"
+          data-bulk-form-for="{{ list_id }}" data-bulk-kind="approve"
+          data-confirm="{{ t('approval_bulk_approve_confirm') }}">
+      <input type="hidden" name="action" value="approve">
+      <button type="submit" class="btn btn-primary btn-sm approval-bulk-btn"
+              data-bulk-btn-for="{{ list_id }}" data-bulk-kind="approve"
+              data-label="{{ t('approval_bulk_approve') }}" disabled>{{ t('approval_bulk_approve') }}</button>
+    </form>
+    {% endif %}
+    {% if bulk_reject_url %}
+    <form method="POST" action="{{ bulk_reject_url }}" class="approval-bulk-form"
+          data-bulk-form-for="{{ list_id }}" data-bulk-kind="reject"
+          data-confirm="{{ t('approval_bulk_reject_confirm') }}">
+      <input type="hidden" name="action" value="reject">
+      <button type="submit" class="btn btn-danger btn-sm approval-bulk-btn"
+              data-bulk-btn-for="{{ list_id }}" data-bulk-kind="reject"
+              data-label="{{ t('approval_bulk_reject') }}" disabled>{{ t('approval_bulk_reject') }}</button>
+    </form>
+    {% endif %}
+    {% if bulk_cancel_url %}
+    <form method="POST" action="{{ bulk_cancel_url }}" class="approval-bulk-form"
+          data-bulk-form-for="{{ list_id }}" data-bulk-kind="cancel"
+          data-confirm="{{ t('approval_bulk_cancel_confirm') }}">
+      <input type="hidden" name="action" value="cancel">
+      <button type="submit" class="btn btn-secondary btn-sm approval-bulk-btn"
+              data-bulk-btn-for="{{ list_id }}" data-bulk-kind="cancel"
+              data-label="{{ t('approval_bulk_cancel') }}" disabled>{{ t('approval_bulk_cancel') }}</button>
+    </form>
+    {% endif %}
+  </div>
+</div>

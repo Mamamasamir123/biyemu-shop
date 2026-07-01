@@ -1,0 +1,38 @@
+{% if req.approval_type.value == 'add_product' %}
+{% set pdata = req.payload|from_json %}
+{% if pdata and pdata.name %}
+<div class="approval-product-preview{% if approval_compact %} approval-product-preview-compact{% endif %}">
+  <div class="approval-product-image">
+    {% if pdata.image %}
+    <img src="{{ url_for('static', filename='uploads/products/' + pdata.image) }}" class="product-thumb product-thumb-md" alt="{{ pdata.name }}">
+    {% else %}
+    <div class="product-thumb product-thumb-md product-thumb-placeholder">{{ pdata.name[0]|upper }}</div>
+    {% endif %}
+  </div>
+  <ul class="approval-product-details">
+    <li><span>{{ t('product') }}</span><strong>{{ pdata.name }}</strong></li>
+    {% if pdata.category %}<li><span>{{ t('category') }}</span><strong>{{ pdata.category }}</strong></li>{% endif %}
+    <li><span>{{ t('price_label') }}</span><strong>{{ pdata.price|money }}</strong></li>
+    <li><span>{{ t('cost_price') }}</span><strong>{{ pdata.cost_price|money }}</strong></li>
+    <li><span>{{ t('quantity_label') }}</span><strong>{{ pdata.quantity }}</strong></li>
+    <li><span>{{ t('approval_expected_profit') }}</span><strong class="text-success">{{ ((pdata.price - pdata.cost_price) * pdata.quantity)|money }}</strong></li>
+  </ul>
+</div>
+{% endif %}
+{% elif req.approval_type.value == 'delete_product' and products_by_id is defined %}
+{% set prod = products_by_id.get(req.target_id) %}
+{% if prod %}
+<div class="approval-product-preview{% if approval_compact %} approval-product-preview-compact{% endif %}">
+  <div class="approval-product-image">
+    {% with p=prod %}{% include 'includes/product_thumb.html' %}{% endwith %}
+  </div>
+  <ul class="approval-product-details">
+    <li><span>{{ t('product') }}</span><strong>{{ prod.name }}</strong></li>
+    {% if prod.category %}<li><span>{{ t('category') }}</span><strong>{{ prod.category }}</strong></li>{% endif %}
+    <li><span>{{ t('price_label') }}</span><strong>{{ prod.price|money }}</strong></li>
+    <li><span>{{ t('cost_price') }}</span><strong>{{ prod.cost_price|money }}</strong></li>
+    <li><span>{{ t('quantity_label') }}</span><strong>{{ prod.quantity }}</strong></li>
+  </ul>
+</div>
+{% endif %}
+{% endif %}

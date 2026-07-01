@@ -1,0 +1,11 @@
+<a href="{{ url_for('employee_dashboard') }}" class="mob-nav-link{% if active == 'dashboard' %} active{% endif %}">{{ t('dashboard') }}</a>
+{% if current_user.permissions.can_view_products %}
+<a href="{{ url_for('employee_products') }}" class="mob-nav-link{% if active == 'products' %} active{% endif %}">{{ t('products') }}</a>
+{% endif %}
+{% if current_user.permissions.can_sell %}
+<a href="{{ url_for('employee_sell') }}" class="mob-nav-link{% if active == 'sell' %} active{% endif %}">{{ t('sell') }}</a>
+{% endif %}
+{% if current_user.permissions.can_view_sales_history %}
+<a href="{{ url_for('employee_sales') }}" class="mob-nav-link{% if active == 'sales' %} active{% endif %}">{{ t('my_sales') }}</a>
+{% endif %}
+<a href="{{ url_for('profile_view') }}" class="mob-nav-link{% if active == 'profile' %} active{% endif %}">{{ t('profile') }}</a>

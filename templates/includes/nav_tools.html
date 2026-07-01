@@ -1,0 +1,23 @@
+<div class="social-tools-title">{{ t('nav_more_tools') }}</div>
+<ul class="social-tools-list">
+{% if current_user.role.value == 'boss' %}
+  <li><a href="{{ url_for('boss_shops') }}">🏪 {{ t('all_shops') }}</a></li>
+  <li><a href="{{ url_for('boss_staff') }}">👥 {{ t('staff') }}</a></li>
+  <li><a href="{{ url_for('boss_approvals') }}">✅ {{ t('approvals') }}{% if pending %} ({{ pending }}){% endif %}</a></li>
+  <li><a href="{{ url_for('boss_finance') }}">📋 {{ t('report') }}</a></li>
+  <li><a href="{{ url_for('boss_trash') }}">🗑️ {{ t('trash_title') }}</a></li>
+{% elif current_user.role.value == 'manager' %}
+  {% if user_can_sell %}<li><a href="{{ url_for('employee_sell') }}">🛒 {{ t('sell') }}</a></li>{% endif %}
+  <li><a href="{{ url_for('manager_shop_view') }}">🏪 {{ t('my_shop') }}</a></li>
+  <li><a href="{{ url_for('manager_shop_products') }}">📦 {{ t('products') }}</a></li>
+  <li><a href="{{ url_for('manager_employees') }}">👥 {{ t('staff') }}</a></li>
+  <li><a href="{{ url_for('manager_shop_sales') }}">💰 {{ t('sales') }}</a></li>
+  <li><a href="{{ url_for('manager_finance') }}">📋 {{ t('report') }}</a></li>
+  <li><a href="{{ url_for('manager_approvals') }}">✅ {{ t('my_requests') }}</a></li>
+{% else %}
+  {% if current_user.permissions.can_sell %}<li><a href="{{ url_for('employee_sell') }}">🛒 {{ t('sell') }}</a></li>{% endif %}
+  {% if current_user.permissions.can_view_products %}<li><a href="{{ url_for('employee_products') }}">📦 {{ t('products') }}</a></li>{% endif %}
+  {% if current_user.permissions.can_view_sales_history %}<li><a href="{{ url_for('employee_sales') }}">💰 {{ t('my_sales') }}</a></li>{% endif %}
+{% endif %}
+  <li><a href="{{ url_for('logout') }}">🚪 {{ t('logout') }}</a></li>
+</ul>

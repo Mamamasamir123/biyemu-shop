@@ -1,0 +1,20 @@
+<div id="promoStoryViewer" class="promo-story-viewer" hidden aria-hidden="true">
+  <div class="promo-story-viewer-shell">
+    <div class="promo-story-viewer-top">
+      <div class="promo-story-progress" id="promoStoryProgress"></div>
+      <div class="promo-story-viewer-meta">
+        <strong id="promoStoryViewerTitle"></strong>
+        <button type="button" class="promo-story-close" onclick="closePromoStoryViewer()" aria-label="{{ t('close') }}">✕</button>
+      </div>
+    </div>
+    <div class="promo-story-stage" id="promoStoryStage">
+      <div class="promo-story-slide active" id="promoStorySlideA"></div>
+      <div class="promo-story-slide" id="promoStorySlideB"></div>
+    </div>
+    <div class="promo-story-tap-zones" aria-hidden="true">
+      <button type="button" class="promo-story-tap-prev" onclick="promoStoryPrev()" aria-label="{{ t('back') }}"></button>
+      <button type="button" class="promo-story-tap-next" onclick="promoStoryNext(true)" aria-label="{{ t('next') }}"></button>
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/promo-stories.js') }}"></script>

@@ -1,0 +1,13 @@
+<div class="approval-actions">
+  <form method="POST" action="{{ approve_url }}" class="approval-action-form">
+    <input name="note" placeholder="{{ t('approval_note_optional') }}">
+    <button type="submit" class="btn btn-primary btn-sm">{{ t('approve') }}</button>
+  </form>
+  <form method="POST" action="{{ reject_url }}" class="approval-action-form">
+    <input name="note" placeholder="{{ t('reject_reason') }}">
+    <button type="submit" class="btn btn-danger btn-sm">{{ t('reject') }}</button>
+  </form>
+</div>
+{% if cancel_url is defined and delete_url is defined %}
+{% include 'includes/approval_manage_actions.html' %}
+{% endif %}

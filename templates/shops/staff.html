@@ -1,0 +1,33 @@
+{% extends "layout_shop.html" %}
+{% block title %}{{ t('staff') }} — {{ shop.name }}{% endblock %}
+{% block content %}
+{% set table_id = 'shopStaffTable' %}
+{% set title = t('staff') ~ ' — ' ~ shop.name %}
+{% set search_ph = t('shop_data_search_staff_ph') %}
+{% set bulk_delete_url = '' %}
+<div class="card shop-data-card">
+  {% include 'includes/shop_data_toolbar.html' %}
+  <div class="table-wrap shop-data-table-wrap">
+    <table class="shop-data-table" id="{{ table_id }}" data-shop-table="{{ table_id }}">
+      <thead><tr>
+        <th>{{ t('name') }}</th>
+        <th>{{ t('role_label') }}</th>
+        <th>{{ t('salary_label') }}</th>
+        <th>{{ t('status') }}</th>
+      </tr></thead>
+      <tbody>
+        {% for u in staff %}
+        <tr data-row data-search="{{ u.full_name }} {{ u.username }} {{ u.role.value }}">
+          <td><strong>{{ u.full_name }}</strong><br><small style="color:var(--muted)">{{ u.username }}</small></td>
+          <td>{{ jukumu(u.role) }}</td>
+          <td>{{ u.salary|money }}</td>
+          <td>{% if u.active %}<span class="badge badge-success">{{ t('active') }}</span>{% else %}<span class="badge badge-danger">{{ t('inactive') }}</span>{% endif %}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="empty-state">{{ t('no_data') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

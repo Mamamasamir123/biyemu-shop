@@ -1,0 +1,9 @@
+<a href="{{ url_for('manager_dashboard') }}" class="mob-nav-link{% if active == 'dashboard' %} active{% endif %}">{{ t('dashboard') }}</a>
+<a href="{{ url_for('manager_shop_view') }}" class="mob-nav-link{% if active == 'shop' or active_tab == 'overview' %} active{% endif %}">{{ t('my_shop') }}</a>
+<a href="{{ url_for('manager_shop_products') }}" class="mob-nav-link{% if active == 'products' or active_tab == 'products' %} active{% endif %}">{{ t('products') }}</a>
+<a href="{{ url_for('manager_employees') }}" class="mob-nav-link{% if active == 'staff' %} active{% endif %}">{{ t('staff') }}</a>
+<a href="{{ url_for('manager_shop_sales') }}" class="mob-nav-link{% if active == 'sales' or active_tab == 'sales' %} active{% endif %}">{{ t('sales') }}</a>
+<a href="{{ url_for('manager_finance') }}" class="mob-nav-link{% if active == 'report' %} active{% endif %}">{{ t('report') }}</a>
+<a href="{{ url_for('manager_approvals') }}" class="mob-nav-link{% if active == 'requests' %} active{% endif %}">{{ t('my_requests') }}</a>
+<a href="{{ url_for('manager_trash') }}" class="mob-nav-link">{{ t('trash_title') }}</a>
+<a href="{{ url_for('profile_view') }}" class="mob-nav-link{% if active == 'profile' %} active{% endif %}">{{ t('profile') }}</a>

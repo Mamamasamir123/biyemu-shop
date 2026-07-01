@@ -1,0 +1,345 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('shops_title') }} — {{ t('app_name') }}{% endblock %}
+{% block nav %}
+{% set active = 'shops' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+
+<div class="page-header">
+  <h1>{{ t('all_shops') }}</h1>
+  <p class="hint">{{ shops|length }} {{ t('shops') }}</p>
+</div>
+
+{% set story_idx = namespace(v=0) %}
+<div class="card promo-admin-panel">
+  <div class="promo-admin-toolbar">
+    <h3>{{ t('promo_banner') }}</h3>
+    <button type="button" class="btn btn-secondary btn-sm promo-add-btn" title="{{ t('promo_add_card') }}" onclick="openPromoAddModal()">+</button>
+  </div>
+  <div class="promo-stories-rail promo-admin-rail{% if promo_cards|length > 4 %} has-nav{% endif %}">
+    {% if promo_cards|length > 4 %}
+    <button type="button" class="promo-scroll-btn promo-scroll-prev" aria-label="{{ t('promo_scroll_prev') }}" hidden>‹</button>
+    {% endif %}
+    <div class="promo-stories-bar promo-admin-bar">
+    {% if promo_cards %}
+    <div class="promo-stories-scroll{% if promo_cards|length > 4 %} is-scrollable{% endif %}" data-promo-scroll>
+      {% for card in promo_cards %}
+      <div class="promo-story-item promo-admin-item promo-story-slot-{{ (loop.index0 % 4) + 1 }}{% if card.image %} promo-story-tappable{% endif %}"
+           {% if card.image %}
+           role="button" tabindex="0"
+           onclick="openPromoStoryViewer({{ story_idx.v }})"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPromoStoryViewer({{ story_idx.v }});}"
+           {% endif %}>
+        <div class="promo-story-ring">
+          <div class="promo-story-avatar{% if not card.image %} promo-story-empty{% endif %}">
+            {% if card.image %}
+            <img src="{{ url_for('static', filename='uploads/banners/' + card.image) }}" alt="{{ card.name }}">
+            {% else %}
+            <span class="promo-story-placeholder-icon">+</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="promo-admin-item-footer">
+          <span class="promo-story-label">{{ card.name or t('promo_card_default', n=loop.index) }}</span>
+          <button type="button" class="promo-edit-icon-btn"
+                  title="{{ t('promo_edit_status') }}"
+                  data-id="{{ card.id }}"
+                  data-name="{{ card.name }}"
+                  data-image="{% if card.image %}{{ url_for('static', filename='uploads/banners/' + card.image) }}{% endif %}"
+                  onclick="event.stopPropagation(); openPromoEditModal(this)">
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+        </div>
+      </div>
+      {% if card.image %}{% set story_idx.v = story_idx.v + 1 %}{% endif %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="hint promo-admin-empty">{{ t('promo_admin_empty') }}</p>
+    {% endif %}
+    </div>
+    {% if promo_cards|length > 4 %}
+    <button type="button" class="promo-scroll-btn promo-scroll-next" aria-label="{{ t('promo_scroll_next') }}">›</button>
+    {% endif %}
+  </div>
+</div>
+
+<div id="promoAddModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closePromoAddModal()"></div>
+  <div class="staff-modal-panel promo-edit-modal">
+    <button type="button" class="staff-modal-close" onclick="closePromoAddModal()">✕</button>
+    <h3>{{ t('promo_add_card') }}</h3>
+    <form method="POST" action="{{ url_for('boss_add_promo_card') }}" id="promoAddForm">
+      <input type="hidden" name="cropped_image" id="promoAddCropData" value="">
+      <div class="promo-edit-preview-wrap">
+        <div class="promo-story-ring promo-edit-preview-ring promo-story-slot-2">
+          <div class="promo-story-avatar promo-story-empty" id="promoAddPreviewAvatar">
+            <span class="promo-story-placeholder-icon" id="promoAddPreviewIcon">+</span>
+            <img src="" alt="" id="promoAddPreviewImg" hidden>
+          </div>
+        </div>
+        <label class="promo-edit-upload-icon" title="{{ t('upload_banner') }}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+          <input type="file" id="promoAddFileInput" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
+        </label>
+      </div>
+      <div class="form-group">
+        <input type="text" name="name" id="promoAddName" maxlength="40" placeholder="{{ t('promo_card_name_label') }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{ t('save') }}</button>
+    </form>
+  </div>
+</div>
+
+<div id="promoEditModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closePromoEditModal()"></div>
+  <div class="staff-modal-panel promo-edit-modal">
+    <button type="button" class="staff-modal-close" onclick="closePromoEditModal()">✕</button>
+    <h3>{{ t('promo_edit_status') }}</h3>
+    <form method="POST" id="promoEditForm" action="">
+      <input type="hidden" name="cropped_image" id="promoEditCropData" value="">
+      <div class="promo-edit-preview-wrap">
+        <div class="promo-story-ring promo-edit-preview-ring promo-story-slot-1" id="promoEditPreviewRing">
+          <div class="promo-story-avatar" id="promoEditPreviewAvatar">
+            <span class="promo-story-placeholder-icon" id="promoEditPreviewIcon">+</span>
+            <img src="" alt="" id="promoEditPreviewImg" hidden>
+          </div>
+        </div>
+        <label class="promo-edit-upload-icon" title="{{ t('upload_banner') }}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+          <input type="file" id="promoEditFileInput" accept="image/png,image/jpeg,image/jpg,image/webp" hidden>
+        </label>
+      </div>
+      <div class="form-group">
+        <input type="text" name="name" id="promoEditName" maxlength="40" placeholder="{{ t('promo_card_name_label') }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{ t('save') }}</button>
+    </form>
+    <form method="POST" id="promoDeleteForm" action="" style="margin-top:10px;">
+      <button type="submit" class="btn btn-danger btn-block btn-sm">{{ t('delete') }}</button>
+    </form>
+  </div>
+</div>
+
+<div class="add-shop-bar">
+  <button type="button" class="btn btn-primary" onclick="document.getElementById('addShopModal').hidden=false">+ {{ t('add_shop') }}</button>
+</div>
+
+<div class="card">
+  <h3>{{ t('all_shops') }} <span class="hint staff-grid-hint">— {{ t('shop_click_details') }}</span></h3>
+  {% if shops %}
+  <div class="shop-grid">
+    {% for s in shops %}
+    {% set stats = shop_stats.get(s.id) %}
+    <a href="{{ url_for('boss_shop_view', shop_id=s.id) }}" class="shop-card">
+      <div class="shop-card-cover{% if not s.cover_image %} shop-card-cover-default{% endif %}"
+           {% if s.cover_image %}style="background-image:url('{{ url_for('static', filename='uploads/shops/covers/' + s.cover_image) }}')"{% endif %}>
+        <div class="shop-card-overlay"></div>
+        <div class="shop-card-logo">
+          {% if s.logo %}
+          <img src="{{ url_for('static', filename='uploads/shops/logos/' + s.logo) }}" alt="{{ s.name }}">
+          {% else %}
+          <div class="shop-card-logo-placeholder">{{ s.name.replace('BiyeMu ', '')[0]|upper }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="shop-card-info">
+        <div class="shop-card-name">{{ s.name }}</div>
+        <div class="shop-card-type">{{ s.shop_type }}{% if s.location %} • {{ s.location }}{% endif %}</div>
+        {% if stats %}
+        <div class="shop-card-stat">{{ t('capital_short') }}: {{ stats.capital|money }}</div>
+        {% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">{{ t('not_found') }}</div>
+  {% endif %}
+</div>
+
+<div id="addShopModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="document.getElementById('addShopModal').hidden=true"></div>
+  <div class="staff-modal-panel">
+    <button type="button" class="staff-modal-close" onclick="document.getElementById('addShopModal').hidden=true">✕</button>
+    <h2>{{ t('add_shop') }}</h2>
+    <form method="POST" action="{{ url_for('boss_add_shop') }}" style="margin-top:16px">
+      <div class="form-group"><label>{{ t('shop_name') }}</label><input name="name" required></div>
+      <div class="form-group"><label>{{ t('shop_type') }}</label><input name="shop_type" required></div>
+      <div class="form-group"><label>{{ t('location') }}</label><input name="location"></div>
+      <button type="submit" class="btn btn-primary">{{ t('add') }}</button>
+    </form>
+  </div>
+</div>
+
+<div id="cropModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeCropModal()"></div>
+  <div class="staff-modal-panel crop-modal-panel">
+    <button type="button" class="staff-modal-close" onclick="closeCropModal()">✕</button>
+    <h2>{{ t('crop_image') }}</h2>
+    <p class="hint">{{ t('crop_hint') }}</p>
+    <div class="crop-container">
+      <img id="cropImage" src="" alt="">
+    </div>
+    <div style="margin-top:14px;display:flex;gap:8px">
+      <button type="button" class="btn btn-secondary" onclick="closeCropModal()">{{ t('cancel') }}</button>
+      <button type="button" class="btn btn-primary" onclick="confirmPromoCrop()">{{ t('crop_confirm') }}</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+<script>
+let cropper = null;
+let promoCropTarget = 'edit';
+const cropModal = document.getElementById('cropModal');
+const cropImage = document.getElementById('cropImage');
+const promoEditModal = document.getElementById('promoEditModal');
+const promoEditForm = document.getElementById('promoEditForm');
+const promoDeleteForm = document.getElementById('promoDeleteForm');
+const promoAddModal = document.getElementById('promoAddModal');
+const promoAddForm = document.getElementById('promoAddForm');
+
+function openPromoEditModal(btn) {
+  if (!btn || !promoEditModal) return;
+  const id = btn.dataset.id;
+  const name = btn.dataset.name || '';
+  const image = btn.dataset.image || '';
+  promoEditForm.action = '{{ url_for("boss_upload_promo_card", card_id="__ID__") }}'.replace('__ID__', id);
+  promoDeleteForm.action = '{{ url_for("boss_delete_promo_card", card_id="__ID__") }}'.replace('__ID__', id);
+  document.getElementById('promoEditName').value = name;
+  document.getElementById('promoEditCropData').value = '';
+  const img = document.getElementById('promoEditPreviewImg');
+  const icon = document.getElementById('promoEditPreviewIcon');
+  if (image) {
+    img.src = image;
+    img.hidden = false;
+    icon.hidden = true;
+  } else {
+    img.src = '';
+    img.hidden = true;
+    icon.hidden = false;
+  }
+  promoEditModal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closePromoEditModal() {
+  if (!promoEditModal) return;
+  promoEditModal.hidden = true;
+  if (cropModal.hidden && (!promoAddModal || promoAddModal.hidden)) document.body.style.overflow = '';
+}
+
+function openCropFromFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    cropImage.src = ev.target.result;
+    cropModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    if (cropper) cropper.destroy();
+    cropper = new Cropper(cropImage, {
+      aspectRatio: 9 / 16,
+      viewMode: 1,
+      autoCropArea: 1,
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('promoEditFileInput')?.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  promoCropTarget = 'edit';
+  openCropFromFile(file);
+  e.target.value = '';
+});
+
+function closeCropModal() {
+  cropModal.hidden = true;
+  const addOpen = promoAddModal && !promoAddModal.hidden;
+  const editOpen = promoEditModal && !promoEditModal.hidden;
+  document.body.style.overflow = (addOpen || editOpen) ? 'hidden' : '';
+  if (cropper) { cropper.destroy(); cropper = null; }
+}
+
+function confirmPromoCrop() {
+  if (!cropper) return;
+  const canvas = cropper.getCroppedCanvas({ width: 720, height: 1280, imageSmoothingQuality: 'high' });
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+  if (promoCropTarget === 'add') {
+    document.getElementById('promoAddCropData').value = dataUrl;
+    const img = document.getElementById('promoAddPreviewImg');
+    const icon = document.getElementById('promoAddPreviewIcon');
+    const avatar = document.getElementById('promoAddPreviewAvatar');
+    img.src = dataUrl;
+    img.hidden = false;
+    icon.hidden = true;
+    if (avatar) avatar.classList.remove('promo-story-empty');
+  } else {
+    document.getElementById('promoEditCropData').value = dataUrl;
+    const img = document.getElementById('promoEditPreviewImg');
+    const icon = document.getElementById('promoEditPreviewIcon');
+    img.src = dataUrl;
+    img.hidden = false;
+    icon.hidden = true;
+  }
+  closeCropModal();
+}
+
+promoDeleteForm?.addEventListener('submit', function(e) {
+  if (!confirm('{{ t("promo_delete_confirm") }}')) e.preventDefault();
+});
+
+function openPromoAddModal() {
+  if (!promoAddModal) return;
+  document.getElementById('promoAddName').value = '';
+  document.getElementById('promoAddCropData').value = '';
+  const img = document.getElementById('promoAddPreviewImg');
+  const icon = document.getElementById('promoAddPreviewIcon');
+  const avatar = document.getElementById('promoAddPreviewAvatar');
+  img.src = '';
+  img.hidden = true;
+  icon.hidden = false;
+  if (avatar) avatar.classList.add('promo-story-empty');
+  promoAddModal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+function closePromoAddModal() {
+  if (!promoAddModal) return;
+  promoAddModal.hidden = true;
+  if (cropModal.hidden && promoEditModal.hidden) document.body.style.overflow = '';
+}
+
+document.getElementById('promoAddFileInput')?.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  promoCropTarget = 'add';
+  openCropFromFile(file);
+  e.target.value = '';
+});
+
+promoAddForm?.addEventListener('submit', function(e) {
+  if (!document.getElementById('promoAddCropData').value) {
+    e.preventDefault();
+    alert('{{ t("promo_new_need_image") }}');
+  }
+});
+</script>
+
+{% if promo_cards %}
+<script>
+window.PROMO_STORY_ITEMS = [
+{%- for card in promo_cards if card.image -%}
+{%- if not loop.first %},{% endif -%}
+{"name":{{ (card.name or t('promo_card_default', n=loop.index))|tojson }},"image":{{ url_for('static', filename='uploads/banners/' + card.image)|tojson }}}
+{%- endfor -%}
+];
+</script>
+<script src="{{ url_for('static', filename='js/promo-stories-scroll.js') }}"></script>
+{% include 'includes/promo_stories_viewer.html' %}
+{% endif %}
+{% endblock %}

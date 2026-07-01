@@ -1,0 +1,57 @@
+{% extends "layout_app.html" %}
+{% set active = 'notifications' %}
+{% block title %}{{ t('notifications_title') }} — BiyeMu{% endblock %}
+
+{% block content %}
+<div class="page-header notifications-header">
+  <div>
+    <h1>{{ t('notifications_title') }}</h1>
+    <p class="hint">{{ t('notifications_subtitle') }}</p>
+  </div>
+  {% if unread_count %}
+  <form method="POST" action="{{ url_for('notifications_mark_all_read') }}">
+    <button type="submit" class="btn btn-secondary btn-sm">{{ t('notifications_mark_all_read') }}</button>
+  </form>
+  {% endif %}
+</div>
+
+<div class="fb-notif-panel card">
+  {% if notif_views %}
+  <ul class="fb-notif-list">
+    {% for v in notif_views %}
+    <li class="fb-notif-item{% if not v.read %} unread{% endif %}">
+      <a href="{{ url_for('notification_detail', note_id=v.id) }}" class="fb-notif-row">
+        <div class="fb-notif-avatar-wrap">
+          {% if v.avatar_url %}
+          <img src="{{ v.avatar_url }}" alt="" class="fb-notif-avatar">
+          {% else %}
+          <div class="fb-notif-avatar placeholder">{{ v.avatar_letter }}</div>
+          {% endif %}
+          {% if not v.read %}<span class="fb-notif-dot" aria-hidden="true"></span>{% endif %}
+        </div>
+        <div class="fb-notif-body">
+          {% if v.is_sale and v.actor_name %}
+          <p class="fb-notif-text"><strong class="fb-notif-actor">{{ v.actor_name }}</strong> {{ t('notif_sale_sold') }} "<strong class="fb-notif-highlight">{{ v.highlight }}</strong>"</p>
+          {% if v.detail %}
+          <p class="fb-notif-detail">{{ v.detail }}</p>
+          {% endif %}
+          {% else %}
+          <p class="fb-notif-text">
+            {% if v.headline %}<strong>{{ v.headline }}</strong>{% endif %}
+            {% if v.body %} <span class="fb-notif-sub">{{ v.body }}</span>{% endif %}
+          </p>
+          {% endif %}
+          <span class="fb-notif-time">{{ v.time_ago }}</span>
+        </div>
+        {% if v.thumb_url %}
+        <img src="{{ v.thumb_url }}" alt="" class="fb-notif-thumb" loading="lazy">
+        {% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="empty-state">{{ t('notifications_empty') }}</div>
+  {% endif %}
+</div>
+{% endblock %}

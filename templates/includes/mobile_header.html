@@ -1,0 +1,63 @@
+<header class="mobile-header-container">
+  <div class="mobile-header-bar">
+    <a href="{% if shop_urls is defined %}{{ shop_urls.overview }}{% else %}{{ url_for('home_feed') }}{% endif %}" class="mobile-header-brand">
+      <div class="mobile-header-title">{{ app_brand_title }}</div>
+      <div class="mobile-header-tagline">{{ app_brand_tagline }}</div>
+    </a>
+    <div class="mobile-header-actions">
+      {% include 'includes/mobile_header_chat.html' %}
+    <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="{{ t('menu') }}" aria-expanded="false" aria-controls="mobileMenuDrawer">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobileMenuDrawer" class="mobile-menu-drawer" hidden>
+  <div class="mobile-menu-backdrop" onclick="closeMobileMenu()"></div>
+  <aside class="mobile-menu-panel">
+    <div class="mobile-menu-panel-head">
+      <div>
+        <div class="mobile-header-title">{{ app_brand_title }}</div>
+        <div class="mobile-header-tagline">{{ app_brand_tagline }}</div>
+      </div>
+      <button type="button" class="mobile-menu-close" onclick="closeMobileMenu()">✕</button>
+    </div>
+    <nav class="mobile-menu-nav">
+      {% include 'includes/mobile_menu_nav.html' %}
+    </nav>
+    <div class="mobile-menu-footer">
+      <form method="POST" action="{{ url_for('set_language') }}" class="lang-switcher">
+        <select name="language" onchange="this.form.submit()" title="{{ t('language') }}">
+          <option value="sw" {% if current_lang == 'sw' %}selected{% endif %}>🇹🇿 SW</option>
+          <option value="en" {% if current_lang == 'en' %}selected{% endif %}>🇬🇧 EN</option>
+          <option value="rn" {% if current_lang == 'rn' %}selected{% endif %}>🇧🇮 RN</option>
+        </select>
+      </form>
+      <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-block">{{ t('logout') }}</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+function toggleMobileMenu() {
+  const drawer = document.getElementById('mobileMenuDrawer');
+  const btn = document.querySelector('.mobile-menu-btn');
+  const open = drawer.hidden;
+  drawer.hidden = !open;
+  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileMenu() {
+  const drawer = document.getElementById('mobileMenuDrawer');
+  const btn = document.querySelector('.mobile-menu-btn');
+  drawer.hidden = true;
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.mobile-menu-link').forEach(function(link) {
+  link.addEventListener('click', closeMobileMenu);
+});
+</script>

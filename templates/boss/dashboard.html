@@ -1,0 +1,122 @@
+{% extends "layout_app.html" %}
+{% block title %}Paneli ya Mkuu — BiyeMu{% endblock %}
+{% block nav %}
+{% set active = 'dashboard' %}
+{% include 'includes/nav_boss.html' %}
+{% endblock %}
+{% block content %}
+
+<div class="dash-welcome">
+  <div style="display: flex; align-items: center; gap: 14px;">
+    {% if current_user.profile_picture %}
+      <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}"
+           class="sidebar-avatar" style="width:52px;height:52px;">
+    {% else %}
+      <div class="sidebar-avatar placeholder" style="width:52px;height:52px;font-size:1.4rem;">
+        {{ current_user.full_name[0]|upper }}
+      </div>
+    {% endif %}
+    <div>
+      <h2 style="margin:0;">{{ t('welcome_user', name=current_user.full_name.split(' ')[0]) }}</h2>
+      <p style="margin:2px 0 0;">{{ role_label(current_user.role.value) }} • {{ t('boss_dashboard_sub') }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="stats-grid shop-stats-grid boss-overview-grid">
+  <div class="stat-card">
+    <div class="label">🏪 {{ t('boss_total_shops') }}</div>
+    <div class="value">{{ company.shops_count }}</div>
+    <div class="stat-hint">{{ t('shops') }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">💼 {{ t('boss_total_capital') }}</div>
+    <div class="value">{{ company.total_capital|money }}</div>
+    <div class="stat-hint">{{ t('capital_hint') }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">💰 {{ t('boss_total_sales') }}</div>
+    <div class="value">{{ company.total_revenue|money }}</div>
+    <div class="stat-hint">{{ company.units_sold }} {{ t('products_sold_label') }} • {{ company.sales_count }} {{ t('sales_count_label') }}</div>
+    <div class="stat-hint">{{ t('cash_dashboard_note') }}</div>
+    {% if company.held_revenue or company.pending_revenue %}
+    <div class="stat-hint">💵 {{ t('cash_held') }}: {{ company.held_revenue|money }} • {{ t('cash_pending') }}: {{ company.pending_revenue|money }}</div>
+    {% endif %}
+  </div>
+  <div class="stat-card">
+    <div class="label">📈 {{ t('boss_total_profit') }}</div>
+    <div class="value {% if company.total_profit < 0 %}danger{% endif %}">{{ company.total_profit|money }}</div>
+    <div class="stat-hint">{{ t('total_profit_hint') }}</div>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">{{ t('staff') }}</div>
+    <div class="value">{{ staff_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('net_profit_positive') if report.net_profit >= 0 else t('net_profit_negative') }}</div>
+    <div class="value {% if report.net_profit < 0 %}danger{% endif %}">{{ report.net_profit|abs|money }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('approvals') }}</div>
+    <div class="value" style="color: var(--accent-red);">{{ pending }}</div>
+  </div>
+</div>
+
+<h3 class="section-title">{{ t('services') }}</h3>
+
+<div class="services-grid">
+  <a href="{{ url_for('boss_shops') }}" class="service-card">
+    <div class="icon">🏪</div>
+    <div class="title">{{ t('all_shops') }}</div>
+    <div class="subtitle">{{ t('add_shop') }}</div>
+    <div class="count">{{ shops_count }} {{ t('shops') }}</div>
+  </a>
+
+  <a href="{{ url_for('boss_products') }}" class="service-card">
+    <div class="icon">📦</div>
+    <div class="title">{{ t('products') }}</div>
+    <div class="subtitle">{{ t('add_product') }}</div>
+  </a>
+
+  <a href="{{ url_for('boss_staff') }}" class="service-card">
+    <div class="icon">👥</div>
+    <div class="title">{{ t('staff') }}</div>
+    <div class="subtitle">{{ t('add_staff') }}</div>
+    <div class="count">{{ staff_count }} {{ t('staff') }}</div>
+  </a>
+
+  <a href="{{ url_for('boss_sales') }}" class="service-card">
+    <div class="icon">💰</div>
+    <div class="title">{{ t('sales') }}</div>
+    <div class="subtitle">{{ t('sales_title') }}</div>
+  </a>
+
+  <a href="{{ url_for('boss_finance') }}" class="service-card">
+    <div class="icon">📊</div>
+    <div class="title">{{ t('report') }}</div>
+    <div class="subtitle">{{ t('reports_title') }}</div>
+  </a>
+
+  <a href="{{ url_for('boss_approvals') }}" class="service-card">
+    <div class="icon">✅</div>
+    <div class="title">{{ t('approvals') }}</div>
+    <div class="subtitle">{{ t('pending_approvals') }}</div>
+    {% if pending %}
+      <div class="count" style="color:var(--accent-red);">{{ pending }} {{ t('pending_approvals') }}</div>
+    {% endif %}
+  </a>
+
+  <a href="{{ url_for('boss_cash') }}" class="service-card">
+    <div class="icon">💵</div>
+    <div class="title">{{ t('cash_confirm_title') }}</div>
+    <div class="subtitle">{{ t('cash_confirm_sub') }}</div>
+    {% if pending_cash %}
+    <div class="count" style="color:var(--accent-red);">{{ pending_cash }} {{ t('cash_pending') }}</div>
+    {% endif %}
+  </a>
+</div>
+
+{% endblock %}

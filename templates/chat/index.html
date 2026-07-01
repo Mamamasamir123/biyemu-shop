@@ -1,0 +1,196 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('chat_title') }} — {{ t('app_name') }}{% endblock %}
+{% block main_extra_class %} chat-main{% endblock %}
+{% block content %}
+<div class="chat-page">
+  <div class="chat-page-header">
+    <div>
+      <h1>{{ t('chat_title') }}</h1>
+      <p class="hint">{{ t('chat_subtitle_permission') }}</p>
+    </div>
+    <div class="chat-shop-filter">
+      <label for="chatShopFilter" class="hint">{{ t('shop_label') }}</label>
+      <select id="chatShopFilter" class="chat-filter-select">
+        <option value="">{{ t('all_shops') }}</option>
+        {% for shop in all_shops %}
+        <option value="{{ shop.id }}">{{ shop.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="chat-shell{% if partner %} has-thread{% endif %}" id="staffChatShell"
+       data-partner-id="{{ partner.id if partner and partner_state == 'approved' else '' }}"
+       data-poll-url="{{ url_for('staff_chat_api', partner_id='__ID__') }}"
+       data-label-sent="{{ t('chat_status_sent') }}"
+       data-label-read="{{ t('chat_status_read') }}">
+    <aside class="chat-contacts-panel card" id="chatContactsPanel">
+      <div class="chat-contacts-toolbar">
+        <label class="shop-data-search-wrap approval-search-wrap chat-search-wrap">
+          <span class="shop-data-search-icon" aria-hidden="true">🔍</span>
+          <input type="search" id="chatContactSearch" class="shop-data-search"
+                 placeholder="{{ t('chat_search_ph') }}" autocomplete="off">
+        </label>
+      </div>
+      <div class="chat-contacts-list" id="chatContactsList">
+        {% for item in directory %}
+        {% set u = item.user %}
+        <div class="chat-directory-item{% if partner and partner.id == u.id %} active{% endif %}{% if item.unread %} has-unread{% endif %}"
+             data-search="{{ u.full_name }} {{ jukumu(u.role) }} {{ item.shop_name }} {{ u.username }}"
+             data-shop-id="{{ u.shop_id or '' }}">
+          <a href="{{ url_for('staff_chat', na=u.id) }}" class="chat-contact-item">
+            <div class="chat-contact-avatar">
+              {% if u.profile_picture %}
+              <img src="{{ url_for('static', filename='uploads/profiles/' + u.profile_picture) }}" alt="">
+              {% else %}
+              <span class="staff-card-avatar">{{ u.full_name[0]|upper }}</span>
+              {% endif %}
+              {% if item.unread %}<span class="chat-contact-dot" aria-hidden="true"></span>{% endif %}
+            </div>
+            <div class="chat-contact-body">
+              <div class="chat-contact-top">
+                <strong>{{ u.full_name }}</strong>
+                {% if item.last_message and item.can_chat %}
+                <time>{{ item.last_message.created_at }}</time>
+                {% endif %}
+              </div>
+              <div class="chat-contact-meta">
+                <span>{{ jukumu(u.role) }}{% if item.shop_name %} • {{ item.shop_name }}{% endif %}</span>
+              </div>
+              {% if item.connection_state == 'approved' and item.last_message %}
+              <p class="chat-contact-preview">
+                {% if item.last_message.sender_id == current_user.id %}{{ t('chat_you') }}: {% endif %}{{ item.last_message.body }}
+              </p>
+              {% elif item.connection_state == 'pending_in' %}
+              <p class="chat-contact-preview connection-pending-in">{{ t('connection_pending_in') }}</p>
+              {% elif item.connection_state == 'pending_out' %}
+              <p class="chat-contact-preview connection-pending-out">{{ t('connection_pending_out') }}</p>
+              {% elif item.connection_state == 'rejected' %}
+              <p class="chat-contact-preview connection-rejected">{{ t('connection_rejected_label') }}</p>
+              {% else %}
+              <p class="chat-contact-preview muted">{{ t('connection_request_hint') }}</p>
+              {% endif %}
+            </div>
+            {% if item.unread %}
+            <span class="chat-unread-badge">{{ item.unread }}</span>
+            {% endif %}
+          </a>
+          {% if item.connection_state == 'none' or item.connection_state == 'rejected' %}
+          <form method="POST" action="{{ url_for('staff_connection_request') }}" class="chat-inline-action">
+            <input type="hidden" name="target_id" value="{{ u.id }}">
+            <button type="submit" class="btn btn-secondary btn-xs">{{ t('connection_request_btn') }}</button>
+          </form>
+          {% elif item.connection_state == 'pending_in' and item.connection_id %}
+          <div class="chat-inline-actions">
+            <form method="POST" action="{{ url_for('staff_connection_approve', conn_id=item.connection_id) }}">
+              <button type="submit" class="btn btn-primary btn-xs">{{ t('approve') }}</button>
+            </form>
+            <form method="POST" action="{{ url_for('staff_connection_reject', conn_id=item.connection_id) }}">
+              <button type="submit" class="btn btn-danger btn-xs">{{ t('reject') }}</button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+        {% else %}
+        <div class="empty-state chat-empty-contacts">{{ t('chat_no_contacts') }}</div>
+        {% endfor %}
+      </div>
+    </aside>
+
+    <section class="chat-thread-panel card" id="chatThreadPanel">
+      {% if partner %}
+      <div class="chat-thread-head">
+        <a href="{{ url_for('staff_chat') }}" class="chat-back-btn" aria-label="{{ t('back') }}">←</a>
+        <div class="chat-thread-user">
+          <div class="chat-contact-avatar sm">
+            {% if partner.profile_picture %}
+            <img src="{{ url_for('static', filename='uploads/profiles/' + partner.profile_picture) }}" alt="">
+            {% else %}
+            <span class="staff-card-avatar">{{ partner.full_name[0]|upper }}</span>
+            {% endif %}
+          </div>
+          <div>
+            <strong>{{ partner.full_name }}</strong>
+            <span class="hint">{{ jukumu(partner.role) }}{% if shops.get(partner.shop_id) %} • {{ shops.get(partner.shop_id) }}{% endif %}</span>
+          </div>
+        </div>
+      </div>
+
+      {% if partner_state == 'approved' %}
+      <div class="chat-messages" id="chatMessages">
+        {% for msg in messages %}
+        <div class="chat-bubble{% if msg.sender_id == current_user.id %} mine{% else %} theirs{% endif %}" data-msg-id="{{ msg.id }}">
+          <p>{{ msg.body }}</p>
+          <div class="chat-bubble-meta">
+            <time>{{ msg.created_at }}</time>
+            {% if msg.sender_id == current_user.id %}
+            <span class="chat-read-status{% if msg.read_at %} is-read{% endif %}"
+                  title="{% if msg.read_at %}{{ t('chat_status_read') }}{% else %}{{ t('chat_status_sent') }}{% endif %}"
+                  aria-label="{% if msg.read_at %}{{ t('chat_status_read') }}{% else %}{{ t('chat_status_sent') }}{% endif %}">
+              {% if msg.read_at %}✓✓{% else %}✓{% endif %}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+        {% else %}
+        <div class="chat-empty-thread" id="chatEmptyThread">{{ t('chat_start_conversation') }}</div>
+        {% endfor %}
+      </div>
+      <form method="POST" action="{{ url_for('staff_chat_send') }}" class="chat-compose" id="chatComposeForm">
+        <input type="hidden" name="receiver_id" value="{{ partner.id }}">
+        <input type="text" name="body" id="chatMessageInput" class="chat-input"
+               placeholder="{{ t('chat_message_ph') }}" maxlength="2000" autocomplete="off" required>
+        <button type="submit" class="btn btn-primary chat-send-btn">{{ t('chat_send') }}</button>
+      </form>
+
+      {% elif partner_state == 'pending_in' and partner_connection_id %}
+      <div class="chat-permission-panel">
+        <div class="chat-placeholder-icon">🤝</div>
+        <h3>{{ t('connection_pending_in_title') }}</h3>
+        <p class="hint">{{ t('connection_pending_in_body', name=partner.full_name) }}</p>
+        <div class="chat-permission-actions">
+          <form method="POST" action="{{ url_for('staff_connection_approve', conn_id=partner_connection_id) }}">
+            <button type="submit" class="btn btn-primary">{{ t('connection_approve_btn') }}</button>
+          </form>
+          <form method="POST" action="{{ url_for('staff_connection_reject', conn_id=partner_connection_id) }}">
+            <button type="submit" class="btn btn-danger">{{ t('connection_reject_btn') }}</button>
+          </form>
+        </div>
+        <p class="hint chat-permission-note">{{ t('connection_approve_benefit') }}</p>
+      </div>
+
+      {% elif partner_state == 'pending_out' %}
+      <div class="chat-permission-panel">
+        <div class="chat-placeholder-icon">⏳</div>
+        <h3>{{ t('connection_pending_out_title') }}</h3>
+        <p class="hint">{{ t('connection_pending_out_body', name=partner.full_name) }}</p>
+      </div>
+
+      {% else %}
+      <div class="chat-permission-panel">
+        <div class="chat-placeholder-icon">🔐</div>
+        <h3>{{ t('connection_needed_title') }}</h3>
+        <p class="hint">{{ t('connection_needed_body', name=partner.full_name) }}</p>
+        <form method="POST" action="{{ url_for('staff_connection_request') }}" class="chat-permission-actions">
+          <input type="hidden" name="target_id" value="{{ partner.id }}">
+          <button type="submit" class="btn btn-primary">{{ t('connection_request_btn') }}</button>
+        </form>
+        <p class="hint chat-permission-note">{{ t('connection_approve_benefit') }}</p>
+      </div>
+      {% endif %}
+
+      {% else %}
+      <div class="chat-thread-placeholder">
+        <div class="chat-placeholder-icon">💬</div>
+        <h3>{{ t('chat_pick_contact') }}</h3>
+        <p class="hint">{{ t('chat_pick_contact_permission_hint') }}</p>
+        {% if pending_connections %}
+        <p class="chat-pending-banner">{{ t('connection_incoming_count', count=pending_connections) }}</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </section>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/staff-chat.js') }}"></script>
+{% endblock %}

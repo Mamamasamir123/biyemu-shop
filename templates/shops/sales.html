@@ -1,0 +1,108 @@
+{% extends "layout_shop.html" %}
+{% block title %}{{ t('sales') }} — {{ shop.name }}{% endblock %}
+{% block content %}
+<div class="stats-grid shop-overview-stats" style="margin-bottom:16px">
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="label">{{ t('cash_shop_available') }}</span>
+      <span class="value">{{ shop_available|money }}</span>
+    </div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="label">{{ t('cash_boss_pending') }}</span>
+      <span class="value">{{ boss_pending_total|money }}</span>
+    </div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="label">{{ t('sales') }}</span>
+      <span class="value">{{ dashboard.revenue|money }}</span>
+    </div>
+    <div class="stat-hint">{{ t('cash_dashboard_note') }}</div>
+  </div>
+  <div class="stat-card shop-stat-compact">
+    <div class="shop-stat-inline">
+      <span class="label">{{ t('profit_label') }}</span>
+      <span class="value">{{ dashboard.profit|money }}</span>
+    </div>
+  </div>
+</div>
+
+{% if shop_available > 0 and submit_cash_url %}
+<div class="card" style="margin-bottom:16px;">
+  <p class="hint">{{ t('cash_at_shop_hint') }}: <strong>{{ shop_available|money }}</strong></p>
+  <a href="{{ submit_cash_url }}" class="btn btn-primary btn-sm">{{ t('cash_manager_handover') }}</a>
+</div>
+{% endif %}
+
+{% set table_id = 'shopSalesHistory' %}
+{% set title = t('history_sales') %}
+{% set search_ph = t('shop_data_search_ph') %}
+{% set bulk_delete_url = bulk_delete_sales_url|default('') %}
+{% set bulk_confirm = t('request_delete_sales_confirm') %}
+<div class="card shop-data-card">
+  {% include 'includes/shop_data_toolbar.html' %}
+  <div class="table-wrap shop-data-table-wrap">
+    <table class="shop-data-table" id="{{ table_id }}" data-shop-table="{{ table_id }}">
+      <thead><tr>
+        {% if bulk_delete_url %}
+        <th class="col-check"><input type="checkbox" data-select-all-for="{{ table_id }}" aria-label="{{ t('select_all') }}"></th>
+        {% endif %}
+        <th>{{ t('date') }}</th>
+        <th>{{ t('product') }}</th>
+        <th>{{ t('employee') }}</th>
+        <th>{{ t('quantity') }}</th>
+        <th>{{ t('total') }}</th>
+        <th>{{ t('profit_label') }}</th>
+        <th>{{ t('status') }}</th>
+        {% if bulk_delete_url %}<th>{{ t('actions_label') }}</th>{% endif %}
+      </tr></thead>
+      <tbody>
+        {% for sale in sales|reverse %}
+        <tr data-row data-search="{{ sale.product_name }} {{ sale.employee_name }} {{ sale.date }} {{ sale.cash_status }}">
+          {% if bulk_delete_url %}
+          <td class="col-check">
+            {% if sale.id in (pending_delete_sale_ids|default([])) %}
+            <input type="checkbox" disabled>
+            {% else %}
+            <input type="checkbox" class="shop-row-check" value="{{ sale.id }}">
+            {% endif %}
+          </td>
+          {% endif %}
+          <td>{{ sale.date }}</td>
+          <td>{{ sale.product_name }}</td>
+          <td>{{ sale.employee_name }}</td>
+          <td>{{ sale.quantity }}</td>
+          <td>{{ sale.total_amount|money }}</td>
+          <td class="{% if sale.profit < 0 %}text-danger{% else %}text-success{% endif %}">{{ sale.profit|money }}</td>
+          <td>
+            {% if sale.cash_status == 'manager_held' %}<span class="badge badge-warning">{{ t('cash_shop_available') }}</span>
+            {% elif sale.cash_status == 'boss_pending' %}<span class="badge badge-warning">{{ t('cash_boss_pending') }}</span>
+            {% elif sale.cash_status == 'confirmed' %}<span class="badge badge-success">{{ t('cash_boss_confirmed') }}</span>
+            {% elif sale.cash_status == 'held' %}<span class="badge">{{ t('cash_held') }}</span>
+            {% elif sale.cash_status == 'pending' %}<span class="badge">{{ t('cash_pending') }}</span>
+            {% else %}{{ sale.cash_status }}{% endif %}
+          </td>
+          {% if bulk_delete_url %}
+          <td>
+            {% if sale.id in (pending_delete_sale_ids|default([])) %}
+            <span class="badge badge-warning">{{ t('delete_pending') }}</span>
+            {% else %}
+            <form method="POST" action="{{ bulk_delete_url }}" style="display:inline"
+                  onsubmit="return confirm('{{ t('request_delete_sales_confirm') }}');">
+              <input type="hidden" name="item_ids" value="{{ sale.id }}">
+              <button type="submit" class="btn btn-danger btn-xs">{{ t('request_delete_btn') }}</button>
+            </form>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+        {% else %}
+        <tr><td colspan="{{ 10 if bulk_delete_url else 8 }}" class="empty-state">{{ t('no_data') }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

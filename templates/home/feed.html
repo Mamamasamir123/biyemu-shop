@@ -1,0 +1,68 @@
+{% extends "layout_app.html" %}
+{% set active = 'home' %}
+{% block main_extra_class %} feed-main{% endblock %}
+{% block title %}{{ t('nav_home') }} — BiyeMu{% endblock %}
+{% block content %}
+
+{% include 'includes/feed_toolbar.html' %}
+{% include 'includes/promo_stories.html' %}
+
+{% if feed %}
+  {% for item in feed %}
+  <article class="feed-post" data-feed-scope="{% if item.is_own_shop %}own{% else %}shared{% endif %}">
+    <div class="feed-post-header">
+      {% if item.shop.logo %}
+      <img src="{{ url_for('static', filename='uploads/shops/logos/' + item.shop.logo) }}" alt="" class="feed-post-logo">
+      {% else %}
+      <div class="feed-post-logo placeholder">{{ item.shop.name.replace('BiyeMu ', '')[0]|upper }}</div>
+      {% endif %}
+      <div class="feed-post-meta">
+        <strong>{{ item.shop.name }}</strong>
+        {% if item.is_own_shop %}
+        <span class="feed-shop-badge own">{{ t('feed_my_shop') }}</span>
+        {% else %}
+        <span class="feed-shop-badge shared">{{ t('feed_shared_shop') }}</span>
+        {% endif %}
+        <span>{{ item.shop.shop_type }}{% if item.shop.location %} • {{ item.shop.location }}{% endif %}</span>
+      </div>
+    </div>
+    <div class="feed-post-body">
+      {% for p in item.products %}
+      {% set sell_product = {
+        'id': p.id,
+        'name': p.name,
+        'price': p.price,
+        'cost': p.cost_price,
+        'stock': p.quantity,
+        'image': (url_for('static', filename='uploads/products/' + p.image) if p.image else '')
+      } %}
+      <div class="feed-product-block">
+        <div class="feed-product-media">
+          {% if p.image %}
+          <img src="{{ url_for('static', filename='uploads/products/' + p.image) }}" alt="{{ p.name }}" loading="lazy">
+          {% else %}
+          <div class="feed-product-media-placeholder">{{ p.name[0]|upper }}</div>
+          {% endif %}
+        </div>
+        <div class="feed-product-info">
+          <div class="feed-product-name">{{ p.name }}</div>
+          <div class="feed-product-price">{{ p.price|money }}</div>
+          <div class="feed-product-stock">{{ p.quantity }} {{ t('in_stock') }}</div>
+          {% if user_can_sell and p.shop_id == my_shop_id %}
+          <button type="button" class="btn btn-primary feed-product-sell-btn" data-product='{{ sell_product|tojson }}'>{{ t('sell_short') }}</button>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </article>
+  {% endfor %}
+{% else %}
+<div class="card feed-empty">{{ t('home_feed_empty') }}</div>
+{% endif %}
+<div class="card feed-empty" id="feedFilterEmpty" hidden>{{ t('feed_filter_empty') }}</div>
+
+{% if user_can_sell %}
+{% include 'includes/sell_modal.html' %}
+{% endif %}
+{% endblock %}

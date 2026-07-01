@@ -1,0 +1,43 @@
+{% extends "layout_app.html" %}
+{% block title %}{{ t('cash_confirm_title') }} — BiyeMu{% endblock %}
+{% block nav %}
+{% set active = 'cash' %}
+{% if current_user.role.value == 'boss' %}{% include 'includes/nav_boss.html' %}
+{% else %}{% include 'includes/nav_manager.html' %}{% endif %}
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>{{ t('cash_confirm_title') }}</h1>
+  <p class="hint">{{ t('cash_confirm_sub') }}</p>
+</div>
+
+<p class="hint cash-dashboard-note">{{ t('cash_dashboard_note') }}</p>
+
+{% if pending %}
+{% for r in pending %}
+<div class="card approval-card cash-remittance-card">
+  <h3>💵 {{ r.amount|money }}</h3>
+  <p class="approval-meta">
+    <strong>{{ t('requested_by') }}:</strong> {{ r.employee_name }}
+    {% if r.remittance_kind == 'from_manager' %} ({{ t('cash_manager_handover') }}){% endif %}
+    &nbsp;|&nbsp;
+    <strong>{{ t('shop_label') }}:</strong> {{ shops.get(r.shop_id, r.shop_id) }}
+  </p>
+  <p class="hint">{{ t('cash_sales_count', count=r.sale_ids|length) }} — {{ r.created_at }}</p>
+  {% if r.note %}<p><em>{{ r.note }}</em></p>{% endif %}
+  <ul class="cash-sale-list compact">
+    {% for s in r.sales %}
+    <li>{{ s.product_name }} x{{ s.quantity }} — {{ s.total_amount|money }}</li>
+    {% endfor %}
+  </ul>
+  <form method="POST" action="{{ confirm_url }}" class="approval-action-form">
+    <input type="hidden" name="remittance_id" value="{{ r.id }}">
+    <input name="note" placeholder="{{ t('approval_note_optional') }}">
+    <button type="submit" class="btn btn-primary btn-sm">{{ t('cash_confirm_btn') }}</button>
+  </form>
+</div>
+{% endfor %}
+{% else %}
+<div class="card empty-state">{{ t('cash_no_pending') }}</div>
+{% endif %}
+{% endblock %}

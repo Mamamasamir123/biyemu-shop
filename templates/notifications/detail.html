@@ -1,0 +1,182 @@
+{% extends "layout_app.html" %}
+{% set active = 'notifications' %}
+{% block main_extra_class %}{% if is_sale %} feed-main{% endif %}{% endblock %}
+{% block title %}{{ t('notifications_title') }} — BiyeMu{% endblock %}
+
+{% block content %}
+<div class="notif-detail-back">
+  <a href="{{ url_for('notifications_list') }}" class="btn btn-secondary btn-sm">← {{ t('notif_detail_back') }}</a>
+</div>
+
+{% if is_sale %}
+<article class="feed-post notif-detail-post">
+  <div class="notif-detail-context">
+    <p class="notif-detail-context-text">
+      <strong>{{ view.actor_name }}</strong> {{ t('notif_sale_sold') }}
+      "<strong>{{ view.highlight }}</strong>"
+    </p>
+    {% if view.detail %}<p class="notif-detail-context-amount">{{ view.detail }}</p>{% endif %}
+    <span class="notif-detail-context-time">{{ view.time_ago }}</span>
+  </div>
+
+  {% if shop %}
+  <div class="feed-post-header">
+    {% if shop.logo %}
+    <img src="{{ url_for('static', filename='uploads/shops/logos/' + shop.logo) }}" alt="" class="feed-post-logo">
+    {% else %}
+    <div class="feed-post-logo placeholder">{{ shop.name.replace('BiyeMu ', '')[0]|upper }}</div>
+    {% endif %}
+    <div class="feed-post-meta">
+      <strong>{{ shop.name }}</strong>
+      <span>{{ shop.shop_type }}{% if shop.location %} • {{ shop.location }}{% endif %}</span>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="feed-post-body">
+    <div class="feed-product-block">
+      <div class="feed-product-media">
+        {% if product and product.image %}
+        <img src="{{ url_for('static', filename='uploads/products/' + product.image) }}" alt="{{ product.name }}" loading="lazy">
+        {% elif meta.get('product_image') %}
+        <img src="{{ url_for('static', filename='uploads/products/' + meta.product_image) }}" alt="{{ view.highlight }}" loading="lazy">
+        {% else %}
+        <div class="feed-product-media-placeholder">{{ view.highlight[0]|upper if view.highlight else '?' }}</div>
+        {% endif %}
+      </div>
+      <div class="feed-product-info">
+        <div class="feed-product-name">{{ product.name if product else view.highlight }}</div>
+        {% if product %}
+        <div class="feed-product-price">{{ product.price|money }}</div>
+        <div class="feed-product-stock">{{ product.quantity }} {{ t('in_stock') }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="notif-detail-sale-meta">
+    <div class="notif-detail-sale-row">
+      <span class="notif-detail-sale-label">{{ t('notif_sale_sold_by') }}</span>
+      <span class="notif-detail-sale-value">{{ view.actor_name }}</span>
+    </div>
+    {% if meta.get('qty') %}
+    <div class="notif-detail-sale-row">
+      <span class="notif-detail-sale-label">{{ t('notif_sale_qty_sold') }}</span>
+      <span class="notif-detail-sale-value">{{ meta.qty }}</span>
+    </div>
+    {% endif %}
+    {% if meta.get('amount') %}
+    <div class="notif-detail-sale-row">
+      <span class="notif-detail-sale-label">{{ t('notif_sale_total_amount') }}</span>
+      <span class="notif-detail-sale-value notif-detail-sale-amount">{{ meta.amount }}</span>
+    </div>
+    {% endif %}
+  </div>
+</article>
+
+{% elif is_cash or is_approval %}
+<div class="card notif-detail-action-card">
+  <div class="notif-detail-generic-head">
+    {% if view.avatar_url %}
+    <img src="{{ view.avatar_url }}" alt="" class="fb-notif-avatar">
+    {% else %}
+    <div class="fb-notif-avatar placeholder">{{ view.avatar_letter }}</div>
+    {% endif %}
+    <div>
+      {% if view.headline %}<h2 class="notif-detail-generic-title">{{ view.headline }}</h2>{% endif %}
+      <span class="fb-notif-time">{{ view.time_ago }}</span>
+    </div>
+  </div>
+  {% if view.body %}<p class="notif-detail-generic-body">{{ view.body }}</p>{% endif %}
+
+  {% if is_approval and approval_req %}
+  <p class="approval-meta">
+    <strong>{{ t('requested_by') }}:</strong> {{ approval_req.requester_name }}
+    {% if shop %}&nbsp;|&nbsp;<strong>{{ t('shop_label') }}:</strong> {{ shop.name }}{% endif %}
+  </p>
+  {% set req = approval_req %}
+  {% include 'includes/approval_product_preview.html' %}
+  {% set pdata = approval_req.payload|from_json %}
+  {% if approval_req.approval_type.value not in ['add_product', 'delete_product'] or (approval_req.approval_type.value == 'add_product' and not pdata.get('name')) %}
+  <p class="notif-detail-extra">{{ approval_req.details }}</p>
+  {% endif %}
+  {% endif %}
+
+  {% if is_cash and action_ctx.remittance %}
+  <div class="notif-detail-cash-amount">💵 {{ action_ctx.remittance.amount|money }}</div>
+  <p class="approval-meta">
+    <strong>{{ t('requested_by') }}:</strong> {{ action_ctx.remittance.employee_name }}
+    {% if shop %}&nbsp;|&nbsp;<strong>{{ t('shop_label') }}:</strong> {{ shop.name }}{% endif %}
+  </p>
+  {% if action_ctx.remittance_sales %}
+  <ul class="cash-sale-list compact">
+    {% for s in action_ctx.remittance_sales %}
+    <li>{{ s.product_name }} x{{ s.quantity }} — {{ s.total_amount|money }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endif %}
+</div>
+
+{% if action_ctx.can_act %}
+<div class="notif-detail-action-btns">
+  <form method="POST" action="{{ url_for('notification_action', note_id=view.id) }}" class="notif-confirm-form">
+    <input type="hidden" name="action" value="approve">
+    <button type="submit" class="btn btn-primary btn-block">{{ t('notif_action_confirm') }}</button>
+  </form>
+  <button type="button" class="btn btn-danger btn-block" onclick="openNotifRejectModal()">{{ t('reject') }}</button>
+</div>
+{% endif %}
+
+{% else %}
+<div class="card notif-detail-generic">
+  <div class="notif-detail-generic-head">
+    {% if view.avatar_url %}
+    <img src="{{ view.avatar_url }}" alt="" class="fb-notif-avatar">
+    {% else %}
+    <div class="fb-notif-avatar placeholder">{{ view.avatar_letter }}</div>
+    {% endif %}
+    <div>
+      {% if view.headline %}<h2 class="notif-detail-generic-title">{{ view.headline }}</h2>{% endif %}
+      <span class="fb-notif-time">{{ view.time_ago }}</span>
+    </div>
+  </div>
+  {% if view.body %}<p class="notif-detail-generic-body">{{ view.body }}</p>{% endif %}
+</div>
+{% endif %}
+
+<div class="notif-detail-actions">
+  <a href="{{ url_for('pro_dashboard') }}" class="btn btn-secondary btn-block">{{ t('notif_detail_go_dashboard') }}</a>
+</div>
+
+{% if action_ctx.can_act %}
+<div id="notifRejectModal" class="staff-modal" hidden>
+  <div class="staff-modal-backdrop" onclick="closeNotifRejectModal()"></div>
+  <div class="staff-modal-panel notif-reject-modal" role="dialog" aria-modal="true">
+    <button type="button" class="staff-modal-close" onclick="closeNotifRejectModal()" aria-label="{{ t('close') }}">✕</button>
+    <h3>{{ t('notif_reject_modal_title') }}</h3>
+    <form method="POST" action="{{ url_for('notification_action', note_id=view.id) }}" class="notif-reject-form">
+      <input type="hidden" name="action" value="reject">
+      <textarea name="note" rows="4" required placeholder="{{ t('reject_reason') }}" class="notif-reject-textarea"></textarea>
+      <button type="submit" class="btn btn-danger btn-block">{{ t('notif_reject_send') }}</button>
+    </form>
+  </div>
+</div>
+<script>
+function openNotifRejectModal() {
+  var modal = document.getElementById('notifRejectModal');
+  if (!modal) return;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  var ta = modal.querySelector('textarea');
+  if (ta) ta.focus();
+}
+function closeNotifRejectModal() {
+  var modal = document.getElementById('notifRejectModal');
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+}
+</script>
+{% endif %}
+{% endblock %}

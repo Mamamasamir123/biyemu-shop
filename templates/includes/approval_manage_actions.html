@@ -1,0 +1,12 @@
+{% if req.approval_type.value in ['add_product', 'delete_product'] and req.status.value == 'pending' %}
+<div class="approval-manage-actions">
+  <form method="POST" action="{{ cancel_url }}" class="approval-action-form">
+    <input name="note" placeholder="{{ t('approval_note_optional') }}">
+    <button type="submit" class="btn btn-secondary btn-sm">{{ cancel_label|default(t('approval_suspend')) }}</button>
+  </form>
+  <form method="POST" action="{{ delete_url }}" class="approval-action-form"
+        onsubmit="return confirm('{{ t('approval_delete_confirm') }}');">
+    <button type="submit" class="btn btn-outline-danger btn-sm">{{ t('approval_delete') }}</button>
+  </form>
+</div>
+{% endif %}

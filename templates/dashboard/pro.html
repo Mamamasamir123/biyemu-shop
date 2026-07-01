@@ -1,0 +1,169 @@
+{% extends "layout_app.html" %}
+{% set active = 'dashboard' %}
+{% block title %}{{ t('nav_dashboard') }} — BiyeMu{% endblock %}
+{% block content %}
+
+<div class="page-header dashboard-page-header">
+  <div>
+    <h1>{{ t('pro_dashboard_title') }}</h1>
+    <p class="hint">{{ t('pro_dashboard_sub') }}</p>
+  </div>
+  <a href="{{ url_for('dashboard_control') }}" class="dashboard-control-btn{% if pending_dashboard_resets %} has-pending{% endif %}" title="{{ t('dashboard_control') }}" aria-label="{{ t('dashboard_control') }}">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+    </svg>
+    <span>{% if current_user.is_boss() %}{{ t('dashboard_control') }}{% else %}{{ t('dashboard_reset_requests') }}{% endif %}</span>
+    {% if pending_dashboard_resets %}<span class="dashboard-pending-badge">{{ pending_dashboard_resets|length }}</span>{% endif %}
+  </a>
+</div>
+
+{% if pending_dashboard_resets and not current_user.is_boss() %}
+<div class="dashboard-pending-banner card">
+  <h3>{{ t('dashboard_reset_pending_banner') }}</h3>
+  <p class="hint">{{ t('dashboard_reset_pending_banner_hint') }}</p>
+  {% for req in pending_dashboard_resets %}
+  <div class="dashboard-pending-banner-item">
+    <span>{{ t('dashboard_reset_pending_msg', boss=req.requester_name, section=t('dashboard_section_' + req.section)) }}</span>
+    <div class="dashboard-pending-actions">
+      <form method="POST" action="{{ url_for('dashboard_respond_reset', request_id=req.id) }}">
+        <input type="hidden" name="action" value="approve">
+        <button type="submit" class="btn btn-primary btn-sm">{{ t('dashboard_reset_approve') }}</button>
+      </form>
+      <form method="POST" action="{{ url_for('dashboard_respond_reset', request_id=req.id) }}"
+            onsubmit="return confirm('{{ t('dashboard_reset_reject_confirm', section=t('dashboard_section_' + req.section)) }}');">
+        <input type="hidden" name="action" value="reject">
+        <button type="submit" class="btn btn-secondary btn-sm">{{ t('dashboard_reset_reject') }}</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ── Pesa: kutuma / kupokea ── #}
+<h3 class="section-title">💵 {{ t('cash_section_title') }}</h3>
+<div class="cash-hub">
+  {% if current_user.role.value == 'employee' %}
+  <a href="{{ url_for('employee_cash') }}" class="cash-hub-card send">
+    <span class="cash-hub-icon">📤</span>
+    <span class="cash-hub-title">{{ t('cash_handover') }}</span>
+    <span class="cash-hub-sub">{{ t('cash_handover_sub') }}</span>
+    {% if held_cash %}<span class="cash-hub-amount">{{ held_cash|money }}</span>{% endif %}
+  </a>
+  {% elif current_user.role.value == 'manager' %}
+  <a href="{{ url_for('manager_cash') }}" class="cash-hub-card receive">
+    <span class="cash-hub-icon">📥</span>
+    <span class="cash-hub-title">{{ t('cash_confirm_title') }}</span>
+    <span class="cash-hub-sub">{{ t('cash_receive_from_employee') }}</span>
+    {% if pending_cash %}<span class="cash-hub-amount">{{ pending_cash|money }}</span>{% endif %}
+  </a>
+  <a href="{{ url_for('manager_submit_cash') }}" class="cash-hub-card send">
+    <span class="cash-hub-icon">📤</span>
+    <span class="cash-hub-title">{{ t('cash_manager_handover') }}</span>
+    <span class="cash-hub-sub">{{ t('cash_send_to_boss') }}</span>
+    {% if shop_available %}<span class="cash-hub-amount">{{ shop_available|money }}</span>{% endif %}
+  </a>
+  {% elif current_user.role.value == 'boss' %}
+  <a href="{{ url_for('boss_cash') }}" class="cash-hub-card receive">
+    <span class="cash-hub-icon">📥</span>
+    <span class="cash-hub-title">{{ t('cash_confirm_title') }}</span>
+    <span class="cash-hub-sub">{{ t('cash_receive_from_manager') }}</span>
+    {% if pending_cash %}<span class="cash-hub-amount">{{ pending_cash|money }}</span>{% endif %}
+  </a>
+  {% endif %}
+</div>
+
+{# ── Takwimu ── #}
+<h3 class="section-title">📊 {{ t('dashboard') }}</h3>
+
+{% if current_user.role.value == 'boss' %}
+<div class="stats-grid shop-stats-grid boss-overview-grid">
+  <div class="stat-card">
+    <div class="label">🏪 {{ t('boss_total_shops') }}</div>
+    <div class="value">{{ company.shops_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">💼 {{ t('boss_total_capital') }}</div>
+    <div class="value">{{ company.total_capital|money }}</div>
+    {% if dashboard_resets.get('capital') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.capital) }}</div>{% endif %}
+  </div>
+  <div class="stat-card">
+    <div class="label">💰 {{ t('boss_total_sales') }}</div>
+    <div class="value">{{ company.total_revenue|money }}</div>
+    <div class="stat-hint">{% if dashboard_resets.get('revenue') %}{{ t('dashboard_since', date=dashboard_resets.revenue) }}{% else %}{{ t('cash_dashboard_note') }}{% endif %}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">📈 {{ t('boss_total_profit') }}</div>
+    <div class="value {% if company.total_profit < 0 %}danger{% endif %}">{{ company.total_profit|money }}</div>
+    {% if dashboard_resets.get('profit') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.profit) }}</div>{% endif %}
+  </div>
+</div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="label">{{ t('staff') }}</div><div class="value">{{ staff_count }}</div>{% if dashboard_resets.get('staff') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.staff) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">{{ t('approvals') }}</div><div class="value" style="color:var(--accent-red);">{{ pending }}</div>{% if dashboard_resets.get('approvals') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.approvals) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">{{ t('net_profit_positive') if report.net_profit >= 0 else t('net_profit_negative') }}</div><div class="value">{{ report.net_profit|abs|money }}</div>{% if dashboard_resets.get('net_profit') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.net_profit) }}</div>{% endif %}</div>
+</div>
+{% elif current_user.role.value == 'manager' %}
+<div class="stats-grid">
+  <div class="stat-card"><div class="label">{{ t('products') }}</div><div class="value">{{ products_count }}</div>{% if dashboard_resets.get('products') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.products) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">{{ t('staff') }}</div><div class="value">{{ employees_count }}</div>{% if dashboard_resets.get('staff') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.staff) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">{{ t('shop_revenue_label') }}</div><div class="value">{{ report.total_revenue|money }}</div><div class="stat-hint">{% if dashboard_resets.get('revenue') %}{{ t('dashboard_since', date=dashboard_resets.revenue) }}{% else %}{{ t('cash_dashboard_note') }}{% endif %}</div></div>
+  <div class="stat-card"><div class="label">{{ t('cash_shop_available') }}</div><div class="value">{{ shop_available|money }}</div>{% if dashboard_resets.get('cash_shop_available') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.cash_shop_available) }}</div>{% endif %}</div>
+</div>
+{% else %}
+<div class="stats-grid">
+  <div class="stat-card"><div class="label">💵 {{ t('cash_held') }}</div><div class="value">{{ held_total|money }}</div>{% if dashboard_resets.get('cash_held') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.cash_held) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">⏳ {{ t('cash_pending') }}</div><div class="value">{{ pending_total|money }}</div>{% if dashboard_resets.get('cash_pending') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.cash_pending) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">✅ {{ t('cash_confirmed') }}</div><div class="value">{{ confirmed_total|money }}</div>{% if dashboard_resets.get('cash_confirmed') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.cash_confirmed) }}</div>{% endif %}</div>
+  <div class="stat-card"><div class="label">{{ t('my_sales') }}</div><div class="value">{{ my_sales_count }}</div>{% if dashboard_resets.get('my_sales') %}<div class="stat-hint">{{ t('dashboard_since', date=dashboard_resets.my_sales) }}</div>{% endif %}</div>
+</div>
+{% endif %}
+
+<div class="dashboard-services-panel">
+<h3 class="section-title">{{ t('services') }}</h3>
+<div class="services-grid">
+{% if current_user.role.value == 'boss' %}
+  <a href="{{ url_for('boss_shops') }}" class="service-card"><div class="icon">🏪</div><div class="title">{{ t('all_shops') }}</div></a>
+  <a href="{{ url_for('boss_staff') }}" class="service-card"><div class="icon">👥</div><div class="title">{{ t('staff') }}</div></a>
+  <a href="{{ url_for('boss_approvals') }}" class="service-card"><div class="icon">✅</div><div class="title">{{ t('approvals') }}</div></a>
+  <a href="{{ url_for('boss_finance') }}" class="service-card"><div class="icon">📋</div><div class="title">{{ t('report') }}</div></a>
+  <a href="{{ url_for('boss_sales') }}" class="service-card"><div class="icon">💰</div><div class="title">{{ t('sales') }}</div></a>
+  <a href="{{ url_for('boss_trash') }}" class="service-card"><div class="icon">🗑️</div><div class="title">{{ t('trash_title') }}</div></a>
+{% elif current_user.role.value == 'manager' %}
+  {% if user_can_sell %}<a href="{{ url_for('employee_sell') }}" class="service-card"><div class="icon">🛒</div><div class="title">{{ t('sell') }}</div></a>{% endif %}
+  <a href="{{ url_for('manager_shop_view') }}" class="service-card"><div class="icon">🏪</div><div class="title">{{ t('my_shop') }}</div></a>
+  <a href="{{ url_for('manager_shop_products') }}" class="service-card"><div class="icon">📦</div><div class="title">{{ t('products') }}</div></a>
+  <a href="{{ url_for('manager_employees') }}" class="service-card"><div class="icon">👥</div><div class="title">{{ t('staff') }}</div></a>
+  <a href="{{ url_for('manager_shop_sales') }}" class="service-card"><div class="icon">💰</div><div class="title">{{ t('sales') }}</div></a>
+  <a href="{{ url_for('manager_finance') }}" class="service-card"><div class="icon">📊</div><div class="title">{{ t('report') }}</div></a>
+  <a href="{{ url_for('manager_approvals') }}" class="service-card"><div class="icon">✅</div><div class="title">{{ t('my_requests') }}</div></a>
+{% else %}
+  {% if permissions.can_sell %}<a href="{{ url_for('employee_sell') }}" class="service-card"><div class="icon">🛒</div><div class="title">{{ t('sell') }}</div></a>{% endif %}
+  {% if permissions.can_view_products %}<a href="{{ url_for('employee_products') }}" class="service-card"><div class="icon">📦</div><div class="title">{{ t('products') }}</div></a>{% endif %}
+  {% if permissions.can_view_sales_history %}<a href="{{ url_for('employee_sales') }}" class="service-card"><div class="icon">💰</div><div class="title">{{ t('my_sales') }}</div></a>{% endif %}
+{% endif %}
+</div>
+</div>
+
+{% if low_stock %}
+<div class="card" style="margin-top:18px;">
+  <h3>⚠️ {{ t('notif_low_stock_title') }}</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>{{ t('product') }}</th><th>{{ t('quantity') }}</th></tr></thead>
+      <tbody>
+        {% for p in low_stock %}
+        <tr>
+          <td class="product-thumb-cell">{% include 'includes/product_thumb.html' %}</td>
+          <td>{{ p.name }}</td>
+          <td><span class="badge badge-warning">{{ p.quantity }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "layout_app.html" %}
+{% block title %}Paneli ya Mfanyakazi — BiyeMu{% endblock %}
+{% block nav %}
+{% set active = 'dashboard' %}
+{% include 'includes/nav_employee.html' %}
+{% endblock %}
+{% block content %}
+
+<div class="dash-welcome">
+  <div style="display: flex; align-items: center; gap: 14px;">
+    {% if current_user.profile_picture %}
+      <img src="{{ url_for('static', filename='uploads/profiles/' + current_user.profile_picture) }}" 
+           class="sidebar-avatar" style="width:52px;height:52px;">
+    {% else %}
+      <div class="sidebar-avatar placeholder" style="width:52px;height:52px;font-size:1.4rem;">
+        {{ current_user.full_name[0]|upper }}
+      </div>
+    {% endif %}
+    <div>
+      <h2 style="margin:0;">{{ t('welcome_user', name=current_user.full_name.split(' ')[0]) }}</h2>
+      <p style="margin:2px 0 0;">{{ role_label(current_user.role.value) }} • {{ shop_name }}</p>
+    </div>
+  </div>
+
+  <div style="text-align: right;">
+    <div style="font-size:0.8rem; color:var(--muted);">{{ t('cash_confirmed') }}</div>
+    <div style="font-size:1.3rem; font-weight:700; color:var(--accent);">{{ my_total_sales|money }}</div>
+    <div style="font-size:0.75rem; color:var(--muted);">{{ t('cash_dashboard_note') }}</div>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">💵 {{ t('cash_held') }}</div>
+    <div class="value">{{ held_total|money }}</div>
+    <div class="stat-hint">{{ t('cash_held_hint') }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">⏳ {{ t('cash_pending') }}</div>
+    <div class="value">{{ pending_total|money }}</div>
+    <div class="stat-hint">{{ t('cash_pending_hint') }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('my_sales') }}</div>
+    <div class="value">{{ my_sales_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">{{ t('available_products') }}</div>
+    <div class="value">{{ available_products }}</div>
+  </div>
+</div>
+
+<h3 class="section-title">{{ t('quick_actions') }}</h3>
+
+<div class="services-grid">
+  {% if permissions.can_sell %}
+  <a href="{{ url_for('employee_sell') }}" class="service-card">
+    <div class="icon">🛒</div>
+    <div class="title">{{ t('sell') }}</div>
+    <div class="subtitle">{{ t('record_sale') }}</div>
+  </a>
+  {% endif %}
+
+  {% if permissions.can_view_products %}
+  <a href="{{ url_for('employee_products') }}" class="service-card">
+    <div class="icon">📦</div>
+    <div class="title">{{ t('products') }}</div>
+    <div class="subtitle">{{ t('available_products') }}</div>
+  </a>
+  {% endif %}
+
+  {% if permissions.can_view_sales_history %}
+  <a href="{{ url_for('employee_sales') }}" class="service-card">
+    <div class="icon">📋</div>
+    <div class="title">{{ t('my_sales') }}</div>
+    <div class="subtitle">{{ t('sales_title') }}</div>
+    <div class="count">{{ my_sales_count }} {{ t('sales') }}</div>
+  </a>
+  {% endif %}
+
+  <a href="{{ url_for('employee_cash') }}" class="service-card">
+    <div class="icon">💵</div>
+    <div class="title">{{ t('cash_handover') }}</div>
+    <div class="subtitle">{{ t('cash_handover_sub') }}</div>
+    {% if held_total %}
+    <div class="count" style="color:var(--accent-red);">{{ held_total|money }}</div>
+    {% endif %}
+  </a>
+
+  <a href="{{ url_for('profile_view') }}" class="service-card">
+    <div class="icon">👤</div>
+    <div class="title">{{ t('profile') }}</div>
+    <div class="subtitle">{{ t('personal_info') }}</div>
+  </a>
+</div>
+
+{% endblock %}

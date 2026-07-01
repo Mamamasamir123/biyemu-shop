@@ -1,0 +1,49 @@
+{# req, shops (optional), show_checkbox, show_review_actions, show_manage_actions, approve_url, reject_url, cancel_url, delete_url #}
+{% set pdata = req.payload|from_json %}
+{% set shop_name = shops.get(req.shop_id, '-') if shops is defined else '' %}
+<article class="approval-card-compact" data-row
+         data-search="{{ aina_ombi(req.approval_type) }} {{ req.requester_name }} {{ shop_name }} {{ req.details }} {{ hali_ombi(req.status) }} {{ req.created_at }} {{ pdata.get('name', '') }}">
+  <div class="approval-card-head">
+    {% if show_checkbox %}
+    <input type="checkbox" class="approval-row-check" value="{{ req.id }}" aria-label="{{ t('select_all') }}">
+    {% endif %}
+    <div class="approval-card-head-text">
+      <span class="approval-type-badge">{{ aina_ombi(req.approval_type) }}</span>
+      {% if req.status.value != 'pending' %}
+      <span class="badge badge-info approval-status-badge">{{ hali_ombi(req.status) }}</span>
+      {% endif %}
+    </div>
+    <time class="approval-date-compact">{{ req.created_at }}</time>
+  </div>
+
+  <div class="approval-card-body">
+    {% if req.requester_name or shop_name %}
+    <p class="approval-meta-compact">
+      {% if req.requester_name %}<span>{{ req.requester_name }}</span>{% endif %}
+      {% if shop_name %}<span class="approval-shop">{{ shop_name }}</span>{% endif %}
+    </p>
+    {% endif %}
+
+    {% set approval_compact = true %}
+    {% include 'includes/approval_product_preview.html' %}
+
+    {% if req.approval_type.value not in ['add_product', 'delete_product'] or (req.approval_type.value == 'add_product' and not pdata.get('name')) %}
+    <p class="approval-details-compact">{{ req.details }}</p>
+    {% endif %}
+
+    {% if req.boss_note %}
+    <p class="approval-note-compact"><em>{{ req.boss_note }}</em></p>
+    {% endif %}
+  </div>
+
+  {% if show_review_actions %}
+  <div class="approval-card-foot">
+    {% include 'includes/approval_actions.html' %}
+  </div>
+  {% elif show_manage_actions and req.status.value == 'pending' and req.approval_type.value in ['add_product', 'delete_product'] %}
+  <div class="approval-card-foot">
+    {% set cancel_label = t('approval_cancel') %}
+    {% include 'includes/approval_manage_actions.html' %}
+  </div>
+  {% endif %}
+</article>
