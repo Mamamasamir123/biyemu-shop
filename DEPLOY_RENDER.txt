@@ -96,8 +96,24 @@ shemu / shemu123
 brosk / brosk123
 
 
-TATIZO?
--------
+TATIZO: "Exited with status 1" (Build successful lakini Failed)
+---------------------------------------------------------------
+Sababu kawaida: GitHub inaruhusu faili 100 tu kwa upload moja.
+Mradi una faili ~186 — code haikupakiwa kamili.
+
+REKEBISHA:
+1. PowerShell: .\tengeneza-pakia-github.ps1
+2. Pakia github-pakia\batch-1, batch-2, batch-3 kwenye GitHub (mara 3)
+3. Render → Settings → Start Command:
+     gunicorn -w 2 --timeout 120 -b 0.0.0.0:$PORT web.server:flask_app
+4. Ongeza env: RENDER = true
+5. Manual Deploy
+
+Maelezo kamili: REKEBISHA_RENDER_FAIL.txt
+
+
+TATIZO LINGINE?
+---------------
 Niambie UNACHOKIONA hasa (screenshot au maandishi):
 - Hatua ngapi uko?
 - Maneno ya kitufe/sehemu unayoona?

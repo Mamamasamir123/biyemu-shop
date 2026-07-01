@@ -1,0 +1,74 @@
+REKEBISHA "Exited with status 1" — HATUA MOJA MOJA
+====================================================
+
+SCREEN YAKO INAONYESHA:
+  Build successful  ✓  (flask, gunicorn zilipakuliwa)
+  Failed            ✗  (app haikuanza)
+
+SABABU KUBWA: GitHub inaruhusu faili 100 tu kwa upload moja.
+Mradi una faili ~186 — code haikupakiwa KAMILI.
+
+
+HATUA 1 — TENGENEZA FOLDA ZA KUPAKIA
+-------------------------------------
+1. Fungua PowerShell kwenye folda biyemu-shop-system
+2. Andika:
+     .\tengeneza-pakia-github.ps1
+3. Itatengeneza folda: github-pakia\batch-1, batch-2, ...
+   (batch-1 ina code muhimu: web, models, services, data, n.k.)
+
+
+HATUA 2 — PAKIA GITHUB (MARA 3)
+--------------------------------
+1. Fungua https://github.com/Manameisa123/biyemu-shop
+2. Bofya "Add file" → "Upload files"
+3. Buruta YOTE yaliyomo ndani ya github-pakia\batch-1
+4. Chini: "Commit changes"
+5. Rudia kwa batch-2 (Add file → Upload files → buruta batch-2)
+6. Rudia kwa batch-3
+
+
+HATUA 3 — HAKIKISHA RENDER SETTINGS
+------------------------------------
+1. Fungua https://dashboard.render.com
+2. Bofya "Biyemu Soko" → "Settings" (upande wa kushoto)
+3. Angalia hivi:
+
+   Root Directory     →  (ACHA TUPU — usiandike chochote)
+   Build Command      →  pip install -r requirements.txt
+   Start Command      →  gunicorn -w 2 --timeout 120 -b 0.0.0.0:$PORT web.server:flask_app
+
+4. Chini: Environment Variables
+   - SECRET_KEY  →  lazima iwe (Generate au herufi ngumu)
+   - RENDER      →  true   (ongeza ikiwa haipo)
+
+5. Bofya "Save Changes"
+
+
+HATUA 4 — DEPLOY TENA
+---------------------
+1. Upande wa kushoto: bofya "Events"
+2. Juu kulia: "Manual Deploy" → "Deploy latest commit"
+3. Subiri "Live" (kijani) — inaweza kuchukua dakika 2-5
+
+
+HATUA 5 — JARIBU
+----------------
+Fungua browser:
+  https://biyemu-soko.onrender.com/login
+
+Ikiwa inaonyesha ukurasa wa kuingia → IMEFANIKIWA!
+
+
+BAADA YA KUFANIKIWA (APK)
+-------------------------
+cd mobile-app
+.\set-server-url.ps1 -ServerUrl "https://biyemu-soko.onrender.com"
+
+
+BADO INASHINDWA?
+----------------
+1. Render → Logs (upande wa kushoto, chini ya MONITOR)
+2. Scroll chini zaidi ya "Build successful"
+3. Tafuta mistari MYEKUNDU (ModuleNotFoundError, ImportError, n.k.)
+4. Nipe screenshot ya logs hizo — nitakuambia hasa nini kimekosekana
