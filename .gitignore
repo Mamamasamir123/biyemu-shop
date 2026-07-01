@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.env
+.venv/
+venv/
+tools/
+mobile-app/node_modules/
+mobile-app/android/
+*.log
+.DS_Store
+Thumbs.db

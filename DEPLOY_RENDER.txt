@@ -1,0 +1,104 @@
+BIYEMU — RENDER (BURE) — MAELEKEZO YANAYOLINGANA NA SCREEN
+==========================================================
+
+Hii ni njia MOJA tu. Fuata namba kwa namba.
+
+
+SEHEMU A — GITHUB (pakia code)
+------------------------------
+1. Fungua https://github.com → ingia akaunti yako
+2. Bofya "+" juu kulia → "New repository"
+3. Repository name: biyemu-shop
+4. Chagua Public
+5. USIWEKE README (acha tupu)
+6. Bofya "Create repository"
+
+7. Ukurasa unaonyesha "uploading an existing file"
+   → bofya "uploading an existing file"
+
+8. Buruta FOLDER yote: biyemu-shop-system
+   (au chagua files zote ndani yake)
+
+9. Chini: "Commit changes"
+
+
+SEHEMU B — RENDER (unda service)
+--------------------------------
+1. Fungua https://dashboard.render.com → ingia
+   (chagua "Sign up with GitHub" ikiwa huna akaunti)
+
+2. Juu kulia ya dashboard: bofya "+ New"
+3. Chagua: "Web Service"  (SI Static Site)
+
+4. Utaona orodha ya repos za GitHub
+   - Ikiwa haujaunganisha GitHub: bofya "Configure account" / Connect GitHub
+   - Baada ya kuunganisha, repo "biyemu-shop" itaonekana
+   - Bofya "Connect" karibu na repo yako
+
+
+SEHEMU C — JAZA FOMU (maneno halisi unayoyaona)
+------------------------------------------------
+Jaza EXACTLY hivi:
+
+  Name              →  biyemu-shop
+  Project           →  (acha default / None)
+  Region            →  Frankfurt (au chochote)
+  Branch            →  main
+  Root Directory    →  (ACHA TUPU)
+  Language          →  Python 3
+  Build Command     →  pip install -r requirements.txt
+  Start Command     →  gunicorn -w 2 --timeout 120 -b 0.0.0.0:$PORT web.server:flask_app
+
+  Instance Type     →  chagua "Free" (bofya dropdown, si Starter)
+
+  Environment Variables (sehemu ya chini ya fomu):
+    - Bofya "Add Environment Variable"
+    - Key:   SECRET_KEY
+    - Value: bofya "Generate" (au andika herufi ngumu yoyote)
+
+5. Chini kabisa ya ukurasa: bofya "Deploy Web Service"
+   (si "Create" pekee — inaweza kuandika "Deploy")
+
+
+SEHEMU D — SUBIRI
+-----------------
+- Utaona "Building..." kisha "Deploying..."
+- Ikiwa imefanikiwa: hali inakuwa "Live" (kijani)
+- URL iko juu: https://biyemu-shop-xxxx.onrender.com
+  (nambari yako itatofautiana)
+
+Jaribu browser:
+  https://URL-YAKO.onrender.com/login
+
+
+SEHEMU E — APK (baadaye)
+------------------------
+cd mobile-app
+.\set-server-url.ps1 -ServerUrl "https://URL-YAKO.onrender.com"
+
+
+KILE HUWEZI KUONA / KINACHOCHANGANYA
+------------------------------------
+| Ukiniona hivi              | Usifanye hivi                    |
+|----------------------------|----------------------------------|
+| Blueprint                  | Hii ni njia nyingine — ruka      |
+| Static Site                | Si hii — chagua Web Service      |
+| Docker                     | Si hii — chagua Python 3         |
+| Starter $7                 | Chagua Free                      |
+| Runtime                    | Jina jipya ni "Language"         |
+| Create Web Service         | Kitufe kinaweza kuwa "Deploy"    |
+
+
+AKAUNTI ZA KUJARIBU
+-------------------
+boss / boss123
+shemu / shemu123
+brosk / brosk123
+
+
+TATIZO?
+-------
+Niambie UNACHOKIONA hasa (screenshot au maandishi):
+- Hatua ngapi uko?
+- Maneno ya kitufe/sehemu unayoona?
+- Ujumbe wa error (nyekundu)?
