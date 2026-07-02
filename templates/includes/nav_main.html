@@ -9,10 +9,10 @@
 <a href="{{ url_for('staff_chat') }}" class="social-nav-item{% if active == 'chat' %} active{% endif %}" title="{{ t('chat_title') }}">
   <span class="social-nav-icon">💬</span>
   <span>{{ t('chat_nav_short') }}</span>
-  {% if unread_chat_messages or pending_connections %}<span class="social-nav-badge">{{ unread_chat_messages + pending_connections }}</span>{% endif %}
+  <span class="social-nav-badge" data-alert-badge="chat"{% if not (unread_chat_messages or pending_connections) %} hidden{% endif %}>{% if unread_chat_messages or pending_connections %}{{ unread_chat_messages + pending_connections }}{% endif %}</span>
 </a>
 <a href="{{ url_for('notifications_list') }}" class="social-nav-item{% if active == 'notifications' %} active{% endif %}" title="{{ t('notifications_title') }}">
   <span class="social-nav-icon">🔔</span>
   <span>{{ t('notifications_title') }}</span>
-  {% if unread_notifications %}<span class="social-nav-badge">{{ unread_notifications }}</span>{% endif %}
+  <span class="social-nav-badge" data-alert-badge="notifications"{% if not unread_notifications %} hidden{% endif %}>{% if unread_notifications %}{{ unread_notifications }}{% endif %}</span>
 </a>

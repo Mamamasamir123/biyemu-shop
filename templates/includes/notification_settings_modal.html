@@ -5,6 +5,16 @@
     <button type="button" class="staff-modal-close" onclick="closeNotificationSettings()" aria-label="{{ t('close') }}">✕</button>
     <h2 id="notificationSettingsTitle">{{ t('notification_settings') }}</h2>
     <p class="hint">{{ t('notification_settings_hint') }}</p>
+    <label class="notification-pref-row alert-sound-row">
+      <div>
+        <strong>{{ t('alert_sound_title') }}</strong>
+        <span class="hint">{{ t('alert_sound_hint') }}</span>
+      </div>
+      <span class="toggle-switch">
+        <input type="checkbox" id="alertSoundToggle" checked>
+        <span class="toggle-slider"></span>
+      </span>
+    </label>
     <form method="POST" action="{{ url_for('notification_settings') }}" class="notification-prefs-form">
       {% for key in notification_pref_keys %}
       <label class="notification-pref-row">

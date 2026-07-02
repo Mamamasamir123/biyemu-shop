@@ -14,6 +14,6 @@
   <a href="{{ url_for('notifications_list') }}" class="mobile-bottom-item{% if active == 'notifications' %} active{% endif %}">
     <span class="mobile-bottom-icon">🔔</span>
     <span class="mobile-bottom-label">{{ t('notifications_short') }}</span>
-    {% if unread_notifications %}<span class="mobile-bottom-badge">{{ unread_notifications }}</span>{% endif %}
+    <span class="mobile-bottom-badge" data-alert-badge="notifications"{% if not unread_notifications %} hidden{% endif %}>{% if unread_notifications %}{{ unread_notifications }}{% endif %}</span>
   </a>
 </nav>

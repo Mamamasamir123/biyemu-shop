@@ -7,6 +7,6 @@
   </button>
   <a href="{{ url_for('notifications_list') }}" class="nav-notifications-link{% if active == 'notifications' %} active{% endif %}">
     🔔 {{ t('notifications_title') }}
-    {% if unread_notifications %}<span class="badge badge-warning">{{ unread_notifications }}</span>{% endif %}
+    <span class="badge badge-warning" data-alert-badge="notifications"{% if not unread_notifications %} hidden{% endif %}>{% if unread_notifications %}{{ unread_notifications }}{% endif %}</span>
   </a>
 </li>

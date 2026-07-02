@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="app-layout social-app has-mobile-header role-{{ current_user.role.value }}">
+<div class="app-layout social-app has-mobile-header role-{{ current_user.role.value }}"
+     {% if current_user %}data-alerts-api="{{ url_for('alerts_summary') }}"{% endif %}>
   <header class="social-topbar sidebar-desktop">
     <a href="{{ url_for('home_feed') }}" class="social-brand">{{ app_brand_title }}</a>
     <nav class="social-topnav">
@@ -45,4 +46,7 @@
   {% include 'includes/notification_settings_modal.html' %}
   {% include 'includes/mobile_bottom_nav.html' %}
 </div>
+{% if current_user %}
+<script src="{{ url_for('static', filename='js/notification-alerts.js') }}"></script>
+{% endif %}
 {% endblock %}

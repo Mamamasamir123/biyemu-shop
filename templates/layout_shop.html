@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
-<div class="app-layout has-mobile-header shop-app-layout role-{{ current_user.role.value }}">
+<div class="app-layout has-mobile-header shop-app-layout role-{{ current_user.role.value }}"
+     {% if current_user %}data-alerts-api="{{ url_for('alerts_summary') }}"{% endif %}>
   <aside class="sidebar sidebar-desktop">
     <a href="{{ shop_urls.overview }}" class="sidebar-user profile-link shop-sidebar-brand">
       {% if shop.logo %}
@@ -48,4 +49,7 @@
   {% include 'includes/mobile_bottom_nav.html' %}
 </div>
 <script src="{{ url_for('static', filename='js/shop-data-table.js') }}"></script>
+{% if current_user %}
+<script src="{{ url_for('static', filename='js/notification-alerts.js') }}"></script>
+{% endif %}
 {% endblock %}
