@@ -2774,6 +2774,21 @@ def staff_connection_reject(conn_id):
     return redirect(url_for("staff_chat", na=requester_id) if requester_id else url_for("staff_chat"))
 
 
+@flask_app.route("/api/arifa/muhtasari")
+@login_required()
+def alerts_summary():
+    user = app.user_service.get_by_id(session["user_id"])
+    return jsonify(
+        {
+            "unread_notifications": app.notification_service.get_unread_count(user.id),
+            "unread_chat": app.chat_service.get_unread_count(user.id),
+            "pending_connections": app.connection_service.get_pending_incoming_count(
+                user.id
+            ),
+        }
+    )
+
+
 @flask_app.route("/mazungumzo/api/<partner_id>")
 @login_required()
 def staff_chat_api(partner_id):

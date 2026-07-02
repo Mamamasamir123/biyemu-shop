@@ -69,6 +69,13 @@
     return bubble;
   }
 
+  var knownIds = {};
+  if (messagesEl) {
+    messagesEl.querySelectorAll('[data-msg-id]').forEach(function (node) {
+      knownIds[node.getAttribute('data-msg-id')] = true;
+    });
+  }
+
   function syncMessages(messages) {
     if (!messagesEl) return;
     var empty = document.getElementById('chatEmptyThread');
@@ -78,8 +85,15 @@
       var bubble = messagesEl.querySelector('[data-msg-id="' + msg.id + '"]');
       if (!bubble) {
         messagesEl.appendChild(createBubble(msg));
+        if (!msg.mine && !knownIds[msg.id]) {
+          if (window.BiyeMuAlerts && window.BiyeMuAlerts.playMessage) {
+            window.BiyeMuAlerts.playMessage();
+          }
+        }
+        knownIds[msg.id] = true;
       } else if (msg.mine) {
         updateReadStatus(bubble, msg);
+        knownIds[msg.id] = true;
       }
     });
     scrollMessages();
